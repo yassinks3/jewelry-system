@@ -1403,6 +1403,11 @@ function openCustomerModal(customerId = null) {
 async function saveCustomer(event, customerId) {
     event.preventDefault();
 
+    if (!currentUser || !currentUser.id) {
+        alert("Error: You must be logged in to save customers.");
+        return;
+    }
+
     const customerData = {
         name: document.getElementById('c-name').value,
         phone: document.getElementById('c-phone').value,
