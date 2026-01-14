@@ -252,9 +252,9 @@ function renderApp() {
         </ul>
         <div class="sidebar-footer">
             ${userRole === 'admin' ? `
-            <li id="nav-sales" onclick="requestSalesArchive()" style="list-style: none; margin-bottom: 1rem; color: var(--text-dim); transition: all 0.3s; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
+            <div id="nav-sales" onclick="requestSalesArchive()" style="margin-bottom: 1rem; color: var(--text-dim); transition: all 0.3s; cursor: pointer; display: flex; align-items: center; gap: 0.75rem;">
                 <i data-lucide="archive"></i> ${t('sold_archive')}
-            </li>
+            </div>
             ` : ''}
             <button class="lang-toggle" onclick="toggleLanguage()" style="margin-bottom: 1rem;">
                 <i data-lucide="languages"></i>
