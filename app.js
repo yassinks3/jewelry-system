@@ -283,6 +283,7 @@ function renderApp() {
 function migrateData() {
     let changed = false;
     if (!inventory.sold) { inventory.sold = []; changed = true; }
+    if (!inventory.customers) { inventory.customers = []; changed = true; }
     inventory.diamonds.forEach((item, index) => {
         if (!item.sku) { item.sku = `D-${1001 + index}`; changed = true; }
     });
