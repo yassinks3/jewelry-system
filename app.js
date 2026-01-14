@@ -84,12 +84,14 @@ async function initApp() {
             const { data: goldData } = await supabaseClient.from('gold').select('*');
             const { data: soldData } = await supabaseClient.from('sales').select('*');
             const { data: repairData } = await supabaseClient.from('repairs').select('*');
+            const { data: customerData } = await supabaseClient.from('customers').select('*');
 
             inventory = {
                 diamonds: diamondData || [],
                 gold: goldData || [],
                 sold: soldData || [],
-                repairs: repairData || []
+                repairs: repairData || [],
+                customers: customerData || []
             };
 
             if (inventory.diamonds.length === 0 && inventory.gold.length === 0) {
