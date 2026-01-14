@@ -269,7 +269,7 @@ function renderApp() {
     // On mobile, close sidebar after clicking a link
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    Sidebar.querySelectorAll('li').forEach(li => {
+    sidebar.querySelectorAll('li').forEach(li => {
         const originalClick = li.onclick;
         li.onclick = (e) => {
             if (window.innerWidth <= 768) toggleSidebar();
