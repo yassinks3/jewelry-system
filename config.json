@@ -146,7 +146,22 @@
             "origin_sku": "Barcode/SKU",
             "json_backup": "Export JSON Backup",
             "json_restore": "Restore from JSON",
-            "confirm_restore": "WARNING: Restoring will overwrite all current data. Proceed?"
+            "confirm_restore": "WARNING: Restoring will overwrite all current data. Proceed?",
+            "customers": "Customers",
+            "add_customer": "Add Customer",
+            "customer_name": "Customer Name",
+            "customer_phone": "Phone",
+            "customer_email": "Email",
+            "customer_address": "Address",
+            "customer_notes": "Notes",
+            "purchase_history": "Purchase History",
+            "lifetime_value": "Lifetime Value",
+            "last_purchase": "Last Purchase",
+            "total_purchases": "Total Purchases",
+            "select_customer": "Select Customer",
+            "no_customer": "No Customer",
+            "optional": "Optional",
+            "edit": "Edit"
         },
         "ar": {
             "dashboard": "لوحة التحكم",
@@ -244,7 +259,22 @@
             "origin_sku": "الباركود/الكود",
             "json_backup": "تصدير نسخة JSON",
             "json_restore": "استعادة من JSON",
-            "confirm_restore": "تحذير: الاستعادة ستقوم بمسح جميع البيانات الحالية. هل تريد الاستمرار؟"
+            "confirm_restore": "تحذير: الاستعادة ستقوم بمسح جميع البيانات الحالية. هل تريد الاستمرار؟",
+            "customers": "العملاء",
+            "add_customer": "إضافة عميل",
+            "customer_name": "اسم العميل",
+            "customer_phone": "الهاتف",
+            "customer_email": "البريد الإلكتروني",
+            "customer_address": "العنوان",
+            "customer_notes": "ملاحظات",
+            "purchase_history": "سجل المشتريات",
+            "lifetime_value": "القيمة الإجمالية",
+            "last_purchase": "آخر شراء",
+            "total_purchases": "إجمالي المشتريات",
+            "select_customer": "اختر العميل",
+            "no_customer": "بدون عميل",
+            "optional": "اختياري",
+            "edit": "تعديل"
         }
     }
 }

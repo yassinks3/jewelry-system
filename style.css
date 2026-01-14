@@ -437,6 +437,76 @@ button:hover {
 
 
 
+/* Auth Screen Management */
+#auth-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.auth-logo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.auth-logo i {
+    width: 60px;
+    height: 60px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.logout-btn {
+    width: 100%;
+    background: transparent !important;
+    color: #ff4444 !important;
+    border: 1px solid rgba(255, 68, 68, 0.3) !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 68, 68, 0.1) !important;
+    border-color: rgba(255, 68, 68, 0.6) !important;
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -813,8 +883,10 @@ button:hover {
     color: var(--gold);
     transform: scale(1.1);
 }
+
 /* Sync & Backup Buttons */
-.btn-sync, .btn-backup {
+.btn-sync,
+.btn-backup {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -846,4 +918,147 @@ button:hover {
 .btn-backup:hover {
     background: rgba(255, 255, 255, 0.1);
     color: var(--gold);
+}
+
+/* Table Styles for Sales Archive */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table thead th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    border-bottom: 2px solid var(--border);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+table tbody td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+table tbody tr {
+    transition: all 0.2s ease;
+}
+
+table tbody tr:hover {
+    background: rgba(212, 175, 55, 0.03);
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Mobile Responsiveness */
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: flex;
+    }
+
+    #app {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        /* Fully Hidden */
+        width: 240px;
+        /* Reduced width */
+        height: 100vh;
+        z-index: 1100;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        padding: 1.5rem 0.75rem;
+        /* Compact padding */
+    }
+
+    .logo {
+        font-size: 1.2rem;
+        /* Scaled down */
+        margin-bottom: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nav-links li {
+        padding: 0.75rem;
+        /* Scaled down */
+        font-size: 0.9rem;
+    }
+
+    .sidebar.active {
+        left: 0 !important;
+    }
+
+    .content {
+        padding: 1rem;
+        height: 100vh;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+        /* Scaled down */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #menu-toggle {
+        background: var(--glass);
+        border: 1px solid var(--border);
+        color: var(--gold);
+        padding: 0.4rem;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    /* Sidebar Overlay */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 1050;
+        display: none;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* Sidebar Close Button */
+    .sidebar-close {
+        display: block !important;
+        color: var(--text-dim);
+        cursor: pointer;
+    }
+
+    .sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+    }
 }
