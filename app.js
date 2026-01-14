@@ -1315,7 +1315,7 @@ function renderCustomers(container) {
             </button>
         </div>
 
-        <div class="card">
+        <div class="card" style="overflow-x: auto;">
             <table>
                 <thead>
                     <tr>
