@@ -63,6 +63,8 @@ body {
 
 .nav-links {
     list-style: none;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .nav-links li {
