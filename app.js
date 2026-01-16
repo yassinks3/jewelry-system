@@ -578,8 +578,10 @@ function renderGold(container, filter = 'All') {
         <div class="inventory-controls">
             <div class="filter-tabs">${types.map(t => `<button class="filter-btn ${filter === t ? 'active' : ''}" onclick="renderGold(document.getElementById('inventory-list'), '${t}')">${t}</button>`).join('')}</div>
             <div style="display: flex; gap: 1rem;">
-                <button class="btn-outline" onclick="exportGold()">Export</button>
-                <button onclick="openGoldModal()">+ Add Gold Item</button>
+                <button class="btn-outline" onclick="exportGold()">${t('export_excel') || 'Export'}</button>
+                <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
+            (filter === 'Necklace' ? t('add') + ' ' + (currentLang === 'en' ? t('gold_label') + ' ' : '') + t(filter.toLowerCase()) + (currentLang === 'ar' ? ' ' + t('gold_label') : '') : t('add') + ' ' + t(filter.toLowerCase()))
+        }</button>
             </div>
         </div>
         ${ranges.length > 1 ? `<div class="range-tabs">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
@@ -670,7 +672,10 @@ function openDiamondModal(editItem = null) {
     if (editItem) updateSuggestion();
 }
 
-function openGoldModal(editItem = null) {
+function openGoldModal(param = null) {
+    const editItem = (param && typeof param === 'object') ? param : null;
+    const preselectedType = (typeof param === 'string' && param !== 'All') ? param : (editItem ? editItem.type : 'Chain');
+
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
     modal.innerHTML = `
@@ -683,7 +688,7 @@ function openGoldModal(editItem = null) {
                 <div class="form-grid">
                     <div class="form-group" style="grid-column: span 2;"><label>${t('image')}</label><input type="file" id="g-image" accept="image/*" class="file-input"></div>
                     <div class="form-group"><label>${t('name')}</label><input type="text" id="g-name" value="${editItem ? editItem.name : ''}" required></div>
-                    <div class="form-group"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${editItem && editItem.type === tg ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
                     <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required><div id="g-suggested" style="font-size: 0.75rem; color: var(--gold); margin-top: 0.25rem;"></div></div>
@@ -1315,7 +1320,7 @@ function renderCustomers(container) {
             </button>
         </div>
 
-        <div class="card" style="overflow-x: auto;">
+        <div class="card" style="overflow-x: auto; padding: 0;">
             <table>
                 <thead>
                     <tr>

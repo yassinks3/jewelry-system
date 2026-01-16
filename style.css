@@ -14,6 +14,27 @@
     --accent-glow: rgba(212, 175, 55, 0.1);
 }
 
+/* Custom Scrollbar for Webkit */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold-dark);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -925,8 +946,8 @@ button:hover {
 /* Table Styles for Sales Archive */
 table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
+    margin-top: 1rem;
 }
 
 table thead th {
@@ -938,7 +959,7 @@ table thead th {
     letter-spacing: 0.5px;
     color: var(--gold);
     border-bottom: 2px solid var(--border);
-    background: rgba(212, 175, 55, 0.05);
+    background: transparent;
 }
 
 table tbody td {
