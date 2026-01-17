@@ -109,6 +109,7 @@ async function initApp() {
 
         migrateData();
         renderApp();
+        fetchLivePrices(true);
     }
 }
 
@@ -118,7 +119,7 @@ const getKaratPrice = (karat) => {
     return (marketPrices.base24k / 24) * numeric;
 };
 
-async function fetchLivePrices() {
+async function fetchLivePrices(silent = false) {
     try {
         const goldRes = await fetch('https://api.gold-api.com/price/XAU');
         const goldData = await goldRes.json();
@@ -136,13 +137,28 @@ async function fetchLivePrices() {
         marketPrices.base24k = Math.round(raw24k + currentOffset);
 
         localStorage.setItem(MARKET_KEY, JSON.stringify(marketPrices));
-        alert(t('sync_success'));
-        showView('dashboard');
+
+        if (!silent) {
+            alert(t('sync_success'));
+        }
+
+        // Refresh dashboard if currently viewed to show new rates
+        if (currentView === 'dashboard') {
+            renderDashboard(document.getElementById('inventory-list'));
+        }
     } catch (err) {
-        console.error(err);
-        alert(t('sync_error'));
+        console.error("Live price sync failed:", err);
+        if (!silent) {
+            alert(t('sync_error'));
+        }
     }
 }
+
+// Start automated background sync every 15 minutes
+setInterval(() => {
+    console.log("Automated market rate sync triggered...");
+    fetchLivePrices(true);
+}, 15 * 60 * 1000);
 
 function updateLayout() {
     document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
@@ -507,7 +523,7 @@ function renderDashboard(container) {
                 <thead><tr style="text-align: left; color: var(--text-dim); border-bottom: 1px solid var(--border);"><th>${t('inventory')}</th><th>${t('type')}</th><th>${t('price')}</th></tr></thead>
                 <tbody>
                     ${[...inventory.diamonds, ...inventory.gold].sort((a, b) => b.id - a.id).slice(0, 5).map(item => `
-                        <tr><td style="padding: 1rem 0;">${item.carat ? item.carat + 'ct ' + item.type : item.name}</td><td>${item.carat ? t('diamonds') : t('gold')}</td><td class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${item.price.toLocaleString()} EGP</td></tr>
+                        <tr><td style="padding: 1rem 0;">${item.carat ? item.carat + 'ct ' + t(item.type.toLowerCase()) : item.name}</td><td>${item.carat ? t('diamonds') : t('gold')}</td><td class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${item.price.toLocaleString()} EGP</td></tr>
                     `).join('')}
                 </tbody>
             </table>
@@ -576,7 +592,7 @@ function renderGold(container, filter = 'All') {
     const types = ['All', 'Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings'];
     container.innerHTML = `
         <div class="inventory-controls">
-            <div class="filter-tabs">${types.map(t => `<button class="filter-btn ${filter === t ? 'active' : ''}" onclick="renderGold(document.getElementById('inventory-list'), '${t}')">${t}</button>`).join('')}</div>
+            <div class="filter-tabs">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('inventory-list'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
             <div style="display: flex; gap: 1rem;">
                 <button class="btn-outline" onclick="exportGold()">${t('export_excel') || 'Export'}</button>
                 <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
@@ -603,7 +619,7 @@ function renderGold(container, filter = 'All') {
                             </div>
                         </div>
                         <h4>${g.name}</h4>
-                        <p>${g.karat} | ${g.weight}g ${g.type}</p>
+                        <p>${g.karat} | ${g.weight}g ${t(g.type.toLowerCase())}</p>
                         <div class="price-tag">${g.price.toLocaleString()} EGP</div>
                     </div>
                 </div>
