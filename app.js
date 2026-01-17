@@ -502,6 +502,12 @@ function renderDashboard(container) {
                     ${t('total_cost')}: <span class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${costValue.toLocaleString()} EGP</span>
                 </div>
             </div>
+            ${userRole === 'admin' ? `
+            <div class="card stat-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px dashed var(--primary-blue); background: rgba(225, 29, 72, 0.02);">
+                <h3 style="margin-bottom: 1rem;">${t('backup')}</h3>
+                <button onclick="exportAll()" class="btn-backup" style="width: 100%;"><i data-lucide="download-cloud"></i> ${t('export_excel')}</button>
+            </div>
+            ` : ''}
         </div>
 
         <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
@@ -548,9 +554,7 @@ function renderDashboard(container) {
         </div>
         
         
-        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
-            ${userRole === 'admin' ? `<button onclick="exportAll()" class="btn-backup" style="flex: 1; max-width: 300px;"><i data-lucide="download-cloud"></i> ${t('backup')}</button>` : ''}
-        </div>
+        <br>
         
         <div class="card recent-activity">
             <h3>${t('recent')}</h3>
@@ -1793,29 +1797,83 @@ window.seedSystemData = async function () {
         // 2. Seed 20 Diamonds
         const shapes = ["Round", "Princess", "Emerald", "Oval", "Marquise", "Pear"];
         const images = [
-            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_ring_test_1_1768677664286.png",
-            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_necklace_test_1_1768677678288.png",
-            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_earrings_test_1_1768677691251.png"
+            "assets/diamond_ring_test_1_1768677664286.png",
+            "assets/diamond_necklace_test_1_1768677678288.png",
+            "assets/diamond_earrings_test_1_1768677691251.png"
         ];
         const diamonds = [];
         for (let i = 0; i < 20; i++) {
             const carat = (0.5 + Math.random() * 2.5).toFixed(2);
             diamonds.push({
                 id: Date.now() + 100 + i,
-                sku: `D-SEED-${1000 + i}`,
+                sku: `D-${1000 + i}`,
                 name: `${shapes[Math.floor(Math.random() * shapes.length)]} Diamond ${carat}ct`,
                 type: shapes[Math.floor(Math.random() * shapes.length)],
                 carat: parseFloat(carat),
                 color: "E", clarity: "VVS1", cut: "Excellent",
                 price: Math.floor(carat * 80000),
-                image: images[i % images.length]
+                image: images[i % images.length],
+                user_id: userId
             });
         }
         await supabaseClient.from('diamonds').insert(diamonds);
 
-        alert("✅ Successfully added 50 customers and 20 diamonds! Refreshing...");
+        // 3. Seed 20 Gold Items
+        const goldNames = ["Vintage Band", "Figaro Chain", "Bangle Bracelet", "Stud Earrings", "Wedding Hoop"];
+        const gold = [];
+        for (let i = 0; i < 20; i++) {
+            const weight = (2 + Math.random() * 15).toFixed(1);
+            gold.push({
+                id: Date.now() + 200 + i,
+                sku: `G-${1000 + i}`,
+                name: goldNames[Math.floor(Math.random() * goldNames.length)],
+                type: "Other",
+                karat: "18k",
+                weight: parseFloat(weight),
+                price: Math.floor(weight * getKaratPrice('18k') * 1.2),
+                image: null,
+                user_id: userId
+            });
+        }
+        await supabaseClient.from('gold').insert(gold);
+
+        alert("✅ Successfully added 50 customers, 20 diamonds, and 20 gold items! Refreshing...");
         location.reload();
     } catch (e) {
         alert("Seeding failed: " + e.message);
+    }
+};
+
+// One-time cleanup script for legacy "SEED" barcodes
+window.cleanupSKUs = async function () {
+    if (!currentUser) return alert("Please log in first!");
+
+    try {
+        console.log("Starting SKU Cleanup...");
+
+        // 1. Clean Diamonds
+        const { data: diamonds } = await supabaseClient.from('diamonds').select('id, sku');
+        for (const item of diamonds) {
+            if (item.sku && (item.sku.includes('SEED') || item.sku.includes('DIAMOND'))) {
+                const newSku = item.sku.replace(/-SEED-/g, '-').replace(/-DIAMOND-/g, '-').replace(/-Diamond-/g, '-');
+                await supabaseClient.from('diamonds').update({ sku: newSku }).eq('id', item.id);
+                console.log(`Updated Diamond: ${item.sku} -> ${newSku}`);
+            }
+        }
+
+        // 2. Clean Gold
+        const { data: gold } = await supabaseClient.from('gold').select('id, sku');
+        for (const item of gold) {
+            if (item.sku && (item.sku.includes('SEED') || item.sku.includes('GOLD'))) {
+                const newSku = item.sku.replace(/-SEED-/g, '-').replace(/-GOLD-/g, '-').replace(/-Gold-/g, '-');
+                await supabaseClient.from('gold').update({ sku: newSku }).eq('id', item.id);
+                console.log(`Updated Gold: ${item.sku} -> ${newSku}`);
+            }
+        }
+
+        alert("✅ SKU Cleanup Complete! All 'SEED' words have been removed. Refreshing...");
+        location.reload();
+    } catch (e) {
+        alert("Cleanup failed: " + e.message);
     }
 };
