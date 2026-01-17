@@ -401,7 +401,7 @@ function showView(view) {
     `;
 
     switch (view) {
-        case 'dashboard': title.innerText = t('overview'); renderDashboard(container); break;
+        case 'dashboard': title.innerText = t('dashboard'); renderDashboard(container); break;
         case 'diamonds': title.innerText = t('diamonds'); container.innerHTML = searchHtml + '<div id="inventory-list"></div>'; renderDiamonds(document.getElementById('inventory-list')); break;
         case 'gold': title.innerText = t('gold'); container.innerHTML = searchHtml + '<div id="inventory-list"></div>'; renderGold(document.getElementById('inventory-list')); break;
         case 'workshop': title.innerText = t('workshop'); renderWorkshop(container); break;
@@ -466,103 +466,145 @@ function setInventoryRange(category, range) {
 }
 
 function renderDashboard(container) {
+    // Privacy Logic for totals
     const totalDiamonds = inventory.diamonds.length;
     const totalGold = inventory.gold.length;
+    const liveValue = inventory.diamonds.reduce((s, i) => s + i.price, 0) + inventory.gold.reduce((s, i) => s + i.price, 0);
+    const costValue = inventory.diamonds.reduce((s, i) => s + (i.cost || i.price * 0.8), 0) + inventory.gold.reduce((s, i) => s + (i.cost || i.price * 0.8), 0);
     const alerts = checkStockLevels();
-    const costValue = [...inventory.diamonds, ...inventory.gold].reduce((sum, item) => sum + item.price, 0);
-    const liveGoldValue = inventory.gold.reduce((sum, g) => sum + (g.weight * getKaratPrice(g.karat)), 0);
-    const liveValue = inventory.diamonds.reduce((sum, d) => sum + d.price, 0) + liveGoldValue;
 
     container.innerHTML = `
+        <div class="dashboard-header animate-fade-in">
+            <div>
+                <h1 class="gradient-text" style="font-size: 2.2rem; margin: 0;">${t('dashboard')}</h1>
+                <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">Welcome back to your luxury management suite.</p>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                ${userRole === 'admin' ? `
+                    <button onclick="exportAll()" class="btn-premium-action">
+                        <i data-lucide="download-cloud" style="width: 18px;"></i> ${t('backup')}
+                    </button>
+                    <button onclick="seedSystemData()" class="btn-premium-action" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(59, 130, 246, 0.2);">
+                        <i data-lucide="database" style="width: 18px;"></i> ${t('seed_data')}
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+
         ${alerts.length > 0 ? `
-        <div class="card alert-banner" style="margin-bottom: 2rem; border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.05);">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <i data-lucide="alert-triangle" style="color: #ef4444;"></i>
+        <div class="glass-card hero-card animate-fade-in" style="margin-bottom: 2rem; border-left: 4px solid #ef4444;">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 0.75rem; border-radius: 12px;">
+                    <i data-lucide="alert-triangle" style="color: #ef4444;"></i>
+                </div>
                 <div style="flex: 1;">
-                    <h4 style="margin: 0; color: #ef4444;">${t('stock_alerts')}</h4>
-                    <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.25rem;">
-                        ${alerts.map(a => `${t('low_stock_on')} <strong>${a.label}</strong> (${a.count} ${t('items_left')})`).join(' | ')}
-                    </div>
+                    <h4 style="margin: 0; color: #ef4444; font-weight: 600;">Inventory Alerts</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0.25rem 0 0 0;">
+                        ${alerts.map(a => `${t('low_stock_on')} <strong>${a.label}</strong> (${a.count})`).join(' | ')}
+                    </p>
                 </div>
                 <i data-lucide="x" onclick="dismissAlert('${alerts.map(a => a.label).join(',')}')" style="cursor: pointer; opacity: 0.5; width: 16px;"></i>
             </div>
         </div>
         ` : ''}
 
-        <div class="stats-grid">
-            <div class="card stat-card"><h3>${t('total_diamonds')}</h3><div class="value">${totalDiamonds}</div></div>
-            <div class="card stat-card"><h3>${t('total_gold')}</h3><div class="value">${totalGold}</div></div>
-            <div class="card stat-card destaque">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h3>${t('value')}</h3>
-                    <i data-lucide="${privacyMode_dashboard ? 'eye-off' : 'eye'}" class="privacy-toggle" onclick="togglePrivacy('dashboard')"></i>
+        <div class="inventory-grid animate-fade-in">
+            <div class="glass-card hero-card" style="grid-column: span 2;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                    <div>
+                        <div class="stat-label">${t('total_portfolio_value')}</div>
+                        <div class="stat-value privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-size: 2.8rem; letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer;" onclick="togglePrivacy('dashboard')">
+                        <i data-lucide="${privacyMode_dashboard ? 'eye-off' : 'eye'}" style="width: 20px; color: var(--primary-blue);"></i>
+                    </div>
                 </div>
-                <div class="value privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${liveValue.toLocaleString()} EGP</div>
-                <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">
-                    ${t('total_cost')}: <span class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${costValue.toLocaleString()} EGP</span>
+                <div style="display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <div>
+                        <div class="stat-label" style="font-size: 0.7rem;">${t('total_cost')}</div>
+                        <div class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #94a3b8;">${costValue.toLocaleString()} EGP</div>
+                    </div>
+                    <div>
+                        <div class="stat-label" style="font-size: 0.7rem;">Est. Gross Profit</div>
+                        <div class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #10b981;">+${(liveValue - costValue).toLocaleString()} EGP</div>
+                    </div>
                 </div>
             </div>
-            ${userRole === 'admin' ? `
-            <div class="card stat-card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 1px dashed var(--primary-blue); background: rgba(225, 29, 72, 0.02);">
-                <h3 style="margin-bottom: 1rem;">${t('backup')}</h3>
-                <button onclick="exportAll()" class="btn-backup" style="width: 100%;"><i data-lucide="download-cloud"></i> ${t('export_excel')}</button>
+            <div class="glass-card">
+                <div class="stat-label">${t('diamonds_in_stock')}</div>
+                <div class="stat-value">${totalDiamonds}</div>
+                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">High-end pieces in vault</div>
             </div>
-            ` : ''}
+            <div class="glass-card">
+                <div class="stat-label">${t('gold_in_stock')}</div>
+                <div class="stat-value">${totalGold}</div>
+                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">Total items currently inventoried</div>
+            </div>
         </div>
 
         <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
-            <div class="card" style="padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="margin: 0;"><i data-lucide="trending-up" style="width: 18px; margin-right: 0.5rem; vertical-align: middle;"></i> Profit Trends (30 Days)</h3>
+            <div class="glass-card">
+                <div class="section-title">
+                    <i data-lucide="trending-up" style="width: 20px;"></i> Profit Dynamics (30 Days)
                 </div>
-                <div style="height: 250px;">
+                <div style="height: 300px;">
                     <canvas id="profitChart"></canvas>
                 </div>
             </div>
 
-            <div class="card" style="padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h3 style="margin: 0;"><i data-lucide="line-chart" style="width: 18px; margin-right: 0.5rem; vertical-align: middle;"></i> ${t('market_rates')}</h3>
+            <div class="glass-card">
+                <div class="section-title">
+                    <i data-lucide="line-chart" style="width: 20px;"></i> ${t('market_pulse')}
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-dim);">Au 24k</span>
-                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
-                    </div>
-                    <div style="font-size: 0.75rem; color: var(--text-dim); text-align: center; margin-top: -0.5rem;">
-                        <i data-lucide="clock" style="width: 12px; margin-right: 0.25rem;"></i>
-                        ${marketPrices.lastSync ? `Last Synced: ${marketPrices.lastSync}` : 'Never Synced'}
-                        ${marketPrices.isFallback ? '<br><span style="color: #fb7185;">(Sync delayed - Using cached price)</span>' : ''}
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-dim);">Au 22k</span>
-                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('22k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: var(--text-dim);">Au 18k</span>
-                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                <div class="market-item">
+                    <span style="color: var(--text-dim);">Gold 24k</span>
+                    <span style="font-weight: 700; color: var(--primary-blue); font-size: 1.1rem;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
+                </div>
+                <div class="market-item">
+                    <span style="color: var(--text-dim);">Gold 21k</span>
+                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('21k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                </div>
+                <div class="market-item">
+                    <span style="color: var(--text-dim);">Gold 18k</span>
+                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                </div>
+                
+                <div style="margin: 1.5rem 0; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px; text-align: center;">
+                    <div style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem;">
+                        <i data-lucide="clock" style="width: 12px; display: inline-block; vertical-align: middle;"></i>
+                        ${marketPrices.lastSync ? `Synced: ${marketPrices.lastSync}` : 'Never'}
+                        ${marketPrices.isFallback ? '<div style="color: #fb7185; margin-top: 0.25rem;">(Offline - Using Cache)</div>' : ''}
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
-                        <button onclick="fetchLivePrices()" class="btn-sync" style="flex: 1;"><i data-lucide="refresh-cw"></i> ${t('sync_live')}</button>
-                        <a href="https://isagha.com" target="_blank" class="btn-outline" style="text-decoration: none; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; padding: 0.5rem;">
-                            <i data-lucide="external-link" style="width: 14px; margin-right: 0.25rem;"></i> iSagha
-                        </a>
+                        <button onclick="fetchLivePrices()" class="btn-sync" style="flex: 1; font-size: 0.75rem;"><i data-lucide="refresh-cw" style="width:14px;"></i> ${t('sync')}</button>
+                        <a href="https://isagha.com" target="_blank" class="btn-outline" style="flex: 1; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; text-decoration: none;">iSagha <i data-lucide="external-link" style="width:12px; margin-left:4px;"></i></a>
                     </div>
-                    <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="openMarketModal()">${t('update_rates')}</button>
                 </div>
+
+                <button class="btn-premium-action" style="width: 100%; border-style: dashed;" onclick="openMarketModal()">
+                    <i data-lucide="settings-2" style="width: 18px;"></i> ${t('adjust_parameters')}
+                </button>
             </div>
         </div>
         
-        
-        <br>
-        
-        <div class="card recent-activity">
-            <h3>${t('recent')}</h3>
-            <table style="width: 100%; margin-top: 1rem; border-collapse: collapse;">
-                <thead><tr style="text-align: left; color: var(--text-dim); border-bottom: 1px solid var(--border);"><th>${t('inventory')}</th><th>${t('type')}</th><th>${t('price')}</th></tr></thead>
+        <div class="glass-card animate-fade-in">
+            <div class="section-title">
+                <i data-lucide="history" style="width: 20px;"></i> ${t('recent_activity')}
+            </div>
+            <table class="recent-table" style="width: 100%; border-collapse: collapse;">
+                <thead><tr style="text-align: left; color: var(--text-dim);"><th>${t('inventory')}</th><th>${t('type')}</th><th>${t('valuation')}</th></tr></thead>
                 <tbody>
                     ${[...inventory.diamonds, ...inventory.gold].sort((a, b) => b.id - a.id).slice(0, 5).map(item => `
-                        <tr><td style="padding: 1rem 0;">${item.carat ? item.carat + 'ct ' + t(item.type.toLowerCase()) : item.name}</td><td>${item.carat ? t('diamonds') : t('gold')}</td><td class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${item.price.toLocaleString()} EGP</td></tr>
+                        <tr>
+                            <td style="font-weight: 500;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div style="width: 8px; height: 8px; border-radius: 50%; background: ${item.carat ? '#60a5fa' : '#fb7185'};"></div>
+                                    ${item.carat ? item.carat + 'ct ' + (item.type || 'Diamond') : (item.name || 'Gold Piece')}
+                                </div>
+                            </td>
+                            <td style="color: var(--text-dim); font-size: 0.9rem;">${item.carat ? t('diamonds') : t('gold')}</td>
+                            <td class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #ffffff;">${item.price.toLocaleString()} EGP</td>
+                        </tr>
                     `).join('')}
                 </tbody>
             </table>
@@ -1541,7 +1583,7 @@ function openCustomerModal(customerId = null) {
 
     modal.innerHTML = `
         <div class="modal">
-            <div class="modal-content card">
+            <div class="modal-content card" style="max-width: 800px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>${customer ? t('edit') : t('add_customer')}</h2>
                     <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
@@ -1807,7 +1849,7 @@ window.seedSystemData = async function () {
             diamonds.push({
                 id: Date.now() + 100 + i,
                 sku: `D-${1000 + i}`,
-                name: `${shapes[Math.floor(Math.random() * shapes.length)]} Diamond ${carat}ct`,
+                name: `${shapes[Math.floor(Math.random() * shapes.length)]} ${carat}ct`,
                 type: shapes[Math.floor(Math.random() * shapes.length)],
                 carat: parseFloat(carat),
                 color: "E", clarity: "VVS1", cut: "Excellent",
@@ -1852,22 +1894,50 @@ window.cleanupSKUs = async function () {
         console.log("Starting SKU Cleanup...");
 
         // 1. Clean Diamonds
-        const { data: diamonds } = await supabaseClient.from('diamonds').select('id, sku');
+        const { data: diamonds } = await supabaseClient.from('diamonds').select('id, sku, name, image');
         for (const item of diamonds) {
-            if (item.sku && (item.sku.includes('SEED') || item.sku.includes('DIAMOND'))) {
-                const newSku = item.sku.replace(/-SEED-/g, '-').replace(/-DIAMOND-/g, '-').replace(/-Diamond-/g, '-');
-                await supabaseClient.from('diamonds').update({ sku: newSku }).eq('id', item.id);
-                console.log(`Updated Diamond: ${item.sku} -> ${newSku}`);
+            let updates = {};
+
+            // Clean SKU - Catch all variations like D-SEED-1003 or D-SEED1003
+            if (item.sku && /SEED/i.test(item.sku)) {
+                updates.sku = item.sku.replace(/-SEED-/gi, '-').replace(/SEED/gi, '');
+                // Ensure format D-1000 if it was mangled
+                if (!updates.sku.includes('-')) {
+                    updates.sku = updates.sku.slice(0, 1) + '-' + updates.sku.slice(1);
+                }
+            }
+
+            // Clean Name (Remove "Diamond ")
+            if (item.name && /Diamond/i.test(item.name)) {
+                updates.name = item.name.replace(/ Diamond /gi, ' ').replace(/Diamond /gi, '').replace(/ Diamond/gi, '').trim();
+            }
+
+            // Fix Image Path
+            if (item.image && item.image.includes('/brain/')) {
+                const parts = item.image.split('/');
+                const filename = parts[parts.length - 1];
+                updates.image = `assets/${filename}`;
+            }
+
+            if (Object.keys(updates).length > 0) {
+                await supabaseClient.from('diamonds').update(updates).eq('id', item.id);
+                console.log(`Deep Cleaned Diamond ${item.id}:`, updates);
             }
         }
 
         // 2. Clean Gold
-        const { data: gold } = await supabaseClient.from('gold').select('id, sku');
+        const { data: gold } = await supabaseClient.from('gold').select('id, sku, name');
         for (const item of gold) {
-            if (item.sku && (item.sku.includes('SEED') || item.sku.includes('GOLD'))) {
-                const newSku = item.sku.replace(/-SEED-/g, '-').replace(/-GOLD-/g, '-').replace(/-Gold-/g, '-');
-                await supabaseClient.from('gold').update({ sku: newSku }).eq('id', item.id);
-                console.log(`Updated Gold: ${item.sku} -> ${newSku}`);
+            let updates = {};
+            if (item.sku && /SEED/i.test(item.sku)) {
+                updates.sku = item.sku.replace(/-SEED-/gi, '-').replace(/SEED/gi, '');
+                if (!updates.sku.includes('-')) {
+                    updates.sku = updates.sku.slice(0, 1) + '-' + updates.sku.slice(1);
+                }
+            }
+            if (Object.keys(updates).length > 0) {
+                await supabaseClient.from('gold').update(updates).eq('id', item.id);
+                console.log(`Deep Cleaned Gold ${item.id}:`, updates);
             }
         }
 

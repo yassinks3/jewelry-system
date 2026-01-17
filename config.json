@@ -52,7 +52,6 @@
     "translations": {
         "en": {
             "dashboard": "Dashboard",
-            "overview": "Business Overview",
             "diamonds": "Diamonds",
             "gold": "Gold",
             "inventory": "Inventory",
@@ -172,7 +171,6 @@
         },
         "ar": {
             "dashboard": "لوحة التحكم",
-            "overview": "نظرة عامة على العمل",
             "diamonds": "الألماس",
             "gold": "الذهب",
             "inventory": "المخزون",
