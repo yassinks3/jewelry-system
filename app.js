@@ -496,15 +496,15 @@ function renderDashboard(container) {
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                     <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">
                         <span style="color: var(--text-dim);">Au 24k</span>
-                        <span style="font-weight: 700; color: var(--gold);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
+                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);">
                         <span style="color: var(--text-dim);">Au 22k</span>
-                        <span style="font-weight: 700; color: var(--gold);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('22k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('22k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
                         <span style="color: var(--text-dim);">Au 18k</span>
-                        <span style="font-weight: 700; color: var(--gold);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                        <span style="font-weight: 700; color: var(--primary-blue);" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
                     </div>
                     <button class="btn-outline" style="width: 100%; margin-top: 1rem;" onclick="openMarketModal()">${t('update_rates')}</button>
                 </div>
@@ -673,7 +673,7 @@ function openDiamondModal(editItem = null) {
                     <div class="form-group"><label>${t('color')}</label><select id="d-color" required>${['D', 'E', 'F', 'G', 'H', 'I', 'J'].map(c => `<option ${editItem && editItem.color === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('clarity')}</label><select id="d-clarity" required>${['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1'].map(cl => `<option ${editItem && editItem.clarity === cl ? 'selected' : ''}>${cl}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('cut')}</label><select id="d-cut" required>${['Excellent', 'Very Good', 'Good', 'Fair'].map(ct => `<option ${editItem && editItem.cut === ct ? 'selected' : ''}>${ct}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.75rem; color: var(--gold); margin-top: 0.25rem;"></div></div>
+                    <div class="form-group"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.75rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
@@ -707,7 +707,7 @@ function openGoldModal(param = null) {
                     <div class="form-group"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required><div id="g-suggested" style="font-size: 0.75rem; color: var(--gold); margin-top: 0.25rem;"></div></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required><div id="g-suggested" style="font-size: 0.75rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
@@ -963,7 +963,7 @@ function renderSales(container) {
                 <button class="btn-outline" onclick="confirmBulkVoid()" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" ${selectedCount === 0 ? 'disabled' : ''}>
                     <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Void Selected (${selectedCount})
                 </button>
-                <span style="color: var(--gold); font-weight: 600; font-size: 0.9rem;">
+                <span style="color: var(--primary-blue); font-weight: 600; font-size: 0.9rem;">
                     ${selectedCount} item${selectedCount !== 1 ? 's' : ''} selected
                 </span>
             `}
@@ -1108,13 +1108,13 @@ function openSettingsModal() {
                 <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
             </div>
             <form onsubmit="saveSettings(event)">
-                <h4 style="margin-bottom: 1rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Business Logic</h4>
+                <h4 style="margin-bottom: 1rem; color: var(--primary-blue); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Business Logic</h4>
                 <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
                     <div class="form-group"><label>${t('profit_margin')}</label><input type="number" id="s-margin" value="${appSettings.profitMargin}" required></div>
                     <div class="form-group"><label>${t('stock_threshold')}</label><input type="number" id="s-threshold" value="${appSettings.stockThreshold}" required></div>
                 </div>
 
-                <h4 style="margin-bottom: 1rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Shop Details (for Receipts)</h4>
+                <h4 style="margin-bottom: 1rem; color: var(--primary-blue); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Shop Details (for Receipts)</h4>
                 <div class="form-group" style="margin-bottom: 1rem;"><label>Shop Name</label><input type="text" id="s-shop-name" value="${shopInfo.name}" required></div>
                 <div class="form-group" style="margin-bottom: 1rem;"><label>Address</label><input type="text" id="s-shop-address" value="${shopInfo.address}" required></div>
                 <div class="form-group" style="margin-bottom: 2rem;"><label>Phone Number</label><input type="text" id="s-shop-phone" value="${shopInfo.phone}" required></div>
@@ -1484,11 +1484,11 @@ function viewCustomerDetail(customerId) {
                 <div class="stats-grid" style="margin-bottom: 2rem;">
                     <div class="card" style="background: rgba(197, 160, 89, 0.1);">
                         <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">${t('total_purchases')}</h4>
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--gold); margin-top: 0.5rem;">${purchases.length}</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;">${purchases.length}</div>
                     </div>
                     <div class="card" style="background: rgba(197, 160, 89, 0.1);">
                         <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">${t('lifetime_value')}</h4>
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--gold); margin-top: 0.5rem;" class="${privacyMode_dashboard ? 'blurred' : ''}">${totalSpent.toLocaleString()} EGP</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;" class="${privacyMode_dashboard ? 'blurred' : ''}">${totalSpent.toLocaleString()} EGP</div>
                     </div>
                 </div>
 

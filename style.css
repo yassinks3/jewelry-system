@@ -1,17 +1,17 @@
 :root {
-    --bg-dark: #05070a;
-    --bg-card: rgba(15, 17, 36, 0.7);
-    --gold: #d4af37;
-    --gold-light: #f3d89d;
-    --gold-dark: #b8860b;
-    --text-main: #f0f2f5;
+    --bg-dark: #020617;
+    --bg-card: rgba(15, 23, 42, 0.7);
+    --primary-blue: #0ea5e9;
+    --blue-light: #7dd3fc;
+    --blue-dark: #0369a1;
+    --text-main: #f8fafc;
     --text-dim: #94a3b8;
-    --border: rgba(212, 175, 55, 0.15);
-    --glass: rgba(255, 255, 255, 0.02);
-    --shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    --gradient-gold: linear-gradient(135deg, #b8860b 0%, #d4af37 50%, #f3d89d 100%);
-    --gradient-royal: linear-gradient(160deg, #070a1a 0%, #0f1124 100%);
-    --accent-glow: rgba(212, 175, 55, 0.1);
+    --border: rgba(14, 165, 233, 0.2);
+    --glass: rgba(255, 255, 255, 0.03);
+    --shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    --gradient-blue: linear-gradient(135deg, #0369a1 0%, #0ea5e9 50%, #7dd3fc 100%);
+    --gradient-deep: linear-gradient(160deg, #020617 0%, #0f172a 100%);
+    --accent-glow: rgba(14, 165, 233, 0.15);
 }
 
 /* Custom Scrollbar for Webkit */
@@ -26,13 +26,13 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--gold-dark);
+    background: var(--blue-dark);
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--gold);
+    background: var(--primary-blue);
 }
 
 * {
@@ -62,7 +62,7 @@ body {
 /* Sidebar */
 .sidebar {
     width: 260px;
-    background: var(--gradient-royal);
+    background: var(--gradient-deep);
     border-right: 1px solid var(--border);
     backdrop-filter: blur(20px);
     display: flex;
@@ -77,7 +77,7 @@ body {
     font-family: 'Outfit', sans-serif;
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--gold);
+    color: var(--primary-blue);
     margin-bottom: 3rem;
     padding-left: 0.5rem;
 }
@@ -102,14 +102,14 @@ body {
 
 .nav-links li:hover {
     background: var(--glass);
-    color: var(--gold-light);
+    color: var(--blue-light);
 }
 
 .nav-links li.active {
-    background: var(--gradient-gold);
+    background: var(--gradient-blue);
     color: #000;
     font-weight: 700;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
 }
 
 /* Main Content */
@@ -142,7 +142,7 @@ header h1 {
 .avatar {
     width: 40px;
     height: 40px;
-    background: var(--gold);
+    background: var(--primary-blue);
     border-radius: 50%;
 }
 
@@ -159,7 +159,7 @@ header h1 {
 
 .card:hover {
     transform: translateY(-8px);
-    border-color: var(--gold);
+    border-color: var(--primary-blue);
 }
 
 .stats-grid {
@@ -186,12 +186,12 @@ textarea {
 input:focus,
 select:focus {
     outline: none;
-    border-color: var(--gold);
+    border-color: var(--primary-blue);
     background: rgba(0, 0, 0, 0.4);
 }
 
 button {
-    background: var(--gradient-gold);
+    background: var(--gradient-blue);
     color: #000;
     border: none;
     padding: 0.8rem 1.8rem;
@@ -201,7 +201,7 @@ button {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
 }
 
 button:hover {
@@ -296,7 +296,7 @@ button:hover {
 }
 
 .filter-btn.active {
-    background: var(--gold);
+    background: var(--primary-blue);
     color: var(--bg-dark);
 }
 
@@ -305,7 +305,7 @@ button:hover {
     padding: 0.2rem 0.6rem;
     border-radius: 20px;
     font-size: 0.75rem;
-    color: var(--gold-light);
+    color: var(--blue-light);
     border: 1px solid var(--border);
 }
 
@@ -324,7 +324,7 @@ button:hover {
 
 .del.edit-btn:hover,
 .sell-btn:hover {
-    color: var(--gold);
+    color: var(--primary-blue);
     transform: scale(1.1);
 }
 
@@ -332,10 +332,10 @@ button:hover {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    background: linear-gradient(135deg, var(--blue-dark), var(--primary-blue));
     padding: 1rem 2rem;
     font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.2);
 }
 
 .btn-outline {
@@ -409,7 +409,7 @@ button:hover {
 
 .sku-tag {
     font-size: 0.7rem;
-    background: var(--gold-dark);
+    background: var(--blue-dark);
     color: var(--bg-dark);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
@@ -453,7 +453,7 @@ button:hover {
 }
 
 .lang-toggle:hover {
-    background: var(--gold);
+    background: var(--primary-blue);
     color: var(--bg-dark);
 }
 
@@ -485,7 +485,7 @@ button:hover {
     font-family: 'Outfit', sans-serif;
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--gold);
+    color: var(--primary-blue);
     margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
@@ -589,14 +589,14 @@ button:hover {
 }
 
 .range-btn:hover {
-    border-color: var(--gold);
+    border-color: var(--primary-blue);
     color: var(--text-main);
 }
 
 .range-btn.active {
-    background: var(--gold);
+    background: var(--primary-blue);
     color: var(--bg-dark);
-    border-color: var(--gold);
+    border-color: var(--primary-blue);
 }
 
 /* Smart Alerts */
@@ -699,7 +699,7 @@ button:hover {
 
 .suggestion-item .match-type {
     font-size: 0.7rem;
-    color: var(--gold);
+    color: var(--primary-blue);
     text-transform: uppercase;
     font-weight: 800;
     letter-spacing: 0.5px;
@@ -811,7 +811,7 @@ button:hover {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--gold);
+    color: var(--primary-blue);
 }
 
 .job-count {
@@ -833,7 +833,7 @@ button:hover {
 .job-card {
     padding: 1rem !important;
     cursor: pointer;
-    border-left: 3px solid var(--gold);
+    border-left: 3px solid var(--primary-blue);
 }
 
 .job-card:hover {
@@ -856,7 +856,7 @@ button:hover {
 
 .job-service {
     font-size: 0.85rem;
-    color: var(--gold-light);
+    color: var(--blue-light);
     margin-bottom: 0.75rem;
 }
 
@@ -903,7 +903,7 @@ button:hover {
 
 .privacy-toggle:hover {
     opacity: 1;
-    color: var(--gold);
+    color: var(--primary-blue);
     transform: scale(1.1);
 }
 
@@ -923,7 +923,7 @@ button:hover {
 }
 
 .btn-sync {
-    background: var(--gold);
+    background: var(--primary-blue);
     color: #000;
 }
 
@@ -940,7 +940,7 @@ button:hover {
 
 .btn-backup:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: var(--gold);
+    color: var(--primary-blue);
 }
 
 /* Table Styles for Sales Archive */
@@ -957,7 +957,7 @@ table thead th {
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.5px;
-    color: var(--gold);
+    color: var(--primary-blue);
     border-bottom: 2px solid var(--border);
     background: transparent;
 }
@@ -1050,7 +1050,7 @@ table tbody tr:last-child td {
     #menu-toggle {
         background: var(--glass);
         border: 1px solid var(--border);
-        color: var(--gold);
+        color: var(--primary-blue);
         padding: 0.4rem;
         border-radius: 8px;
         cursor: pointer;
