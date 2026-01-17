@@ -607,7 +607,7 @@ function renderDashboard(container) {
                                 </div>
                             </td>
                             <td style="color: var(--text-dim); font-size: 0.9rem;">${item.carat ? t('diamonds') : t('gold')}</td>
-                            <td class="privacy-value ${privacyMode_sales ? 'blurred' : ''}" style="font-weight: 600; color: #ffffff;">${item.price.toLocaleString()} EGP</td>
+                            <td class="privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-weight: 600; color: #ffffff;">${item.price.toLocaleString()} EGP</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -1258,11 +1258,7 @@ async function saveRepair(event, editId = null) {
     initApp();
 }
 
-function togglePrivacy(type) {
-    type === 'dashboard' ? (privacyMode_dashboard = !privacyMode_dashboard) : (privacyMode_sales = !privacyMode_sales);
-    localStorage.setItem(`privacy_mode_${type}`, JSON.stringify(type === 'dashboard' ? privacyMode_dashboard : privacyMode_sales));
-    showView(currentView);
-}
+
 
 // Special JSON Export/Import for Advanced Data Management
 function exportJSON() {
