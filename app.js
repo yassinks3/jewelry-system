@@ -1000,42 +1000,112 @@ function viewQR(category, id) {
     new QRCode(document.getElementById("qr-output"), { text: item.sku, width: 200, height: 200 });
 }
 
-function generateReceipt(item) {
+async function generateReceipt(saleData) {
     const doc = new jspdf.jsPDF();
+    const item = saleData.original_data || saleData;
 
-    // Header
-    doc.setFontSize(22);
+    // 1. Header & Branding
+    doc.setFillColor(18, 18, 22); // Dark background for header
+    doc.rect(0, 0, 210, 40, 'F');
+
+    doc.setFontSize(24);
     doc.setTextColor(197, 160, 89); // Gold
+    doc.setFont("helvetica", "bold");
     doc.text(shopInfo.name.toUpperCase(), 105, 20, { align: 'center' });
+
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${shopInfo.address}  |  Tel: ${shopInfo.phone}`, 105, 30, { align: 'center' });
+
+    // 2. Invoice Details
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(18);
+    doc.text("INVOICE / RECEIPT", 20, 60);
 
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.text(shopInfo.address, 105, 28, { align: 'center' });
-    doc.text(`Tel: ${shopInfo.phone}`, 105, 33, { align: 'center' });
+    doc.text(`Invoice ID: #${saleData.id.toString().slice(-6)}`, 20, 70);
+    doc.text(`Date: ${new Date(saleData.sold_date || Date.now()).toLocaleDateString()}`, 20, 75);
 
-    doc.setDrawColor(197, 160, 89);
-    doc.line(20, 40, 190, 40);
+    // 3. Customer Info (if available)
+    if (saleData.customer_id) {
+        const { data: customer } = await supabaseClient.from('customers').select('*').eq('id', saleData.customer_id).single();
+        if (customer) {
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(12);
+            doc.text("BILL TO:", 140, 60);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text(customer.name, 140, 68);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+            doc.text(customer.phone || "", 140, 74);
+        }
+    }
 
-    // Content
-    doc.setFontSize(16);
-    doc.setTextColor(0, 0, 0);
-    doc.text("SALES RECEIPT", 20, 55);
+    // 4. Item Table Header
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, 85, 190, 85);
+    doc.setFillColor(245, 245, 245);
+    doc.rect(20, 86, 170, 10, 'F');
+    doc.setFont("helvetica", "bold");
+    doc.text("Description", 25, 92);
+    doc.text("SKU", 120, 92);
+    doc.text("Total", 160, 92);
 
-    doc.setFontSize(12);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 140, 55);
+    // 5. Item Detail Body
+    doc.setFont("helvetica", "normal");
+    const itemName = item.carat ? `${item.carat}ct ${item.type || 'Diamond'}` : (item.name || 'Gold Item');
+    doc.text(itemName, 25, 105);
+    doc.text(item.sku, 120, 105);
+    doc.text(`${saleData.price.toLocaleString()} EGP`, 160, 105);
 
-    doc.setFontSize(14);
-    doc.text(`Item Detail:`, 20, 75);
-    doc.text(`SKU: ${item.sku}`, 30, 85);
-    doc.text(`Type: ${item.type || 'Jewelry'}`, 30, 95);
-
-    doc.setFontSize(18);
-    doc.text(`Total Amount: ${item.price.toLocaleString()} EGP`, 20, 120);
-
+    // 6. Technical Specifications (The professional touch)
+    let specY = 120;
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.text("Technical Specifications:", 20, specY);
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
-    doc.text("Thank you for your business!", 105, 200, { align: 'center' });
 
-    doc.save(`receipt_${item.sku}.pdf`);
+    if (item.carat) { // Diamond Specs
+        doc.text(`• Carat Weight: ${item.carat} ct`, 25, specY + 8);
+        doc.text(`• Color Grade: ${item.color || 'N/A'}`, 25, specY + 14);
+        doc.text(`• Clarity: ${item.clarity || 'N/A'}`, 100, specY + 8);
+        doc.text(`• Cut: ${item.cut || 'N/A'}`, 100, specY + 14);
+    } else { // Gold Specs
+        doc.text(`• Weight: ${item.weight} g`, 25, specY + 8);
+        doc.text(`• Purity: ${item.karat}`, 25, specY + 14);
+    }
+
+    // 7. QR Code Implementation (Manual Draw for QR compatibility)
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text("SCAN FOR AUTHENTICATION", 155, 160, { align: 'center' });
+
+    // Secret QR div for generation
+    const qrDiv = document.createElement('div');
+    new QRCode(qrDiv, { text: item.sku, width: 128, height: 128 });
+
+    // Wait for QR to render then add to PDF
+    setTimeout(() => {
+        const qrCanvas = qrDiv.querySelector('canvas');
+        if (qrCanvas) {
+            const qrImg = qrCanvas.toDataURL("image/png");
+            doc.addImage(qrImg, 'PNG', 140, 130, 30, 30);
+        }
+
+        // Footer
+        doc.setTextColor(100, 100, 100);
+        doc.setFontSize(10);
+        doc.text("Terms & Conditions:", 20, 240);
+        doc.setFontSize(8);
+        doc.text("• Authenticated via Idar Jewelry advanced inventory system.", 20, 246);
+        doc.text("• Please retain this invoice for maintenance and future trade-ins.", 20, 251);
+
+        doc.save(`Idar_Invoice_${item.sku}.pdf`);
+    }, 100);
 }
 
 function renderSales(container) {
@@ -1089,20 +1159,20 @@ function renderSales(container) {
                     <td class="${privacyMode_sales ? 'blurred' : ''}">${item.price.toLocaleString()} EGP</td>
                     ${!voidSelectionMode ? `
                     <td style="display: flex; gap: 0.5rem;">
-                        <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" onclick="downloadArchiveReceipt('${item.sku}')">
-                            <i data-lucide="download" style="width: 12px; height: 12px;"></i> Receipt
+                        <button onclick="generateReceipt(${JSON.stringify(item).replace(/"/g, '&quot;')})" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">
+                            <i data-lucide="printer" style="width: 12px; height: 12px;"></i> Receipt
                         </button>
+                        ${userRole === 'admin' ? `
+                        <button onclick="voidSale(${item.id})" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                            <i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i> Void
+                        </button>
+                        ` : ''}
                     </td>
                     ` : ''}
                 </tr>`).join('')}
         </tbody></table></div>
     `;
     lucide.createIcons();
-}
-
-function downloadArchiveReceipt(sku) {
-    const item = inventory.sold.find(s => s.sku === sku);
-    if (item) generateReceipt(item);
 }
 
 function printTag(category, id) {
