@@ -951,10 +951,17 @@ function openSellModal(category, id) {
                         <label style="margin: 0;">${t('select_customer')} (${t('optional')})</label>
                         <a href="javascript:void(0)" onclick="prepareNewCustomerDuringSale('${category}', ${id})" style="font-size: 0.7rem; color: var(--primary-blue); text-decoration: none; font-weight: 600;">+ ${t('add_customer')}</a>
                     </div>
-                    <select id="s-customer">
+                    
+                    <input type="text" id="customer-search" placeholder="Search by name or C-ID..." 
+                           oninput="filterSellCustomers(this.value)" 
+                           style="margin-bottom: 0.5rem; height: 32px; font-size: 0.8rem; background: rgba(0,0,0,0.2);">
+                    
+                    <select id="s-customer" size="5" style="height: auto; min-height: 100px;">
                         <option value="">${t('no_customer')}</option>
                         ${inventory.customers.sort((a, b) => a.name.localeCompare(b.name)).map(c => `
-                            <option value="${c.id}" ${parseInt(preSelectedId) === c.id ? 'selected' : ''}>${c.name}${c.phone ? ' - ' + c.phone : ''}</option>
+                            <option value="${c.id}" ${parseInt(preSelectedId) === c.id ? 'selected' : ''} class="cust-opt">
+                                ${c.name} (${c.customer_code || 'No ID'})
+                            </option>
                         `).join('')}
                     </select>
                 </div>
@@ -964,6 +971,17 @@ function openSellModal(category, id) {
     `;
     lucide.createIcons();
     pendingSale = null; // Clear state after use
+}
+
+function filterSellCustomers(query) {
+    const select = document.getElementById('s-customer');
+    const options = select.querySelectorAll('.cust-opt');
+    const q = query.toLowerCase();
+
+    options.forEach(opt => {
+        const text = opt.textContent.toLowerCase();
+        opt.style.display = text.includes(q) ? 'block' : 'none';
+    });
 }
 
 function prepareNewCustomerDuringSale(category, id) {
@@ -1057,6 +1075,7 @@ async function generateReceipt(saleData) {
             doc.setFont("helvetica", "normal");
             doc.setFontSize(10);
             doc.text(customer.phone || "", 140, 74);
+            doc.text(`Cust ID: ${customer.customer_code || 'N/A'}`, 140, 79);
         }
     }
 
@@ -1651,9 +1670,9 @@ function renderCustomers(container) {
                         </td></tr>
                     ` : customerStats.map(c => `
                         <tr onclick="viewCustomerDetail(${c.id})" style="cursor: pointer;">
-                            <td><strong>${c.name}</strong></td>
+                            <td>${c.customer_code || '-'}</td>
+                            <td style="font-weight: 600;">${c.name}</td>
                             <td>${c.phone || '-'}</td>
-                            <td>${c.email || '-'}</td>
                             <td>${c.totalPurchases}</td>
                             <td class="${privacyMode_stats ? 'blurred' : ''}">${c.totalSpent.toLocaleString()} EGP</td>
                             <td>${c.lastPurchase || '-'}</td>
@@ -1685,7 +1704,10 @@ function openCustomerModal(customerId = null) {
         <div class="modal">
             <div class="modal-content card" style="max-width: 800px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h2>${customer ? t('edit') : t('add_customer')}</h2>
+                    <div>
+                        <h2>${customer ? t('edit') : t('add_customer')}</h2>
+                        ${customer?.customer_code ? `<p style="font-size: 0.8rem; color: var(--primary-blue); font-weight: 600; margin: 0.25rem 0 0 0;">Customer ID: ${customer.customer_code}</p>` : ''}
+                    </div>
                     <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
                 </div>
                 <form onsubmit="saveCustomer(event, ${customerId})">
@@ -1699,7 +1721,7 @@ function openCustomerModal(customerId = null) {
                             <input type="tel" id="c-phone" value="${customer?.phone || ''}">
                         </div>
                         <div class="form-group">
-                            <label>${t('customer_email')}</label>
+                            <label>${t('customer_email')} (${t('optional')})</label>
                             <input type="email" id="c-email" value="${customer?.email || ''}">
                         </div>
                         <div class="form-group">
@@ -1750,6 +1772,7 @@ async function saveCustomer(event, customerId) {
         } else {
             finalCustomerId = Date.now();
             customerData.id = finalCustomerId;
+            customerData.customer_code = generateCustomerCode(); // Assign C-1000 SKU
             customerData.created_date = new Date().toISOString().split('T')[0];
             const { error } = await supabaseClient
                 .from('customers')
@@ -1792,6 +1815,18 @@ async function deleteCustomer(id) {
         console.error("Delete failed:", e);
         alert("Delete failed: " + e.message);
     }
+}
+
+function generateCustomerCode() {
+    if (!inventory.customers || inventory.customers.length === 0) return 'C-1001';
+    const codes = inventory.customers
+        .map(c => c.customer_code)
+        .filter(code => code && code.startsWith('C-'))
+        .map(code => parseInt(code.split('-')[1]))
+        .filter(num => !isNaN(num));
+
+    const max = codes.length > 0 ? Math.max(...codes) : 1000;
+    return `C-${max + 1}`;
 }
 
 function viewCustomerDetail(customerId) {
@@ -1937,6 +1972,7 @@ window.seedSystemData = async function () {
             customers.push({
                 id: Date.now() + i,
                 name: `${fname} ${lname}`,
+                customer_code: `C-${1001 + i}`,
                 phone: `01${Math.floor(Math.random() * 9)} ${Math.floor(1000000 + Math.random() * 9000000)}`,
                 email: `${fname.toLowerCase()}.${lname.toLowerCase()}${i}@example.com`,
                 address: `${Math.floor(Math.random() * 100)} Street, ${cities[Math.floor(Math.random() * cities.length)]}, Cairo`,
