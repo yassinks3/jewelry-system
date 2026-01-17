@@ -22,7 +22,8 @@ let currentInventoryRanges = { diamonds: 'All', gold: 'All' };
 let appSettings = { profitMargin: 20, stockThreshold: 2, workshopServices: ['Polishing', 'Sizing', 'Stone Setting', 'Cleaning'] };
 let marketPrices = JSON.parse(localStorage.getItem(MARKET_KEY)) || { base24k: 3000, offset: 0, lastSync: null };
 if (!marketPrices.lastSync) marketPrices.lastSync = null;
-let privacyMode_dashboard = JSON.parse(localStorage.getItem('privacy_mode_dashboard')) || false;
+let privacyMode_stats = JSON.parse(localStorage.getItem('privacy_mode_stats')) || false;
+let privacyMode_market = JSON.parse(localStorage.getItem('privacy_mode_market')) || false;
 let privacyMode_sales = JSON.parse(localStorage.getItem('privacy_mode_sales')) || false;
 let shopInfo = JSON.parse(localStorage.getItem(SHOP_INFO_KEY)) || {
     name: 'Idar Jewelry',
@@ -513,20 +514,20 @@ function renderDashboard(container) {
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                     <div>
                         <div class="stat-label">${t('total_portfolio_value')}</div>
-                        <div class="stat-value privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-size: 2.8rem; letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
+                        <div class="stat-value privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-size: 2.8rem; letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer;" onclick="togglePrivacy('dashboard')">
-                        <i data-lucide="${privacyMode_dashboard ? 'eye-off' : 'eye'}" style="width: 20px; color: var(--primary-blue);"></i>
+                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer;" onclick="togglePrivacy('stats')">
+                        <i data-lucide="${privacyMode_stats ? 'eye-off' : 'eye'}" style="width: 20px; color: var(--primary-blue);"></i>
                     </div>
                 </div>
                 <div style="display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05);">
                     <div>
                         <div class="stat-label" style="font-size: 0.7rem;">${t('total_cost')}</div>
-                        <div class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #94a3b8;">${costValue.toLocaleString()} EGP</div>
+                        <div class="privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-weight: 600; color: #94a3b8;">${costValue.toLocaleString()} EGP</div>
                     </div>
                     <div>
                         <div class="stat-label" style="font-size: 0.7rem;">Est. Gross Profit</div>
-                        <div class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #10b981;">+${(liveValue - costValue).toLocaleString()} EGP</div>
+                        <div class="privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-weight: 600; color: #10b981;">+${(liveValue - costValue).toLocaleString()} EGP</div>
                     </div>
                 </div>
             </div>
@@ -553,20 +554,23 @@ function renderDashboard(container) {
             </div>
 
             <div class="glass-card">
-                <div class="section-title">
-                    <i data-lucide="line-chart" style="width: 20px;"></i> ${t('market_pulse')}
+                <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="display: flex; align-items: center; gap: 0.75rem;">
+                        <i data-lucide="line-chart" style="width: 20px;"></i> ${t('market_pulse')}
+                    </span>
+                    <i data-lucide="${privacyMode_market ? 'eye-off' : 'eye'}" style="width: 16px; cursor: pointer; opacity: 0.6;" onclick="togglePrivacy('market')"></i>
                 </div>
                 <div class="market-item">
                     <span style="color: var(--text-dim);">Gold 24k</span>
-                    <span style="font-weight: 700; color: var(--primary-blue); font-size: 1.1rem;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
+                    <span style="font-weight: 700; color: var(--primary-blue); font-size: 1.1rem;" class="privacy-value ${privacyMode_market ? 'blurred' : ''}">${marketPrices.base24k.toLocaleString()} EGP</span>
                 </div>
                 <div class="market-item">
                     <span style="color: var(--text-dim);">Gold 21k</span>
-                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('21k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_market ? 'blurred' : ''}">${getKaratPrice('21k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
                 </div>
                 <div class="market-item">
                     <span style="color: var(--text-dim);">Gold 18k</span>
-                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
+                    <span style="font-weight: 600;" class="privacy-value ${privacyMode_market ? 'blurred' : ''}">${getKaratPrice('18k').toLocaleString(undefined, { maximumFractionDigits: 0 })} EGP</span>
                 </div>
                 
                 <div style="margin: 1.5rem 0; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px; text-align: center;">
@@ -603,7 +607,7 @@ function renderDashboard(container) {
                                 </div>
                             </td>
                             <td style="color: var(--text-dim); font-size: 0.9rem;">${item.carat ? t('diamonds') : t('gold')}</td>
-                            <td class="privacy-value ${privacyMode_dashboard ? 'blurred' : ''}" style="font-weight: 600; color: #ffffff;">${item.price.toLocaleString()} EGP</td>
+                            <td class="privacy-value ${privacyMode_sales ? 'blurred' : ''}" style="font-weight: 600; color: #ffffff;">${item.price.toLocaleString()} EGP</td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -612,6 +616,20 @@ function renderDashboard(container) {
     `;
     lucide.createIcons();
     renderProfitChart();
+}
+
+function togglePrivacy(type) {
+    if (type === 'stats') {
+        privacyMode_stats = !privacyMode_stats;
+        localStorage.setItem('privacy_mode_stats', JSON.stringify(privacyMode_stats));
+    } else if (type === 'market') {
+        privacyMode_market = !privacyMode_market;
+        localStorage.setItem('privacy_mode_market', JSON.stringify(privacyMode_market));
+    } else { // This 'else' now specifically handles 'sales' based on the instruction's context
+        privacyMode_sales = !privacyMode_sales;
+        localStorage.setItem('privacy_mode_sales', JSON.stringify(privacyMode_sales));
+    }
+    showView(currentView);
 }
 
 function renderDiamonds(container) {
@@ -1555,7 +1573,7 @@ function renderCustomers(container) {
                             <td>${c.phone || '-'}</td>
                             <td>${c.email || '-'}</td>
                             <td>${c.totalPurchases}</td>
-                            <td class="${privacyMode_dashboard ? 'blurred' : ''}">${c.totalSpent.toLocaleString()} EGP</td>
+                            <td class="${privacyMode_stats ? 'blurred' : ''}">${c.totalSpent.toLocaleString()} EGP</td>
                             <td>${c.lastPurchase || '-'}</td>
                             <td onclick="event.stopPropagation()" style="display: flex; gap: 0.5rem;">
                                 <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
@@ -1708,7 +1726,7 @@ function viewCustomerDetail(customerId) {
                     </div>
                     <div class="card" style="background: rgba(197, 160, 89, 0.1);">
                         <h4 style="margin: 0; font-size: 0.85rem; color: var(--text-dim);">${t('lifetime_value')}</h4>
-                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;" class="${privacyMode_dashboard ? 'blurred' : ''}">${totalSpent.toLocaleString()} EGP</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--primary-blue); margin-top: 0.5rem;" class="${privacyMode_stats ? 'blurred' : ''}">${totalSpent.toLocaleString()} EGP</div>
                     </div>
                 </div>
 
