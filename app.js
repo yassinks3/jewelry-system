@@ -547,10 +547,9 @@ function renderDashboard(container) {
             </div>
         </div>
         
-        <div style="margin-bottom: 2rem; display: flex; gap: 1rem;">
-            <button onclick="fetchLivePrices()" class="btn-sync" style="flex: 1;"><i data-lucide="refresh-cw"></i> ${t('sync_live')}</button>
-            <a href="https://isagha.com" target="_blank" class="btn-outline" style="flex: 1;"><i data-lucide="external-link"></i> ${t('official_site')}</a>
-            ${userRole === 'admin' ? `<button onclick="exportAll()" class="btn-backup" style="flex: 1;"><i data-lucide="download-cloud"></i> ${t('backup')}</button>` : ''}
+        
+        <div style="margin-bottom: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+            ${userRole === 'admin' ? `<button onclick="exportAll()" class="btn-backup" style="flex: 1; max-width: 300px;"><i data-lucide="download-cloud"></i> ${t('backup')}</button>` : ''}
         </div>
         
         <div class="card recent-activity">
@@ -862,8 +861,8 @@ function saveGold(event, editId = null) {
     } else finalize();
 }
 
-function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds.csv', ['Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
-function exportGold() { downloadCSV(inventory.gold, 'gold.csv', ['Name', 'Type', 'Karat', 'Weight', 'Price']); }
+function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds.csv', ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
+function exportGold() { downloadCSV(inventory.gold, 'gold.csv', ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price']); }
 function exportAll() { downloadCSV([...inventory.diamonds, ...inventory.gold], 'inventory_backup.csv', ['SKU', 'Type', 'Price']); }
 
 function requestSalesArchive() { if (prompt(t('enter_pass')) === SYSTEM_PASS) showView('sales'); else alert(t('wrong_pass')); }
