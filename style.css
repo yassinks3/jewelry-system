@@ -410,6 +410,67 @@ button:hover {
     object-fit: cover;
 }
 
+/* Search & Suggestions UI */
+.search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.local-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    padding: 0.8rem 1.25rem;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suggestion-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.suggestion-item .match-label {
+    font-size: 0.9rem;
+    color: var(--text-base);
+}
+
+.suggestion-item .match-type {
+    font-size: 0.75rem;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.highlight {
+    color: var(--primary-gold);
+    font-weight: 700;
+}
+
+.fuzzy-hint {
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-left: 0.5rem;
+}
+
 /* Modern Dashboard Redesign */
 .glass-card {
     background: rgba(18, 18, 22, 0.7);

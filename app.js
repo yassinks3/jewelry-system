@@ -413,39 +413,75 @@ function showView(view) {
     lucide.createIcons();
 }
 
+// Fuzzy Matching Engine (Typo Tolerant)
+function isFuzzyMatch(target, query) {
+    if (!query) return true;
+    const t = target.toLowerCase();
+    const q = query.toLowerCase();
+
+    // 1. Exact substring (Highest priority)
+    if (t.includes(q)) return true;
+
+    // 2. Char presence check (Good for transposed numbers like 1301 vs 1003)
+    // We only trigger this for shorter queries or digit-heavy strings
+    const qChars = q.split('');
+    let matches = 0;
+    qChars.forEach(char => {
+        if (t.includes(char)) matches++;
+    });
+
+    // If 80% of query characters are found in target, it's a fuzzy match
+    const matchRatio = matches / qChars.length;
+    if (qChars.length >= 3 && matchRatio >= 0.8) return true;
+
+    return false;
+}
+
 function handleSearch(val) {
     currentSearch = val.toLowerCase();
     const suggestionsContainer = document.getElementById('search-suggestions');
-    const listContainer = document.getElementById('inventory-list');
-    const activeView = document.querySelector('.nav-links li.active')?.id?.replace('nav-', '') || '';
+    const activeView = currentView;
 
     if (!val || val.length < 1) {
         suggestionsContainer.classList.add('hidden');
-        if (activeView === 'diamonds') renderDiamonds(listContainer);
-        else if (activeView === 'gold') renderGold(listContainer);
+        if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+        else if (activeView === 'gold') updateInventoryGrid('gold');
+        else if (activeView === 'customers') updateCustomerTable();
         return;
     }
 
     let matches = [];
-    if (activeView === 'diamonds') {
-        inventory.diamonds.forEach(d => {
-            const label = `${d.carat}ct ${d.type} Diamond (${d.sku})`;
-            if (label.toLowerCase().includes(currentSearch)) matches.push({ label, value: d.sku, type: 'diamond' });
-        });
-    } else if (activeView === 'gold') {
-        inventory.gold.forEach(g => {
-            const label = `${g.name} (${g.sku})`;
-            if (label.toLowerCase().includes(currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
-        });
-    }
+    // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
+    inventory.diamonds.forEach(d => {
+        const label = `${d.carat}ct ${d.type} Diamond (${d.sku})`;
+        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku, type: 'diamond' });
+    });
+    inventory.gold.forEach(g => {
+        const label = `${g.name} (${g.sku})`;
+        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
+    });
+    // Add customers to global search suggestions too
+    inventory.customers.forEach(c => {
+        const label = `${c.name} (${c.customer_code})`;
+        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id, type: 'customer' });
+    });
 
     if (matches.length > 0) {
-        suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')"><span class="match-label">${m.label}</span><span class="match-type">${t(m.type === 'diamond' ? 'diamonds' : 'gold')}</span></div>`).join('');
+        suggestionsContainer.innerHTML = matches.slice(0, 10).map(m => {
+            const regex = new RegExp(`(${currentSearch})`, 'gi');
+            const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
+            return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
+                <span class="match-label">${highlightedLabel}</span>
+                <span class="match-type">${t(m.type === 'diamond' ? 'diamonds' : (m.type === 'gold' ? 'gold' : 'customers'))}</span>
+            </div>`;
+        }).join('');
         suggestionsContainer.classList.remove('hidden');
     } else suggestionsContainer.classList.add('hidden');
 
-    if (activeView === 'diamonds') renderDiamonds(listContainer);
-    else if (activeView === 'gold') renderGold(listContainer);
+    // Filter the view itself
+    if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+    else if (activeView === 'gold') updateInventoryGrid('gold');
+    else if (activeView === 'customers') updateCustomerTable();
 }
 
 function selectSuggestion(value, type) {
@@ -453,7 +489,77 @@ function selectSuggestion(value, type) {
     const searchInput = document.getElementById('global-search');
     if (searchInput) searchInput.value = value;
     document.getElementById('search-suggestions').classList.add('hidden');
-    showView(type === 'diamond' ? 'diamonds' : 'gold');
+
+    if (type === 'customer') {
+        showView('customers');
+        // If it's a customer ID, currentSearch is the ID, handleSearch/updateTable will find them
+    } else {
+        const targetView = type === 'diamond' ? 'diamonds' : 'gold';
+        if (currentView === targetView) updateInventoryGrid(targetView);
+        else showView(targetView);
+    }
+}
+
+// Local View Search Handlers
+function handleLocalSearch(query, type) {
+    currentSearch = query.toLowerCase();
+    const suggestionsId = `${type}-local-suggestions`;
+    const suggestionsContainer = document.getElementById(suggestionsId);
+
+    if (!query) {
+        if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
+        if (type === 'customers') updateCustomerTable();
+        else updateInventoryGrid(type);
+        return;
+    }
+
+    let matches = [];
+    if (type === 'diamonds') {
+        inventory.diamonds.forEach(d => {
+            const label = `${d.carat}ct ${d.type} (${d.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
+        });
+    } else if (type === 'gold') {
+        inventory.gold.forEach(g => {
+            const label = `${g.name} (${g.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku });
+        });
+    } else if (type === 'customers') {
+        inventory.customers.forEach(c => {
+            const label = `${c.name} (${c.customer_code})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id });
+        });
+    }
+
+    if (suggestionsContainer && matches.length > 0) {
+        suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `
+            <div class="suggestion-item" onclick="selectLocalSuggestion('${m.value}', '${type}')">
+                <span class="match-label">${m.label}</span>
+                <i data-lucide="corner-down-left" style="width: 12px; height: 12px; opacity: 0.3;"></i>
+            </div>
+        `).join('');
+        suggestionsContainer.classList.remove('hidden');
+        lucide.createIcons();
+    } else if (suggestionsContainer) {
+        suggestionsContainer.classList.add('hidden');
+    }
+
+    if (type === 'customers') updateCustomerTable();
+    else updateInventoryGrid(type);
+}
+
+function selectLocalSuggestion(value, type) {
+    currentSearch = value.toLowerCase();
+    const inputId = type === 'customers' ? 'customer-search-input' : (type === 'diamonds' ? 'diamond-search-input' : 'gold-search-input');
+    const input = document.getElementById(inputId);
+    if (input) input.value = value;
+
+    const suggestionsId = `${type}-local-suggestions`;
+    const suggestionsContainer = document.getElementById(suggestionsId);
+    if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
+
+    if (type === 'customers') updateCustomerTable();
+    else updateInventoryGrid(type);
 }
 
 document.addEventListener('click', (e) => {
@@ -637,12 +743,6 @@ function renderDiamonds(container) {
     if (!container) return;
     const ranges = getSKURanges('diamonds');
     const activeRange = currentInventoryRanges.diamonds;
-    const items = inventory.diamonds.filter(d => {
-        const skuNumber = parseInt(d.sku.split('-')[1]);
-        const inRange = activeRange === 'All' || (skuNumber >= activeRange.start && skuNumber <= activeRange.end);
-        if (!inRange && !currentSearch) return false;
-        return d.sku.toLowerCase().includes(currentSearch) || d.type.toLowerCase().includes(currentSearch) || d.carat.toString().includes(currentSearch);
-    });
 
     container.innerHTML = `
         <div class="inventory-controls" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
@@ -650,46 +750,31 @@ function renderDiamonds(container) {
             <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet"></i> ${t('export_excel')}</button>
         </div>
         ${ranges.length > 1 ? `<div class="range-tabs">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("diamonds", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
-        <div class="grid">
-            ${items.map(d => `
-                <div class="card item-card">
-                    <div class="card-image">${d.image ? `<img src="${d.image}">` : `<div class="image-placeholder"><i data-lucide="diamond"></i></div>`}</div>
-                    <div class="card-body">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <span class="sku-tag">${d.sku}</span>
-                            <div style="display: flex; gap: 0.6rem;">
-                                <i data-lucide="tag" onclick="printTag('diamonds', ${d.id})" class="tag-btn"></i>
-                                <i data-lucide="qr-code" onclick="viewQR('diamonds', ${d.id})" class="qr-btn"></i>
-                                <i data-lucide="shopping-cart" onclick="openSellModal('diamonds', ${d.id})" class="sell-btn"></i>
-                                ${userRole === 'admin' ? `
-                                <i data-lucide="edit-3" onclick="requestEdit('diamonds', ${d.id})" class="edit-btn"></i>
-                                <i data-lucide="trash-2" onclick="deleteItem('diamonds', ${d.id})" class="delete-btn"></i>
-                                ` : ''}
-                            </div>
-                        </div>
-                        <h4>${d.name || ''} ${d.carat} ${t('carat')} ${d.type}</h4>
-                        <p>${d.cut} | ${d.color} | ${d.clarity}</p>
-                        <div class="price-tag">${d.price.toLocaleString()} EGP</div>
-                    </div>
-                </div>
-            `).join('')}
+        
+        <div class="search-container">
+            <div class="search-bar" style="max-width: 100%; margin: 0;">
+                <i data-lucide="search"></i>
+                <input type="text" id="diamond-search-input" placeholder="${t('search')} ${t('diamonds')}..." 
+                       value="${currentSearch}" 
+                       oninput="handleLocalSearch(this.value, 'diamonds')">
+            </div>
+            <div id="diamonds-local-suggestions" class="local-suggestions hidden"></div>
+        </div>
+
+        <div id="diamond-grid" class="grid">
+            <!-- Grid items injected via updateInventoryGrid -->
         </div>
     `;
     lucide.createIcons();
+    updateInventoryGrid('diamonds');
 }
 
 function renderGold(container, filter = 'All') {
     if (!container) return;
     const ranges = getSKURanges('gold');
     const activeRange = currentInventoryRanges.gold;
-    const items = inventory.gold.filter(g => (filter === 'All' || g.type === filter)).filter(g => {
-        const skuNumber = parseInt(g.sku.split('-')[1]);
-        const inRange = activeRange === 'All' || (skuNumber >= activeRange.start && skuNumber <= activeRange.end);
-        if (!inRange && !currentSearch) return false;
-        return g.sku.toLowerCase().includes(currentSearch) || g.name.toLowerCase().includes(currentSearch) || g.type.toLowerCase().includes(currentSearch);
-    });
-
     const types = ['All', 'Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings'];
+
     container.innerHTML = `
         <div class="inventory-controls">
             <div class="filter-tabs">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('inventory-list'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
@@ -701,31 +786,99 @@ function renderGold(container, filter = 'All') {
             </div>
         </div>
         ${ranges.length > 1 ? `<div class="range-tabs">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
-        <div class="grid">
-            ${items.map(g => `
-                <div class="card item-card">
-                    <div class="card-image">${g.image ? `<img src="${g.image}">` : `<div class="image-placeholder"><i data-lucide="${getIconForType(g.type)}"></i></div>`}</div>
-                    <div class="card-body">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <span class="sku-tag">${g.sku}</span>
-                            <div style="display: flex; gap: 0.6rem;">
-                                <i data-lucide="tag" onclick="printTag('gold', ${g.id})" class="tag-btn"></i>
-                                <i data-lucide="qr-code" onclick="viewQR('gold', ${g.id})" class="qr-btn"></i>
-                                <i data-lucide="shopping-cart" onclick="openSellModal('gold', ${g.id})" class="sell-btn"></i>
-                                ${userRole === 'admin' ? `
-                                <i data-lucide="edit-3" onclick="requestEdit('gold', ${g.id})" class="edit-btn"></i>
-                                <i data-lucide="trash-2" onclick="deleteItem('gold', ${g.id})" class="delete-btn"></i>
-                                ` : ''}
-                            </div>
-                        </div>
-                        <h4>${g.name}</h4>
-                        <p>${g.karat} | ${g.weight}g ${t(g.type.toLowerCase())}</p>
-                        <div class="price-tag">${g.price.toLocaleString()} EGP</div>
-                    </div>
-                </div>
-            `).join('')}
+        
+        <div class="search-container">
+            <div class="search-bar" style="max-width: 100%; margin: 0;">
+                <i data-lucide="search"></i>
+                <input type="text" id="gold-search-input" placeholder="${t('search')} ${t('gold')}..." 
+                       value="${currentSearch}" 
+                       oninput="handleLocalSearch(this.value, 'gold')">
+            </div>
+            <div id="gold-local-suggestions" class="local-suggestions hidden"></div>
+        </div>
+
+        <div id="gold-grid" class="grid">
+            <!-- Grid items injected via updateInventoryGrid -->
         </div>
     `;
+    lucide.createIcons();
+    updateInventoryGrid('gold', filter);
+}
+
+function updateInventoryGrid(type, goldFilter = 'All') {
+    const gridId = type === 'diamonds' ? 'diamond-grid' : 'gold-grid';
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+
+    const searchTerm = currentSearch.toLowerCase();
+    const activeRange = currentInventoryRanges[type];
+
+    const items = inventory[type].filter(item => {
+        // Range Check
+        const skuNumber = parseInt(item.sku.split('-')[1]);
+        const inRange = activeRange === 'All' || (skuNumber >= activeRange.start && skuNumber <= activeRange.end);
+        if (!inRange && !searchTerm) return false;
+
+        // Search Check
+        const matchesSearch = isFuzzyMatch(item.sku, searchTerm) ||
+            (item.name && isFuzzyMatch(item.name, searchTerm)) ||
+            (item.type && isFuzzyMatch(item.type, searchTerm)) ||
+            (item.carat && isFuzzyMatch(item.carat.toString(), searchTerm));
+
+        // Category Check (for Gold)
+        const matchesFilter = type === 'diamonds' || goldFilter === 'All' || item.type === goldFilter;
+
+        return matchesSearch && matchesFilter;
+    }).sort((a, b) => b.id - a.id); // Show newest first
+
+    grid.innerHTML = items.length === 0 ? `
+        <div class="image-placeholder" style="grid-column: 1/-1; padding: 4rem;">
+            <i data-lucide="search-x" style="width: 48px; height: 48px; opacity: 0.2; margin-bottom: 1rem;"></i>
+            <p style="color: var(--text-dim);">${t('no_items')}</p>
+        </div>
+    ` : items.map(item => type === 'diamonds' ? `
+        <div class="card item-card animate-fade-in shadow-hover">
+            <div class="card-image">${item.image ? `<img src="${item.image}">` : `<div class="image-placeholder"><i data-lucide="diamond"></i></div>`}</div>
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+                    <span class="sku-tag">${item.sku}</span>
+                    <div style="display: flex; gap: 0.6rem;">
+                        <i data-lucide="tag" onclick="printTag('diamonds', ${item.id})" class="tag-btn" title="Print Tag"></i>
+                        <i data-lucide="qr-code" onclick="viewQR('diamonds', ${item.id})" class="qr-btn" title="View QR"></i>
+                        <i data-lucide="shopping-cart" onclick="openSellModal('diamonds', ${item.id})" class="sell-btn" title="Sell Item"></i>
+                        ${userRole === 'admin' ? `
+                        <i data-lucide="edit-3" onclick="requestEdit('diamonds', ${item.id})" class="edit-btn" title="Edit"></i>
+                        <i data-lucide="trash-2" onclick="deleteItem('diamonds', ${item.id})" class="delete-btn" title="Delete"></i>
+                        ` : ''}
+                    </div>
+                </div>
+                <h4 style="margin-bottom: 0.25rem;">${item.name || ''}</h4>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.75rem;">${item.carat} ${t('carat')} ${item.type} | ${item.cut} | ${item.color}</p>
+                <div class="price-tag">${item.price.toLocaleString()} EGP</div>
+            </div>
+        </div>
+    ` : `
+        <div class="card item-card animate-fade-in shadow-hover">
+            <div class="card-image">${item.image ? `<img src="${item.image}">` : `<div class="image-placeholder"><i data-lucide="${getIconForType(item.type)}"></i></div>`}</div>
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem;">
+                    <span class="sku-tag">${item.sku}</span>
+                    <div style="display: flex; gap: 0.6rem;">
+                        <i data-lucide="tag" onclick="printTag('gold', ${item.id})" class="tag-btn" title="Print Tag"></i>
+                        <i data-lucide="qr-code" onclick="viewQR('gold', ${item.id})" class="qr-btn" title="View QR"></i>
+                        <i data-lucide="shopping-cart" onclick="openSellModal('gold', ${item.id})" class="sell-btn" title="Sell Item"></i>
+                        ${userRole === 'admin' ? `
+                        <i data-lucide="edit-3" onclick="requestEdit('gold', ${item.id})" class="edit-btn" title="Edit"></i>
+                        <i data-lucide="trash-2" onclick="deleteItem('gold', ${item.id})" class="delete-btn" title="Delete"></i>
+                        ` : ''}
+                    </div>
+                </div>
+                <h4 style="margin-bottom: 0.25rem;">${item.name}</h4>
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.75rem;">${item.karat} | ${item.weight}g ${t(item.type.toLowerCase())}</p>
+                <div class="price-tag">${item.price.toLocaleString()} EGP</div>
+            </div>
+        </div>
+    `).join('');
     lucide.createIcons();
 }
 
@@ -975,13 +1128,30 @@ function openSellModal(category, id) {
 
 function filterSellCustomers(query) {
     const select = document.getElementById('s-customer');
-    const options = select.querySelectorAll('.cust-opt');
     const q = query.toLowerCase();
 
-    options.forEach(opt => {
-        const text = opt.textContent.toLowerCase();
-        opt.style.display = text.includes(q) ? 'block' : 'none';
-    });
+    // Filter logic
+    const matches = inventory.customers.filter(c =>
+        isFuzzyMatch(c.name, q) ||
+        (c.customer_code && isFuzzyMatch(c.customer_code, q))
+    ).sort((a, b) => a.name.localeCompare(b.name));
+
+    // Re-render only the options
+    select.innerHTML = `
+        <option value="">${t('no_customer')}</option>
+        ${matches.map(c => `
+            <option value="${c.id}" class="cust-opt">
+                ${c.name} (${c.customer_code || 'No ID'})
+            </option>
+        `).join('')}
+    `;
+
+    // If there is only one exact match (or very few), keep the select box open/focused
+    if (matches.length > 0) {
+        select.size = Math.min(Math.max(matches.length + 1, 2), 10);
+    } else {
+        select.size = 2;
+    }
 }
 
 function prepareNewCustomerDuringSale(category, id) {
@@ -1613,38 +1783,42 @@ async function voidSale(saleId) {
 }
 
 function renderCustomers(container) {
-    const searchTerm = currentSearch.toLowerCase();
-    const filteredCustomers = inventory.customers.filter(c =>
-        c.name.toLowerCase().includes(searchTerm) ||
-        (c.phone && c.phone.includes(searchTerm)) ||
-        (c.email && c.email.toLowerCase().includes(searchTerm))
-    );
+    // 1. Pre-calculate Statistics for ALL customers (One pass O(N))
+    const customerStatsMap = new Map();
 
-    // Calculate stats for each customer
-    const customerStats = filteredCustomers.map(customer => {
-        const purchases = inventory.sold.filter(s => s.customer_id === customer.id);
-        const totalSpent = purchases.reduce((sum, s) => sum + (s.is_voided ? 0 : s.price), 0);
-        const lastPurchase = purchases.length > 0
-            ? purchases.sort((a, b) => new Date(b.sold_date) - new Date(a.sold_date))[0].sold_date
-            : null;
-
-        return {
-            ...customer,
-            totalPurchases: purchases.length,
-            totalSpent,
-            lastPurchase
-        };
+    // Initialize map
+    inventory.customers.forEach(c => {
+        customerStatsMap.set(c.id, { totalPurchases: 0, totalSpent: 0, lastPurchase: null });
     });
+
+    // Populate from sales archive
+    inventory.sold.forEach(sale => {
+        if (!sale.customer_id || sale.is_voided) return;
+        const stats = customerStatsMap.get(sale.customer_id);
+        if (stats) {
+            stats.totalPurchases++;
+            stats.totalSpent += sale.price;
+            if (!stats.lastPurchase || new Date(sale.sold_date) > new Date(stats.lastPurchase)) {
+                stats.lastPurchase = sale.sold_date;
+            }
+        }
+    });
+
+    // Save calculation to a global-ish scope so updateCustomerTable can access it without recalculating
+    window.cachedCustomerStats = customerStatsMap;
 
     container.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-            <div class="search-bar" style="max-width: 400px; margin: 0;">
-                <i data-lucide="search"></i>
-                <input type="text" id="customer-search" placeholder="${t('search')} ${t('customers')}..." 
-                       value="${currentSearch}" 
-                       oninput="currentSearch = this.value; showView('customers')">
+            <div class="search-container" style="flex: 1; margin: 0 1rem 0 0;">
+                <div class="search-bar" style="max-width: 100%; margin: 0;">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="customer-search-input" placeholder="${t('search')} ${t('customers')}..." 
+                           value="${currentSearch}" 
+                           oninput="handleLocalSearch(this.value, 'customers')">
+                </div>
+                <div id="customers-local-suggestions" class="local-suggestions hidden"></div>
             </div>
-            <button onclick="openCustomerModal()" style="display: flex; align-items: center; gap: 0.5rem;">
+            <button onclick="openCustomerModal()" style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
                 <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
                 ${t('add_customer')}
             </button>
@@ -1654,44 +1828,70 @@ function renderCustomers(container) {
             <table>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>${t('customer_name')}</th>
                         <th>${t('customer_phone')}</th>
-                        <th>${t('customer_email')}</th>
                         <th>${t('total_purchases')}</th>
                         <th>${t('lifetime_value')}</th>
                         <th>${t('last_purchase')}</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${customerStats.length === 0 ? `
-                        <tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-dim);">
-                            ${t('no_items')}
-                        </td></tr>
-                    ` : customerStats.map(c => `
-                        <tr onclick="viewCustomerDetail(${c.id})" style="cursor: pointer;">
-                            <td>${c.customer_code || '-'}</td>
-                            <td style="font-weight: 600;">${c.name}</td>
-                            <td>${c.phone || '-'}</td>
-                            <td>${c.totalPurchases}</td>
-                            <td class="${privacyMode_stats ? 'blurred' : ''}">${c.totalSpent.toLocaleString()} EGP</td>
-                            <td>${c.lastPurchase || '-'}</td>
-                            <td onclick="event.stopPropagation()" style="display: flex; gap: 0.5rem;">
-                                <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
-                                        onclick="openCustomerModal(${c.id})">
-                                    <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> ${t('edit')}
-                                </button>
-                                <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444;" 
-                                        onclick="deleteCustomer(${c.id})">
-                                    <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> ${t('delete')}
-                                </button>
-                            </td>
-                        </tr>
-                    `).join('')}
+                <tbody id="customer-table-body">
+                    <!-- Rows injected via updateCustomerTable -->
                 </tbody>
             </table>
         </div>
     `;
+    lucide.createIcons();
+    updateCustomerTable(); // Initial draw
+}
+
+function handleCustomerSearch(query) {
+    currentSearch = query;
+    updateCustomerTable();
+}
+
+function updateCustomerTable() {
+    const tbody = document.getElementById('customer-table-body');
+    if (!tbody) return;
+
+    const searchTerm = currentSearch.toLowerCase();
+    const filtered = inventory.customers.filter(c =>
+        isFuzzyMatch(c.name, searchTerm) ||
+        (c.customer_code && isFuzzyMatch(c.customer_code, searchTerm)) ||
+        (c.phone && isFuzzyMatch(c.phone, searchTerm))
+    ).sort((a, b) => a.name.localeCompare(b.name));
+
+    tbody.innerHTML = filtered.length === 0 ? `
+        <tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-dim);">
+            ${t('no_items')}
+        </td></tr>
+    ` : filtered.map(customer => {
+        const stats = window.cachedCustomerStats.get(customer.id) || { totalPurchases: 0, totalSpent: 0, lastPurchase: null };
+        return `
+            <tr onclick="viewCustomerDetail(${customer.id})" style="cursor: pointer;">
+                <td>${customer.customer_code || '-'}</td>
+                <td style="font-weight: 600;">${customer.name}</td>
+                <td>${customer.phone || '-'}</td>
+                <td>${stats.totalPurchases}</td>
+                <td class="${privacyMode_stats ? 'blurred' : ''}">${stats.totalSpent.toLocaleString()} EGP</td>
+                <td>${stats.lastPurchase || '-'}</td>
+                <td onclick="event.stopPropagation()" style="display: flex; gap: 0.5rem;">
+                    <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
+                            onclick="openCustomerModal(${customer.id})">
+                        <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> ${t('edit')}
+                    </button>
+                    <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444;" 
+                            onclick="deleteCustomer(${customer.id})">
+                        <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> ${t('delete')}
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    // Re-create icons for new rows
     lucide.createIcons();
 }
 
