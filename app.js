@@ -25,6 +25,7 @@ if (!marketPrices.lastSync) marketPrices.lastSync = null;
 let privacyMode_stats = JSON.parse(localStorage.getItem('privacy_mode_stats')) || false;
 let privacyMode_market = JSON.parse(localStorage.getItem('privacy_mode_market')) || false;
 let privacyMode_sales = JSON.parse(localStorage.getItem('privacy_mode_sales')) || false;
+let pendingSale = null; // Tracks { category, id, newCustomerId } during "New Customer" jump
 let shopInfo = JSON.parse(localStorage.getItem(SHOP_INFO_KEY)) || {
     name: 'Idar Jewelry',
     address: 'Cairo, Egypt',
@@ -935,6 +936,10 @@ function openSellModal(category, id) {
     const item = inventory[category].find(i => i.id === id);
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
+
+    // Auto-select newly created customer if returning from a "New Customer" jump
+    const preSelectedId = (pendingSale && pendingSale.id === id && pendingSale.newCustomerId) ? pendingSale.newCustomerId : "";
+
     modal.innerHTML = `
         <div class="modal"><div class="modal-content card" style="max-width: 400px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"><h2>${t('sell_item')}</h2><i data-lucide="x" class="close-btn" onclick="closeModal()"></i></div>
@@ -942,11 +947,14 @@ function openSellModal(category, id) {
                 <div class="form-group"><label>${t('sale_price')}</label><input type="number" id="s-price" value="${item.price}" required></div>
                 <div class="form-group" style="margin-top: 1rem;"><label>${t('sale_date')}</label><input type="date" id="s-date" value="${new Date().toISOString().split('T')[0]}" required></div>
                 <div class="form-group" style="margin-top: 1rem;">
-                    <label>${t('select_customer')} (${t('optional')})</label>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem;">
+                        <label style="margin: 0;">${t('select_customer')} (${t('optional')})</label>
+                        <a href="javascript:void(0)" onclick="prepareNewCustomerDuringSale('${category}', ${id})" style="font-size: 0.7rem; color: var(--primary-blue); text-decoration: none; font-weight: 600;">+ ${t('add_customer')}</a>
+                    </div>
                     <select id="s-customer">
                         <option value="">${t('no_customer')}</option>
                         ${inventory.customers.sort((a, b) => a.name.localeCompare(b.name)).map(c => `
-                            <option value="${c.id}">${c.name}${c.phone ? ' - ' + c.phone : ''}</option>
+                            <option value="${c.id}" ${parseInt(preSelectedId) === c.id ? 'selected' : ''}>${c.name}${c.phone ? ' - ' + c.phone : ''}</option>
                         `).join('')}
                     </select>
                 </div>
@@ -955,6 +963,14 @@ function openSellModal(category, id) {
         </div></div>
     `;
     lucide.createIcons();
+    pendingSale = null; // Clear state after use
+}
+
+function prepareNewCustomerDuringSale(category, id) {
+    pendingSale = { category, id };
+    closeModal();
+    showView('customers');
+    openCustomerModal();
 }
 
 function sellItem(event, category, id) {
@@ -1724,6 +1740,7 @@ async function saveCustomer(event, customerId) {
     };
 
     try {
+        let finalCustomerId = customerId;
         if (customerId) {
             const { error } = await supabaseClient
                 .from('customers')
@@ -1731,7 +1748,8 @@ async function saveCustomer(event, customerId) {
                 .eq('id', customerId);
             if (error) throw error;
         } else {
-            customerData.id = Date.now();
+            finalCustomerId = Date.now();
+            customerData.id = finalCustomerId;
             customerData.created_date = new Date().toISOString().split('T')[0];
             const { error } = await supabaseClient
                 .from('customers')
@@ -1739,8 +1757,17 @@ async function saveCustomer(event, customerId) {
             if (error) throw error;
         }
 
-        closeModal();
-        initApp();
+        // Handle Return-to-Sale logic
+        if (pendingSale && !customerId) {
+            const savedPending = { ...pendingSale, newCustomerId: finalCustomerId };
+            closeModal();
+            await initApp();
+            pendingSale = savedPending; // Re-set because initApp might clear it if we weren't careful, but here we re-open
+            openSellModal(pendingSale.category, pendingSale.id);
+        } else {
+            closeModal();
+            initApp();
+        }
     } catch (error) {
         alert("Error saving customer: " + error.message);
     }
