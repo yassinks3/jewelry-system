@@ -19,7 +19,7 @@ let currentSearch = '';
 let currentLang = localStorage.getItem(LANG_KEY) || 'en';
 let dismissedAlerts = JSON.parse(localStorage.getItem('dismissed_alerts')) || [];
 let currentInventoryRanges = { diamonds: 'All', gold: 'All' };
-let appSettings = { profitMargin: 20, stockThreshold: 2 };
+let appSettings = { profitMargin: 20, stockThreshold: 2, workshopServices: ['Polishing', 'Sizing', 'Stone Setting', 'Cleaning'] };
 let marketPrices = { base24k: 3000, offset: 0 };
 let privacyMode_dashboard = JSON.parse(localStorage.getItem('privacy_mode_dashboard')) || false;
 let privacyMode_sales = JSON.parse(localStorage.getItem('privacy_mode_sales')) || false;
@@ -104,7 +104,8 @@ async function initApp() {
 
         setupRealtimeSync();
 
-        appSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { profitMargin: 20, stockThreshold: 2 };
+        appSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { profitMargin: 20, stockThreshold: 2, workshopServices: ['Polishing', 'Sizing', 'Stone Setting', 'Cleaning'] };
+        if (!appSettings.workshopServices) appSettings.workshopServices = ['Polishing', 'Sizing', 'Stone Setting', 'Cleaning'];
         marketPrices = JSON.parse(localStorage.getItem(MARKET_KEY)) || { base24k: 3000, offset: 0 };
 
         migrateData();
@@ -1014,44 +1015,146 @@ function printTag(category, id) {
 }
 
 function renderWorkshop(container) {
-    container.innerHTML = `<button onclick="openRepairModal()">+ ${t('add_job')}</button><div class="workshop-board">` + ['received', 'goldsmith', 'ready', 'delivered'].map(s => `
-        <div class="workshop-column"><h3>${t(s)}</h3>${inventory.repairs.filter(j => j.status === s).map(j => `<div class="card job-card" onclick="openRepairModal(${j.id})">${j.customer} - ${j.service}</div>`).join('')}</div>
-    `).join('') + `</div>`;
+    const statuses = ['hamada_fathy', 'verified_received', 'received', 'goldsmith', 'ready', 'delivered'];
+    container.innerHTML = `
+        <div class="inventory-controls">
+            <button onclick="openRepairModal()">+ ${t('add_job')}</button>
+        </div>
+        <div class="workshop-board">
+            ${statuses.map(s => `
+                <div class="workshop-column">
+                    <h3>${t(s)}</h3>
+                    <div class="job-list">
+                        ${inventory.repairs.filter(j => j.status === s).map(j => `
+                            <div class="card job-card" onclick="openRepairModal(${j.id})">
+                                <div style="font-weight: 700; color: var(--primary-blue); margin-bottom: 0.5rem;">${j.customer || t('no_customer')}</div>
+                                <div class="job-service">${j.service}</div>
+                                ${j.notes ? `<div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${j.notes}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>`;
+    lucide.createIcons();
 }
 
 function openRepairModal(editId = null) {
     const job = editId ? inventory.repairs.find(j => j.id === editId) : null;
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
+
+    // Create Datalist for Services
+    const serviceListId = 'saved-services-list';
+    let datalist = document.getElementById(serviceListId);
+    if (!datalist) {
+        datalist = document.createElement('datalist');
+        datalist.id = serviceListId;
+        document.body.appendChild(datalist);
+    }
+    datalist.innerHTML = appSettings.workshopServices.map(s => `<option value="${s}">`).join('');
+
     modal.innerHTML = `
-        <div class="modal"><div class="modal-content card">
-            <form onsubmit="saveRepair(event, ${editId})">
-                <input type="text" id="r-customer" value="${job ? job.customer : ''}" placeholder="Customer" required>
-                <input type="text" id="r-service" value="${job ? job.service : ''}" placeholder="Service" required>
-                <select id="r-status">${['received', 'goldsmith', 'ready', 'delivered'].map(s => `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}</select>
-                <input type="date" id="r-date" value="${job ? job.dueDate : ''}" required>
-                <button type="submit">${t('save')}</button>
-            </form>
-        </div></div>
+        <div class="modal">
+            <div class="modal-content card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>${job ? t('edit') : t('add_job')}</h2>
+                    <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
+                </div>
+                <form onsubmit="saveRepair(event, ${editId})">
+                    <div class="form-grid">
+                        <div class="form-group" style="position: relative;">
+                            <label>${t('customer')}</label>
+                            <input type="text" id="r-customer" value="${job ? job.customer : ''}" 
+                                placeholder="${t('customer_name')} (${t('optional')})" 
+                                oninput="handleCustomerAutocomplete(this)" autocomplete="off">
+                            <div id="r-customer-suggestions" class="suggestions-dropdown hidden"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>${t('service_type')}</label>
+                            <input type="text" id="r-service" value="${job ? job.service : ''}" 
+                                placeholder="${t('service_type_placeholder')}" list="${serviceListId}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>${t('status')}</label>
+                            <select id="r-status" required>
+                                ${['hamada_fathy', 'verified_received', 'received', 'goldsmith', 'ready', 'delivered'].map(s =>
+        `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>${t('due_date')}</label>
+                            <input type="date" id="r-date" value="${job ? job.due_date : ''}">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>${t('notes')}</label>
+                        <textarea id="r-notes" class="textarea-auto" placeholder="${t('notes')}..." 
+                            oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${job ? job.notes || '' : ''}</textarea>
+                    </div>
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <button type="submit">${t('save')}</button>
+                        <button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     `;
+    lucide.createIcons();
+
+    // Auto-adjust textarea if editing
+    const tx = modal.querySelector('#r-notes');
+    if (tx) { tx.style.height = 'auto'; tx.style.height = tx.scrollHeight + 'px'; }
+}
+
+function handleCustomerAutocomplete(input) {
+    const val = input.value.toLowerCase();
+    const suggestions = document.getElementById('r-customer-suggestions');
+    if (!val) { suggestions.classList.add('hidden'); return; }
+
+    const matches = inventory.customers.filter(c => c.name.toLowerCase().includes(val)).slice(0, 5);
+    if (matches.length > 0) {
+        suggestions.innerHTML = matches.map(m => `
+            <div class="suggestion-item" onclick="selectRepairCustomer('${m.name}')">
+                <span>${m.name}</span>
+                <span style="font-size: 0.7rem; color: var(--text-dim);">${m.phone || ''}</span>
+            </div>`).join('');
+        suggestions.classList.remove('hidden');
+    } else {
+        suggestions.classList.add('hidden');
+    }
+}
+
+function selectRepairCustomer(name) {
+    document.getElementById('r-customer').value = name;
+    document.getElementById('r-customer-suggestions').classList.add('hidden');
 }
 
 async function saveRepair(event, editId = null) {
     event.preventDefault();
+    if (!currentUser) return alert("Please log in first");
+
+    const service = document.getElementById('r-service').value;
+    const notes = document.getElementById('r-notes').value;
+
+    // Persistence for new services
+    if (service && !appSettings.workshopServices.includes(service)) {
+        appSettings.workshopServices.push(service);
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
+    }
+
     const job = {
-        id: editId || undefined, // Supabase will generate if null
+        id: editId || Date.now(),
         customer: document.getElementById('r-customer').value,
-        service: document.getElementById('r-service').value,
+        service: service,
         status: document.getElementById('r-status').value,
-        due_date: document.getElementById('r-date').value
+        due_date: document.getElementById('r-date').value,
+        notes: notes,
+        user_id: currentUser.id
     };
 
     const { error } = await supabaseClient.from('repairs').upsert([job]);
-
-    if (error) {
-        alert("Error saving job: " + error.message);
-        return;
-    }
+    if (error) { alert("Error saving job: " + error.message); return; }
 
     closeModal();
     initApp();
