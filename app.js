@@ -1015,7 +1015,7 @@ function printTag(category, id) {
 }
 
 function renderWorkshop(container) {
-    const statuses = ['hamada_fathy', 'verified_received', 'received', 'goldsmith', 'ready', 'delivered'];
+    const statuses = ['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'];
     container.innerHTML = `
         <div class="inventory-controls">
             <button onclick="openRepairModal()">+ ${t('add_job')}</button>
@@ -1078,7 +1078,7 @@ function openRepairModal(editId = null) {
                         <div class="form-group">
                             <label>${t('status')}</label>
                             <select id="r-status" required>
-                                ${['hamada_fathy', 'verified_received', 'received', 'goldsmith', 'ready', 'delivered'].map(s =>
+                                ${['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'].map(s =>
         `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}
                             </select>
                         </div>
@@ -1465,10 +1465,14 @@ function renderCustomers(container) {
                             <td>${c.totalPurchases}</td>
                             <td class="${privacyMode_dashboard ? 'blurred' : ''}">${c.totalSpent.toLocaleString()} EGP</td>
                             <td>${c.lastPurchase || '-'}</td>
-                            <td onclick="event.stopPropagation()">
+                            <td onclick="event.stopPropagation()" style="display: flex; gap: 0.5rem;">
                                 <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;" 
                                         onclick="openCustomerModal(${c.id})">
-                                    <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> Edit
+                                    <i data-lucide="edit-2" style="width: 12px; height: 12px;"></i> ${t('edit')}
+                                </button>
+                                <button class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444;" 
+                                        onclick="deleteCustomer(${c.id})">
+                                    <i data-lucide="trash-2" style="width: 12px; height: 12px;"></i> ${t('delete')}
                                 </button>
                             </td>
                         </tr>
@@ -1563,6 +1567,27 @@ async function saveCustomer(event, customerId) {
         initApp();
     } catch (error) {
         alert("Error saving customer: " + error.message);
+    }
+}
+
+async function deleteCustomer(id) {
+    if (!confirm(t('delete_confirm'))) return;
+
+    try {
+        const { error } = await supabaseClient
+            .from('customers')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        // Update local state
+        inventory.customers = inventory.customers.filter(c => c.id !== id);
+
+        showView('customers');
+    } catch (e) {
+        console.error("Delete failed:", e);
+        alert("Delete failed: " + e.message);
     }
 }
 
@@ -1689,3 +1714,62 @@ async function confirmBulkVoid() {
         alert("Bulk void failed: " + e.message);
     }
 }
+
+// System Data Seeding Utility
+window.seedSystemData = async function () {
+    if (!currentUser) return alert("Please log in first!");
+    if (!confirm("This will add 50 test customers and 20 diamonds to your database. Proceed?")) return;
+
+    const userId = currentUser.id;
+    const firstNames = ["Ahmed", "Mohamed", "Yassen", "Laila", "Nour", "Sara", "Omar", "Khaled", "Zain", "Hoda", "Mona", "Ali", "Tarek", "Fatma", "Karma"];
+    const lastNames = ["Waled", "Zaki", "Hassan", "Mansour", "Kassab", "Saad", "Gaber", "Ezzat", "Salem", "Amer"];
+    const cities = ["Maadi", "Zamalek", "Heliopolis", "New Cairo", "Sheikh Zayed", "Nasr City"];
+
+    try {
+        // 1. Seed 50 Customers
+        const customers = [];
+        for (let i = 0; i < 50; i++) {
+            const fname = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const lname = lastNames[Math.floor(Math.random() * lastNames.length)];
+            customers.push({
+                id: Date.now() + i,
+                name: `${fname} ${lname}`,
+                phone: `01${Math.floor(Math.random() * 9)} ${Math.floor(1000000 + Math.random() * 9000000)}`,
+                email: `${fname.toLowerCase()}.${lname.toLowerCase()}${i}@example.com`,
+                address: `${Math.floor(Math.random() * 100)} Street, ${cities[Math.floor(Math.random() * cities.length)]}, Cairo`,
+                notes: "Seed data customer.",
+                user_id: userId,
+                created_date: new Date().toISOString().split('T')[0]
+            });
+        }
+        await supabaseClient.from('customers').insert(customers);
+
+        // 2. Seed 20 Diamonds
+        const shapes = ["Round", "Princess", "Emerald", "Oval", "Marquise", "Pear"];
+        const images = [
+            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_ring_test_1_1768677664286.png",
+            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_necklace_test_1_1768677678288.png",
+            "/Users/yassenwaled/.gemini/antigravity/brain/a9d0ecd6-1b59-4f25-a54c-7e78cbb75106/diamond_earrings_test_1_1768677691251.png"
+        ];
+        const diamonds = [];
+        for (let i = 0; i < 20; i++) {
+            const carat = (0.5 + Math.random() * 2.5).toFixed(2);
+            diamonds.push({
+                id: Date.now() + 100 + i,
+                sku: `D-SEED-${1000 + i}`,
+                name: `${shapes[Math.floor(Math.random() * shapes.length)]} Diamond ${carat}ct`,
+                type: shapes[Math.floor(Math.random() * shapes.length)],
+                carat: parseFloat(carat),
+                color: "E", clarity: "VVS1", cut: "Excellent",
+                price: Math.floor(carat * 80000),
+                image: images[i % images.length]
+            });
+        }
+        await supabaseClient.from('diamonds').insert(diamonds);
+
+        alert("✅ Successfully added 50 customers and 20 diamonds! Refreshing...");
+        location.reload();
+    } catch (e) {
+        alert("Seeding failed: " + e.message);
+    }
+};

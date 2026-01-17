@@ -1109,15 +1109,15 @@ table tbody tr:last-child td {
     top: 100%;
     left: 0;
     right: 0;
-    background: var(--bg-card);
-    backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid var(--border);
+    background: #0a0a0c;
+    /* Solid background for legibility */
+    border: 1px solid var(--primary-blue);
     border-radius: 12px;
     margin-top: 0.5rem;
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
-    box-shadow: var(--shadow);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
 .suggestion-item {
@@ -1127,6 +1127,10 @@ table tbody tr:last-child td {
     justify-content: space-between;
     align-items: center;
     transition: background 0.2s;
+    color: #ffffff;
+    /* Solid white */
+    font-weight: 600;
+    /* Bolder names */
 }
 
 .suggestion-item:hover {

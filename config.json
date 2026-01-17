@@ -54,7 +54,7 @@
             "dashboard": "Dashboard",
             "overview": "Business Overview",
             "diamonds": "Diamonds",
-            "gold": "Gold Items",
+            "gold": "Gold",
             "inventory": "Inventory",
             "value": "Inventory Value",
             "recent": "Recent Items",
@@ -134,12 +134,12 @@
             "service_type": "Service Type",
             "status": "Status",
             "due_date": "Expected Date",
-            "received": "Received",
+            "hamada_received": "Hamada Received",
+            "am_fathy_received": "Am-Fathy Received",
             "goldsmith": "With Goldsmith",
             "ready": "Ready for Pickup",
+            "received": "Received",
             "delivered": "Delivered",
-            "hamada_fathy": "Hamada/Am-Fathy Received",
-            "verified_received": "Received (Verified)",
             "notes": "Internal Notes",
             "service_type_placeholder": "Select or type a service...",
             "source": "Item Origin",
@@ -167,7 +167,8 @@
             "select_customer": "Select Customer",
             "no_customer": "No Customer",
             "optional": "Optional",
-            "edit": "Edit"
+            "edit": "Edit",
+            "delete": "Delete"
         },
         "ar": {
             "dashboard": "لوحة التحكم",
@@ -256,12 +257,11 @@
             "add": "إضافة",
             "gold_item": "قطعة ذهب",
             "gold_label": "ذهب",
-            "received": "تم الاستلام",
+            "hamada_received": "حمادة استلم",
+            "am_fathy_received": "عم فتحي استلم",
             "goldsmith": "عند الصائغ",
             "ready": "جاهز للاستلام",
             "delivered": "تم التسليم",
-            "hamada_fathy": "حمادة/عم فتحي استلم",
-            "verified_received": "تم الاستلام (مؤكد)",
             "notes": "ملاحظات داخلية",
             "service_type_placeholder": "اختر أو اكتب نوع الخدمة...",
             "source": "مصدر القطعة",
@@ -286,7 +286,8 @@
             "select_customer": "اختر العميل",
             "no_customer": "بدون عميل",
             "optional": "اختياري",
-            "edit": "تعديل"
+            "edit": "تعديل",
+            "delete": "حذف"
         }
     }
 }
