@@ -820,9 +820,9 @@ function renderDiamonds(container, filter = 'All') {
         <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
             <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderDiamonds(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase().replace(' ', '_'))}</button>`).join('')}</div>
             <div style="display: flex; gap: 1rem;">
-                <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel')}</button>
-                <button class="btn-import" onclick="importCSV('diamonds')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
+                <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_excel')}</button>
                 <button onclick="openDiamondModal('${filter}')">+ ${filter === 'All' ? t('add_diamond') : t('add') + ' ' + t(filter.toLowerCase().replace(' ', '_'))}</button>
+                <button class="btn-outline" onclick="exportCSV('diamonds')"><i data-lucide="download" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_csv')}</button>
             </div>
             ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("diamonds", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
         </div>
@@ -854,12 +854,12 @@ function renderGold(container, filter = 'All') {
 
         <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
             <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
-            <div style="gap: 1rem; display: flex;">
-                <button class="btn-outline" onclick="exportGold()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel') || 'Export'}</button>
-                <button class="btn-import" onclick="importCSV('gold')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn-outline" onclick="exportGold()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_excel') || 'Excel'}</button>
                 <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
             (filter === 'Necklace' ? t('add') + ' ' + (currentLang === 'en' ? t('gold_label') + ' ' : '') + t(filter.toLowerCase()) + (currentLang === 'ar' ? ' ' + t('gold_label') : '') : t('add') + ' ' + t(filter.toLowerCase()))
         }</button>
+                <button class="btn-outline" onclick="exportCSV('gold')"><i data-lucide="download" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_csv')}</button>
             </div>
             ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
         </div>
@@ -1168,8 +1168,14 @@ function saveGold(event, editId = null) {
     } else finalize();
 }
 
-function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds.csv', ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
-function exportGold() { downloadCSV(inventory.gold, 'gold.csv', ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price']); }
+function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds_excel.csv', ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
+function exportGold() { downloadCSV(inventory.gold, 'gold_excel.csv', ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price']); }
+function exportCSV(type) {
+    const data = inventory[type];
+    const filename = `${type}_export.csv`;
+    const headers = type === 'diamonds' ? ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price'] : ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price'];
+    downloadCSV(data, filename, headers);
+}
 function exportAll() { downloadCSV([...inventory.diamonds, ...inventory.gold], 'inventory_backup.csv', ['SKU', 'Type', 'Price']); }
 
 function requestSalesArchive() { if (prompt(t('enter_pass')) === SYSTEM_PASS) showView('sales'); else alert(t('wrong_pass')); }
