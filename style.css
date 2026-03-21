@@ -295,6 +295,12 @@ button:hover {
     gap: 1.5rem;
 }
 
+.modal-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
