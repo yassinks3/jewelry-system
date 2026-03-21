@@ -33,6 +33,11 @@ let shopInfo = JSON.parse(localStorage.getItem(SHOP_INFO_KEY)) || {
 };
 let voidSelectionMode = false;
 let selectedVoidIds = new Set();
+let currentCustomerSort = 'name_asc';
+let currentCustomerFilter = 'all'; // New state for filtering 'all' or 'ready'
+let commandPaletteActive = false;
+let paletteSelectedIndex = -1;
+let paletteCurrentMatches = [];
 
 // Config placeholders (loaded in initApp)
 let translations = {};
@@ -268,26 +273,27 @@ function renderApp() {
     Sidebar.innerHTML = `
         <div class="logo">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <i data-lucide="gem"></i>
-                <span>${currentLang === 'ar' ? 'مجوهرات إيدار' : 'Idar Jewelry'}</span>
+                <i data-lucide="gem" class="logo-shimmer"></i>
+                <span class="logo-shimmer">${currentLang === 'ar' ? 'مجوهرات إيدار' : 'Idar Jewelry'}</span>
             </div>
             <i data-lucide="x" class="sidebar-close" style="display: none;" onclick="toggleSidebar()"></i>
         </div>
         <ul class="nav-links">
-            <li id="nav-dashboard" onclick="showView('dashboard')">
+            <li id="nav-dashboard" onclick="navigateTab('dashboard')">
                 <i data-lucide="layout-dashboard"></i> ${t('dashboard')}
             </li>
-            <li id="nav-diamonds" onclick="showView('diamonds')">
+            <li id="nav-diamonds" onclick="navigateTab('diamonds')">
                 <i data-lucide="diamond"></i> ${t('diamonds')}
             </li>
-            <li id="nav-gold" onclick="showView('gold')">
+            <li id="nav-gold" onclick="navigateTab('gold')">
                 <i data-lucide="coins"></i> ${t('gold')}
             </li>
-            <li id="nav-workshop" onclick="showView('workshop')">
+            <li id="nav-workshop" onclick="navigateTab('workshop')">
                 <i data-lucide="hammer"></i> ${t('workshop')}
             </li>
-            <li id="nav-customers" onclick="showView('customers')">
+            <li id="nav-customers" onclick="navigateTab('customers')" style="position: relative;">
                 <i data-lucide="users"></i> ${t('customers')}
+                ${inventory.customers.some(c => inventory.repairs.some(j => j.customer === c.name && j.status === 'ready')) ? '<span class="nav-badge"></span>' : ''}
             </li>
             ${userRole === 'admin' ? `
             <li id="nav-settings" onclick="openSettingsModal()">
@@ -383,7 +389,16 @@ function downloadCSV(data, filename, headers) {
     const link = document.createElement("a");
     link.setAttribute("href", URL.createObjectURL(blob));
     link.setAttribute("download", filename);
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+}
+
+function navigateTab(view) {
+    currentSearch = "";
+    const globalSearch = document.getElementById('global-search');
+    if (globalSearch) globalSearch.value = "";
+    showView(view);
 }
 
 function showView(view) {
@@ -403,12 +418,12 @@ function showView(view) {
     `;
 
     switch (view) {
-        case 'dashboard': title.innerText = t('dashboard'); renderDashboard(container); break;
-        case 'diamonds': title.innerText = t('diamonds'); container.innerHTML = searchHtml + '<div id="inventory-list"></div>'; renderDiamonds(document.getElementById('inventory-list')); break;
-        case 'gold': title.innerText = t('gold'); container.innerHTML = searchHtml + '<div id="inventory-list"></div>'; renderGold(document.getElementById('inventory-list')); break;
-        case 'workshop': title.innerText = t('workshop'); renderWorkshop(container); break;
-        case 'customers': title.innerText = t('customers'); renderCustomers(container); break;
-        case 'sales': title.innerText = t('sold_archive'); renderSales(container); break;
+        case 'dashboard': if (title) title.innerText = t('dashboard'); renderDashboard(container); break;
+        case 'diamonds': if (title) title.innerText = t('diamonds'); renderDiamonds(container); break;
+        case 'gold': if (title) title.innerText = t('gold'); renderGold(container); break;
+        case 'workshop': if (title) title.innerText = t('workshop'); renderWorkshop(container); break;
+        case 'customers': if (title) title.innerText = t('customers'); renderCustomers(container); break;
+        case 'sales': if (title) title.innerText = t('sold_archive'); renderSales(container); break;
     }
     lucide.createIcons();
 }
@@ -416,28 +431,44 @@ function showView(view) {
 // Fuzzy Matching Engine (Typo Tolerant)
 function isFuzzyMatch(target, query) {
     if (!query) return true;
-    const t = target.toLowerCase();
-    const q = query.toLowerCase();
 
-    // 1. Exact substring (Highest priority)
+    // Normalize: Remove slashes, dashes, and spaces for symbol-agnostic searching
+    const normalize = (s) => (s || "").toLowerCase().replace(/[\/\-\s]/g, '');
+
+    const t = normalize(target);
+    const q = normalize(query);
+
+    // 1. Exact normalized substring (Highest priority)
     if (t.includes(q)) return true;
 
-    // 2. Char presence check (Good for transposed numbers like 1301 vs 1003)
-    // We only trigger this for shorter queries or digit-heavy strings
-    const qChars = q.split('');
+    // 2. Sequential Fuzzy Match (characters must appear in order)
+    let tIndex = 0;
     let matches = 0;
-    qChars.forEach(char => {
-        if (t.includes(char)) matches++;
-    });
+    for (let i = 0; i < q.length; i++) {
+        const char = q[i];
+        const foundAt = t.indexOf(char, tIndex);
+        if (foundAt !== -1) {
+            matches++;
+            tIndex = foundAt + 1;
+        }
+    }
 
-    // If 80% of query characters are found in target, it's a fuzzy match
-    const matchRatio = matches / qChars.length;
-    if (qChars.length >= 3 && matchRatio >= 0.8) return true;
+    // If the search is purely numbers (like searching for an SKU), do not fuzzy patch.
+    // Numbers MUST be exact substring matches (handled in step 1).
+    const isNumeric = /^\d+$/.test(q);
+    if (isNumeric) return false;
+
+    // If 80% of query characters are found sequentially in target, it's a fuzzy match
+    const matchRatio = matches / q.length;
+    if (q.length >= 3 && matchRatio >= 0.8) return true;
 
     return false;
 }
 
+let globalSearchTimeout;
 function handleSearch(val) {
+    clearTimeout(globalSearchTimeout);
+    globalSearchTimeout = setTimeout(() => {
     currentSearch = val.toLowerCase();
     const suggestionsContainer = document.getElementById('search-suggestions');
     const activeView = currentView;
@@ -453,8 +484,11 @@ function handleSearch(val) {
     let matches = [];
     // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
     inventory.diamonds.forEach(d => {
-        const label = `${d.carat}ct ${d.type} Diamond (${d.sku})`;
-        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku, type: 'diamond' });
+        const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} ${t('diamond')} (${d.sku})`;
+        if (isFuzzyMatch(label, currentSearch)) {
+            const isFuzzy = !label.toLowerCase().includes(currentSearch);
+            matches.push({ label, value: d.sku, type: 'diamond', isFuzzy });
+        }
     });
     inventory.gold.forEach(g => {
         const label = `${g.name} (${g.sku})`;
@@ -471,7 +505,10 @@ function handleSearch(val) {
             const regex = new RegExp(`(${currentSearch})`, 'gi');
             const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
             return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
-                <span class="match-label">${highlightedLabel}</span>
+                <div style="display: flex; flex-direction: column;">
+                    <span class="match-label">${highlightedLabel}</span>
+                    ${m.isFuzzy ? `<span class="fuzzy-hint" style="font-size: 0.7rem; color: var(--primary-gold); opacity: 0.8;">✨ ${t('potential_match')}</span>` : ''}
+                </div>
                 <span class="match-type">${t(m.type === 'diamond' ? 'diamonds' : (m.type === 'gold' ? 'gold' : 'customers'))}</span>
             </div>`;
         }).join('');
@@ -482,6 +519,7 @@ function handleSearch(val) {
     if (activeView === 'diamonds') updateInventoryGrid('diamonds');
     else if (activeView === 'gold') updateInventoryGrid('gold');
     else if (activeView === 'customers') updateCustomerTable();
+    }, 250);
 }
 
 function selectSuggestion(value, type) {
@@ -501,7 +539,10 @@ function selectSuggestion(value, type) {
 }
 
 // Local View Search Handlers
+let localSearchTimeout;
 function handleLocalSearch(query, type) {
+    clearTimeout(localSearchTimeout);
+    localSearchTimeout = setTimeout(() => {
     currentSearch = query.toLowerCase();
     const suggestionsId = `${type}-local-suggestions`;
     const suggestionsContainer = document.getElementById(suggestionsId);
@@ -516,7 +557,7 @@ function handleLocalSearch(query, type) {
     let matches = [];
     if (type === 'diamonds') {
         inventory.diamonds.forEach(d => {
-            const label = `${d.carat}ct ${d.type} (${d.sku})`;
+            const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} (${d.sku})`;
             if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
         });
     } else if (type === 'gold') {
@@ -546,6 +587,7 @@ function handleLocalSearch(query, type) {
 
     if (type === 'customers') updateCustomerTable();
     else updateInventoryGrid(type);
+    }, 250);
 }
 
 function selectLocalSuggestion(value, type) {
@@ -563,9 +605,35 @@ function selectLocalSuggestion(value, type) {
 }
 
 document.addEventListener('click', (e) => {
+    // 1. Hide search suggestions if clicking outside
     const suggestions = document.getElementById('search-suggestions');
     const searchBar = document.querySelector('.search-bar');
     if (suggestions && searchBar && !searchBar.contains(e.target)) suggestions.classList.add('hidden');
+
+    // 2. Close active modal if clicking exactly on the dark backdrop
+    const modalContainer = document.getElementById('modal-container');
+    if (e.target === modalContainer) {
+        closeModal();
+    }
+});
+
+// Global Keyboard Shortcuts (QoL)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const modalContainer = document.getElementById('modal-container');
+        if (modalContainer && !modalContainer.classList.contains('hidden')) {
+            closeModal();
+        }
+        
+        if (typeof commandPaletteActive !== 'undefined' && commandPaletteActive && typeof closeCommandPalette === 'function') {
+            closeCommandPalette();
+        }
+        
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('active')) {
+            toggleSidebar();
+        }
+    }
 });
 
 function setInventoryRange(category, range) {
@@ -582,22 +650,7 @@ function renderDashboard(container) {
     const alerts = checkStockLevels();
 
     container.innerHTML = `
-        <div class="dashboard-header animate-fade-in">
-            <div>
-                <h1 class="gradient-text" style="font-size: 2.2rem; margin: 0;">${t('dashboard')}</h1>
-                <p style="color: var(--text-dim); margin-top: 0.5rem; font-size: 0.9rem;">Welcome back to your luxury management suite.</p>
-            </div>
-            <div style="display: flex; gap: 1rem;">
-                ${userRole === 'admin' ? `
-                    <button onclick="exportAll()" class="btn-premium-action">
-                        <i data-lucide="download-cloud" style="width: 18px;"></i> ${t('backup')}
-                    </button>
-                    <button onclick="seedSystemData()" class="btn-premium-action" style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(59, 130, 246, 0.2);">
-                        <i data-lucide="database" style="width: 18px;"></i> ${t('seed_data')}
-                    </button>
-                ` : ''}
-            </div>
-        </div>
+        <div style="margin-top: -1rem;"></div> <!-- Pull content up -->
 
         ${alerts.length > 0 ? `
         <div class="glass-card hero-card animate-fade-in" style="margin-bottom: 2rem; border-left: 4px solid #ef4444;">
@@ -606,7 +659,7 @@ function renderDashboard(container) {
                     <i data-lucide="alert-triangle" style="color: #ef4444;"></i>
                 </div>
                 <div style="flex: 1;">
-                    <h4 style="margin: 0; color: #ef4444; font-weight: 600;">Inventory Alerts</h4>
+                    <h4 style="margin: 0; color: #ef4444; font-weight: 600;">${t('inventory_alerts')}</h4>
                     <p style="font-size: 0.85rem; color: var(--text-dim); margin: 0.25rem 0 0 0;">
                         ${alerts.map(a => `${t('low_stock_on')} <strong>${a.label}</strong> (${a.count})`).join(' | ')}
                     </p>
@@ -638,17 +691,27 @@ function renderDashboard(container) {
                     </div>
                 </div>
             </div>
-            <div class="glass-card">
-                <div class="stat-label">${t('diamonds_in_stock')}</div>
-                <div class="stat-value">${totalDiamonds}</div>
-                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">High-end pieces in vault</div>
-            </div>
-            <div class="glass-card">
-                <div class="stat-label">${t('gold_in_stock')}</div>
-                <div class="stat-value">${totalGold}</div>
-                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">Total items currently inventoried</div>
+            <div style="grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="glass-card">
+                    <div class="stat-label">${t('diamonds_in_stock')}</div>
+                    <div class="stat-value">${totalDiamonds}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">High-end pieces in vault</div>
+                </div>
+                <div class="glass-card">
+                    <div class="stat-label">${t('gold_in_stock')}</div>
+                    <div class="stat-value">${totalGold}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">Total items currently inventoried</div>
+                </div>
             </div>
         </div>
+
+        ${userRole === 'admin' ? `
+            <div style="margin-bottom: 2.5rem; display: flex; justify-content: flex-start;">
+                <button onclick="exportAll()" class="btn-premium-action" style="width: auto; border-style: dashed; padding: 0.6rem 2rem;">
+                    <i data-lucide="download-cloud" style="width: 18px;"></i> ${t('backup')}
+                </button>
+            </div>
+        ` : ''}
 
         <div class="grid" style="grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
             <div class="glass-card">
@@ -739,18 +802,13 @@ function togglePrivacy(type) {
     showView(currentView);
 }
 
-function renderDiamonds(container) {
+function renderDiamonds(container, filter = 'All') {
     if (!container) return;
     const ranges = getSKURanges('diamonds');
     const activeRange = currentInventoryRanges.diamonds;
+    const types = ['All', 'Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'];
 
     container.innerHTML = `
-        <div class="inventory-controls" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
-            <button onclick="openDiamondModal()">+ ${t('add_diamond')}</button>
-            <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet"></i> ${t('export_excel')}</button>
-        </div>
-        ${ranges.length > 1 ? `<div class="range-tabs">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("diamonds", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
-        
         <div class="search-container">
             <div class="search-bar" style="max-width: 100%; margin: 0;">
                 <i data-lucide="search"></i>
@@ -761,12 +819,22 @@ function renderDiamonds(container) {
             <div id="diamonds-local-suggestions" class="local-suggestions hidden"></div>
         </div>
 
+        <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
+            <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderDiamonds(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase().replace(' ', '_'))}</button>`).join('')}</div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel')}</button>
+                <button class="btn-import" onclick="importCSV('diamonds')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
+                <button onclick="openDiamondModal('${filter}')">+ ${filter === 'All' ? t('add_diamond') : t('add') + ' ' + t(filter.toLowerCase().replace(' ', '_'))}</button>
+            </div>
+            ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("diamonds", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
+        </div>
+
         <div id="diamond-grid" class="grid">
             <!-- Grid items injected via updateInventoryGrid -->
         </div>
     `;
     lucide.createIcons();
-    updateInventoryGrid('diamonds');
+    updateInventoryGrid('diamonds', filter);
 }
 
 function renderGold(container, filter = 'All') {
@@ -776,17 +844,6 @@ function renderGold(container, filter = 'All') {
     const types = ['All', 'Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings'];
 
     container.innerHTML = `
-        <div class="inventory-controls">
-            <div class="filter-tabs">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('inventory-list'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="btn-outline" onclick="exportGold()">${t('export_excel') || 'Export'}</button>
-                <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
-            (filter === 'Necklace' ? t('add') + ' ' + (currentLang === 'en' ? t('gold_label') + ' ' : '') + t(filter.toLowerCase()) + (currentLang === 'ar' ? ' ' + t('gold_label') : '') : t('add') + ' ' + t(filter.toLowerCase()))
-        }</button>
-            </div>
-        </div>
-        ${ranges.length > 1 ? `<div class="range-tabs">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
-        
         <div class="search-container">
             <div class="search-bar" style="max-width: 100%; margin: 0;">
                 <i data-lucide="search"></i>
@@ -797,6 +854,18 @@ function renderGold(container, filter = 'All') {
             <div id="gold-local-suggestions" class="local-suggestions hidden"></div>
         </div>
 
+        <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
+            <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
+            <div style="gap: 1rem; display: flex;">
+                <button class="btn-outline" onclick="exportGold()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel') || 'Export'}</button>
+                <button class="btn-import" onclick="importCSV('gold')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
+                <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
+            (filter === 'Necklace' ? t('add') + ' ' + (currentLang === 'en' ? t('gold_label') + ' ' : '') + t(filter.toLowerCase()) + (currentLang === 'ar' ? ' ' + t('gold_label') : '') : t('add') + ' ' + t(filter.toLowerCase()))
+        }</button>
+            </div>
+            ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
+        </div>
+
         <div id="gold-grid" class="grid">
             <!-- Grid items injected via updateInventoryGrid -->
         </div>
@@ -805,7 +874,7 @@ function renderGold(container, filter = 'All') {
     updateInventoryGrid('gold', filter);
 }
 
-function updateInventoryGrid(type, goldFilter = 'All') {
+function updateInventoryGrid(type, filter = 'All') {
     const gridId = type === 'diamonds' ? 'diamond-grid' : 'gold-grid';
     const grid = document.getElementById(gridId);
     if (!grid) return;
@@ -825,16 +894,25 @@ function updateInventoryGrid(type, goldFilter = 'All') {
             (item.type && isFuzzyMatch(item.type, searchTerm)) ||
             (item.carat && isFuzzyMatch(item.carat.toString(), searchTerm));
 
-        // Category Check (for Gold)
-        const matchesFilter = type === 'diamonds' || goldFilter === 'All' || item.type === goldFilter;
+        // Category Check
+        const matchesFilter = filter === 'All' || (type === 'diamonds' ? (item.item_type === filter) : (item.type === filter));
 
         return matchesSearch && matchesFilter;
     }).sort((a, b) => b.id - a.id); // Show newest first
 
     grid.innerHTML = items.length === 0 ? `
-        <div class="image-placeholder" style="grid-column: 1/-1; padding: 4rem;">
-            <i data-lucide="search-x" style="width: 48px; height: 48px; opacity: 0.2; margin-bottom: 1rem;"></i>
-            <p style="color: var(--text-dim);">${t('no_items')}</p>
+        <div class="card glass-card" style="grid-column: 1/-1; padding: 6rem 2rem; text-align: center; border: 1px dashed rgba(255,255,255,0.1); background: transparent;">
+            <div style="background: rgba(212, 175, 55, 0.1); width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                <i data-lucide="${type === 'diamonds' ? 'diamond' : 'plus-circle'}" style="color: var(--primary-gold); width: 32px; height: 32px;"></i>
+            </div>
+            <h3 style="margin-bottom: 0.5rem; color: var(--text-base);">${searchTerm ? t('no_results_found') : (type === 'diamonds' ? t('no_diamonds_yet') : t('no_gold_yet'))}</h3>
+            <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.95rem;">${searchTerm ? t('no_results_desc') : t('get_started_desc')}</p>
+            ${!searchTerm ? `
+                <button onclick="${type === 'diamonds' ? 'openDiamondModal()' : 'openGoldModal()'}" class="btn-premium" style="padding: 0.8rem 2rem; font-size: 0.9rem;">
+                    <i data-lucide="plus" style="width: 18px; vertical-align: middle; margin-right: 0.5rem;"></i>
+                    ${type === 'diamonds' ? t('add_diamond') : t('add_gold')}
+                </button>
+            ` : ''}
         </div>
     ` : items.map(item => type === 'diamonds' ? `
         <div class="card item-card animate-fade-in shadow-hover">
@@ -908,7 +986,10 @@ function deleteItem(category, id) {
     }
 }
 
-function openDiamondModal(editItem = null) {
+function openDiamondModal(param = null) {
+    const editItem = (param && typeof param === 'object') ? param : null;
+    const preselectedType = (typeof param === 'string' && param !== 'All') ? param : (editItem ? editItem.item_type || 'Loose Stone' : 'Loose Stone');
+
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
     modal.innerHTML = `
@@ -920,7 +1001,8 @@ function openDiamondModal(editItem = null) {
             <form id="diamond-form" onsubmit="saveDiamond(event, ${editItem ? editItem.id : null})">
                 <div class="form-grid">
                     <div class="form-group" style="grid-column: span 2;"><label>${t('image')}</label><input type="file" id="d-image" accept="image/*" class="file-input"></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
+                    <div class="form-group"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
+                    <div class="form-group"><label>${t('type')}</label><select id="d-item-type" required>${['Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'].map(tg => `<option ${(editItem && editItem.item_type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase().replace(' ', '_'))}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('shape')}</label><select id="d-shape" required>${['Round', 'Princess', 'Emerald', 'Asscher', 'Cushion', 'Marquise', 'Oval', 'Pear', 'Radiant', 'Heart'].map(s => `<option ${editItem && editItem.type === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
                     <div class="form-group"><label>${t('carat')}</label><input type="number" id="d-carat" step="any" value="${editItem ? editItem.carat : ''}" required></div>
                     <div class="form-group"><label>${t('color')}</label><select id="d-color" required>${['D', 'E', 'F', 'G', 'H', 'I', 'J'].map(c => `<option ${editItem && editItem.color === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
@@ -1011,6 +1093,7 @@ function saveDiamond(event, editId = null) {
         id: editId || Date.now(),
         sku: editId ? inventory.diamonds.find(i => i.id === editId).sku : generateSKU('diamonds'),
         name: document.getElementById('d-name').value,
+        item_type: document.getElementById('d-item-type').value,
         type: document.getElementById('d-shape').value,
         carat: parseFloat(document.getElementById('d-carat').value),
         color: document.getElementById('d-color').value,
@@ -1027,13 +1110,17 @@ function saveDiamond(event, editId = null) {
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
-            // Fallback to local
-            editId ? (inventory.diamonds[inventory.diamonds.findIndex(i => i.id === editId)] = diamond) : inventory.diamonds.unshift(diamond);
-            saveToStorage();
+        } else {
+            // Surgical Update
+            if (editId) {
+                const idx = inventory.diamonds.findIndex(i => i.id === editId);
+                if (idx !== -1) inventory.diamonds[idx] = diamond;
+            } else {
+                inventory.diamonds.unshift(diamond);
+            }
         }
-
         closeModal();
-        initApp(); // Refresh from cloud
+        renderApp();
     };
     const imageInput = document.getElementById('d-image');
     if (imageInput.files[0]) {
@@ -1063,13 +1150,17 @@ function saveGold(event, editId = null) {
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
-            // Fallback to local
-            editId ? (inventory.gold[inventory.gold.findIndex(i => i.id === editId)] = item) : inventory.gold.unshift(item);
-            saveToStorage();
+        } else {
+            // Surgical Update
+            if (editId) {
+                const idx = inventory.gold.findIndex(i => i.id === editId);
+                if (idx !== -1) inventory.gold[idx] = item;
+            } else {
+                inventory.gold.unshift(item);
+            }
         }
-
         closeModal();
-        initApp(); // Refresh from cloud
+        renderApp();
     };
     const imageInput = document.getElementById('g-image');
     if (imageInput.files[0]) {
@@ -1090,68 +1181,85 @@ function openSellModal(category, id) {
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
 
-    // Auto-select newly created customer if returning from a "New Customer" jump
+    // Finding customer details if pre-selected
     const preSelectedId = (pendingSale && pendingSale.id === id && pendingSale.newCustomerId) ? pendingSale.newCustomerId : "";
+    const preSelectedCustomer = preSelectedId ? inventory.customers.find(c => c.id === parseInt(preSelectedId)) : null;
 
     modal.innerHTML = `
-        <div class="modal"><div class="modal-content card" style="max-width: 400px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"><h2>${t('sell_item')}</h2><i data-lucide="x" class="close-btn" onclick="closeModal()"></i></div>
+        <div class="modal"><div class="modal-content card" style="max-width: 400px; position: relative;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>${t('sell_item')}</h2>
+                <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
+            </div>
             <form onsubmit="sellItem(event, '${category}', ${id})">
                 <div class="form-group"><label>${t('sale_price')}</label><input type="number" id="s-price" value="${item.price}" required></div>
                 <div class="form-group" style="margin-top: 1rem;"><label>${t('sale_date')}</label><input type="date" id="s-date" value="${new Date().toISOString().split('T')[0]}" required></div>
-                <div class="form-group" style="margin-top: 1rem;">
+                
+                <!-- Autocomplete Customer Selection -->
+                <div class="form-group" style="margin-top: 1.5rem; position: relative;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem;">
                         <label style="margin: 0;">${t('select_customer')} (${t('optional')})</label>
-                        <a href="javascript:void(0)" onclick="prepareNewCustomerDuringSale('${category}', ${id})" style="font-size: 0.7rem; color: var(--primary-blue); text-decoration: none; font-weight: 600;">+ ${t('add_customer')}</a>
+                        <a href="javascript:void(0)" onclick="prepareNewCustomerDuringSale('${category}', ${id})" 
+                           style="font-size: 0.7rem; color: var(--primary-blue); text-decoration: none; font-weight: 600;">
+                           + ${currentLang === 'ar' ? (t('add_new_customer_link') || 'إضافة عميل جديد') : t('add_customer')}
+                        </a>
                     </div>
                     
-                    <input type="text" id="customer-search" placeholder="Search by name or C-ID..." 
-                           oninput="filterSellCustomers(this.value)" 
-                           style="margin-bottom: 0.5rem; height: 32px; font-size: 0.8rem; background: rgba(0,0,0,0.2);">
-                    
-                    <select id="s-customer" size="5" style="height: auto; min-height: 100px;">
-                        <option value="">${t('no_customer')}</option>
-                        ${inventory.customers.sort((a, b) => a.name.localeCompare(b.name)).map(c => `
-                            <option value="${c.id}" ${parseInt(preSelectedId) === c.id ? 'selected' : ''} class="cust-opt">
-                                ${c.name} (${c.customer_code || 'No ID'})
-                            </option>
-                        `).join('')}
-                    </select>
+                    <div class="search-bar" style="margin: 0; max-width: 100%;">
+                        <i data-lucide="user"></i>
+                        <input type="text" id="cust-autocomplete-input" 
+                               placeholder="${currentLang === 'ar' ? 'ابحث عن اسم العميل...' : 'Find customer name...'}"
+                               value="${preSelectedCustomer ? preSelectedCustomer.name : ''}"
+                               oninput="handleSellCustomerAutocomplete(this.value)"
+                               autocomplete="off">
+                    </div>
+                    <input type="hidden" id="s-customer" value="${preSelectedId}">
+                    <div id="sell-cust-suggestions" class="suggestions-dropdown hidden" 
+                         style="top: 100%; border-color: var(--primary-blue); background: #0a0a0c;"></div>
                 </div>
-                <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${t('confirm_sale')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-premium" style="flex: 1;">${t('confirm_sale')}</button>
+                    <button type="button" class="btn-outline" onclick="closeModal()" style="flex: 1;">${t('cancel')}</button>
+                </div>
             </form>
         </div></div>
     `;
     lucide.createIcons();
-    pendingSale = null; // Clear state after use
+    pendingSale = null;
 }
 
-function filterSellCustomers(query) {
-    const select = document.getElementById('s-customer');
-    const q = query.toLowerCase();
+function handleSellCustomerAutocomplete(query) {
+    const suggestions = document.getElementById('sell-cust-suggestions');
+    const val = query.toLowerCase();
 
-    // Filter logic
-    const matches = inventory.customers.filter(c =>
-        isFuzzyMatch(c.name, q) ||
-        (c.customer_code && isFuzzyMatch(c.customer_code, q))
-    ).sort((a, b) => a.name.localeCompare(b.name));
-
-    // Re-render only the options
-    select.innerHTML = `
-        <option value="">${t('no_customer')}</option>
-        ${matches.map(c => `
-            <option value="${c.id}" class="cust-opt">
-                ${c.name} (${c.customer_code || 'No ID'})
-            </option>
-        `).join('')}
-    `;
-
-    // If there is only one exact match (or very few), keep the select box open/focused
-    if (matches.length > 0) {
-        select.size = Math.min(Math.max(matches.length + 1, 2), 10);
-    } else {
-        select.size = 2;
+    if (!val) {
+        suggestions.classList.add('hidden');
+        document.getElementById('s-customer').value = ""; // Clear selection if input empty
+        return;
     }
+
+    const matches = inventory.customers.filter(c =>
+        isFuzzyMatch(c.name, val) || (c.customer_code && isFuzzyMatch(c.customer_code, val))
+    ).slice(0, 5);
+
+    if (matches.length > 0) {
+        suggestions.innerHTML = matches.map(m => `
+            <div class="suggestion-item" onclick="selectSellCustomer(${m.id}, '${m.name.replace(/'/g, "\\'")}')">
+                <span style="font-weight: 600;">${m.name}</span>
+                <span style="font-size: 0.7rem; color: var(--text-dim);">${m.customer_code || ''}</span>
+            </div>
+        `).join('');
+        suggestions.classList.remove('hidden');
+    } else {
+        suggestions.classList.add('hidden');
+    }
+}
+
+function selectSellCustomer(id, name) {
+    document.getElementById('s-customer').value = id;
+    document.getElementById('cust-autocomplete-input').value = name;
+    document.getElementById('sell-cust-suggestions').classList.add('hidden');
 }
 
 function prepareNewCustomerDuringSale(category, id) {
@@ -1309,7 +1417,19 @@ async function generateReceipt(saleData) {
         doc.text("• Authenticated via Idar Jewelry advanced inventory system.", 20, 246);
         doc.text("• Please retain this invoice for maintenance and future trade-ins.", 20, 251);
 
-        doc.save(`Idar_Invoice_${item.sku}.pdf`);
+        try {
+            const blob = doc.output('blob');
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Idar_Invoice_${item.sku}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+        } catch (e) {
+            doc.save(`Idar_Invoice_${item.sku}.pdf`); // Fallback if blob fails
+        }
     }, 100);
 }
 
@@ -1387,6 +1507,7 @@ function printTag(category, id) {
     printWindow.print();
 }
 
+let longPressTimer;
 function renderWorkshop(container) {
     const statuses = ['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'];
     container.innerHTML = `
@@ -1394,22 +1515,101 @@ function renderWorkshop(container) {
             <button onclick="openRepairModal()">+ ${t('add_job')}</button>
         </div>
         <div class="workshop-board">
-            ${statuses.map(s => `
+            ${statuses.map(s => {
+        const jobs = inventory.repairs.filter(j => {
+            if (j.status !== s) return false;
+            // Filter old deliveries (> 24h)
+            if (s === 'delivered' && j.delivered_at) {
+                const ageHours = (new Date() - new Date(j.delivered_at)) / (1000 * 60 * 60);
+                if (ageHours > 24) return false;
+            }
+            return true;
+        });
+
+        const isCrowded = jobs.length > 3; // Trigger compact mode when scrolling is likely needed
+        return `
                 <div class="workshop-column">
-                    <h3>${t(s)}</h3>
-                    <div class="job-list">
-                        ${inventory.repairs.filter(j => j.status === s).map(j => `
-                            <div class="card job-card" onclick="openRepairModal(${j.id})">
-                                <div style="font-weight: 700; color: var(--primary-blue); margin-bottom: 0.5rem;">${j.customer || t('no_customer')}</div>
-                                <div class="job-service">${j.service}</div>
-                                ${j.notes ? `<div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${j.notes}</div>` : ''}
-                            </div>
-                        `).join('')}
+                    <div class="column-header">
+                        <h3>${t(s)}</h3>
+                        <span class="job-count">${jobs.length}</span>
                     </div>
-                </div>
-            `).join('')}
+                    <div class="job-list ${isCrowded ? 'is-crowded' : ''}">
+                        ${jobs.sort((a, b) => (b.is_urgent ? 1 : 0) - (a.is_urgent ? 1 : 0)).map(j => {
+            const ageDays = Math.floor((new Date() - new Date(j.created_at || j.id)) / (1000 * 60 * 60 * 24));
+            return `
+                            <div class="card job-card ${j.is_urgent ? 'job-urgent' : ''}" 
+                                style="position: relative;"
+                                onclick="openRepairModal(${j.id})"
+                                onmousedown="handleJobLongPressStart(${j.id})" 
+                                onmouseup="handleJobLongPressEnd()" 
+                                onmouseleave="handleJobLongPressEnd()"
+                                ontouchstart="handleJobLongPressStart(${j.id})" 
+                                ontouchend="handleJobLongPressEnd()">
+                                
+                                ${j.is_urgent && status !== 'delivered' ? `<div class="urgent-badge">${t('urgent')}</div>` : ''}
+
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                    <div style="font-weight: 700; color: var(--primary-blue);">${j.customer || t('no_customer')}</div>
+                                    ${status !== 'delivered' ? `
+                                        <i data-lucide="star" 
+                                           class="urgent-toggle ${j.is_urgent ? 'active' : ''}" 
+                                           onclick="toggleUrgent(${j.id}, event)"
+                                           style="width: 14px; height: 14px;"></i>
+                                    ` : ''}
+                                </div>
+                                <div class="job-service">${j.service}</div>
+                                ${j.notes ? `<div class="job-notes-summary">${j.notes}</div>` : ''}
+
+                                <div class="job-footer" style="margin-top: 0.75rem;">
+                                    ${status === 'delivered' && j.delivered_at ? `
+                                        <div class="job-age-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.1);">
+                                            <i data-lucide="check-circle" style="width: 10px; height: 10px;"></i>
+                                            ${t('delivered_at_label')}: ${(() => {
+                        const ageMins = Math.floor((new Date() - new Date(j.delivered_at)) / (1000 * 60));
+                        if (ageMins < 1) return t('just_now');
+                        if (ageMins < 60) return t('minutes_ago').replace('{n}', ageMins);
+                        return t('hours_ago').replace('{n}', Math.floor(ageMins / 60));
+                    })()}
+                                        </div>
+                                    ` : `
+                                        <div class="job-age-badge">
+                                            <i data-lucide="clock" style="width: 10px; height: 10px;"></i>
+                                            ${ageDays === 0 ? t('today') : t('days_active').replace('{n}', ageDays)}
+                                        </div>
+                                    `}
+                                    ${j.phone ? `<div class="job-phone">${j.phone}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+        }).join('')}
+                    </div>
+                </div>`;
+    }).join('')}
         </div>`;
     lucide.createIcons();
+}
+
+async function toggleUrgent(id, event) {
+    if (event) event.stopPropagation();
+    const job = inventory.repairs.find(j => j.id === id);
+    if (!job) return;
+
+    const newPriority = !job.is_urgent;
+
+    // UI Update (Immediate/Optimistic)
+    job.is_urgent = newPriority;
+    const viewContent = document.getElementById('view-content');
+    if (currentView === 'workshop') renderWorkshop(viewContent);
+
+    // Sync to DB
+    const { error } = await supabaseClient.from('repairs').update({ is_urgent: newPriority }).eq('id', id);
+
+    if (error) {
+        console.error("DB Update failed, reverting UI", error);
+        job.is_urgent = !newPriority; // Revert on failure
+        if (currentView === 'workshop') renderWorkshop(viewContent);
+        alert("Error updating priority: " + error.message);
+    }
 }
 
 function openRepairModal(editId = null) {
@@ -1465,9 +1665,14 @@ function openRepairModal(editId = null) {
                         <textarea id="r-notes" class="textarea-auto" placeholder="${t('notes')}..." 
                             oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${job ? job.notes || '' : ''}</textarea>
                     </div>
-                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                        <button type="submit">${t('save')}</button>
-                        <button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button>
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 1rem;">
+                            <button type="submit" class="btn-premium">${t('save')}</button>
+                            <button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button>
+                        </div>
+                        ${editId ? `<button type="button" class="btn-danger-text" onclick="confirmJobDeletion(${editId})">
+                            <i data-lucide="trash-2" style="width: 16px;"></i> ${t('delete_job')}
+                        </button>` : ''}
                     </div>
                 </form>
             </div>
@@ -1516,21 +1721,58 @@ async function saveRepair(event, editId = null) {
         localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
     }
 
+    const dueDate = document.getElementById('r-date').value;
+    const status = document.getElementById('r-status').value;
+    const existingJob = editId ? inventory.repairs.find(j => j.id === editId) : null;
+
     const job = {
         id: editId || Date.now(),
         customer: document.getElementById('r-customer').value,
         service: service,
-        status: document.getElementById('r-status').value,
-        due_date: document.getElementById('r-date').value,
+        status: status,
+        due_date: dueDate === "" ? null : dueDate,
         notes: notes,
-        user_id: currentUser.id
+        user_id: currentUser.id,
+        is_urgent: existingJob ? existingJob.is_urgent : false,
+        delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
+            ? new Date().toISOString()
+            : (existingJob ? existingJob.delivered_at : null)
     };
 
     const { error } = await supabaseClient.from('repairs').upsert([job]);
     if (error) { alert("Error saving job: " + error.message); return; }
 
+    // Surgical Update
+    if (editId) {
+        const idx = inventory.repairs.findIndex(j => j.id === editId);
+        if (idx !== -1) inventory.repairs[idx] = job;
+    } else {
+        inventory.repairs.unshift(job);
+    }
+
     closeModal();
-    initApp();
+    renderApp();
+}
+
+function handleJobLongPressStart(id) {
+    longPressTimer = setTimeout(() => {
+        confirmJobDeletion(id);
+    }, 2000);
+}
+
+function handleJobLongPressEnd() {
+    clearTimeout(longPressTimer);
+}
+
+async function confirmJobDeletion(id) {
+    if (confirm(t('delete_job_confirm') || "Are you sure you want to erase this repair job?")) {
+        const { error } = await supabaseClient.from('repairs').delete().eq('id', id);
+        if (error) {
+            alert("Error deleting job: " + error.message);
+        } else {
+            initApp();
+        }
+    }
 }
 
 
@@ -1543,7 +1785,9 @@ function exportJSON() {
     const link = document.createElement('a');
     link.href = url;
     link.download = `idar_backup_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
 }
 
 function importJSON() {
@@ -1568,6 +1812,93 @@ function importJSON() {
         reader.readAsText(file);
     };
     input.click();
+}
+
+function importCSV(category) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = async e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = async event => {
+            const content = event.target.result;
+            await processCSVContent(content, category);
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+async function processCSVContent(content, category) {
+    const lines = content.split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+    const items = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+
+        // Basic CSV parser that handles quotes
+        const row = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+        const cleanRow = row.map(v => v.replace(/^"|"$/g, '').replace(/""/g, '"'));
+
+        const itemData = {};
+        headers.forEach((h, idx) => {
+            const key = h.replace(/\s+/g, '_');
+            itemData[key] = cleanRow[idx];
+        });
+
+        // Schema Mapping
+        let item = { id: Date.now() + i };
+
+        if (category === 'diamonds') {
+            item = {
+                ...item,
+                sku: itemData.sku || generateSKU('diamonds'),
+                name: itemData.name || 'Imported Diamond',
+                price: parseFloat(itemData.price) || 0,
+                image: null,
+                item_type: itemData.item_type || 'Loose Stone',
+                type: itemData.shape || itemData.type || 'Round',
+                carat: parseFloat(itemData.carat) || 0,
+                color: itemData.color || 'D',
+                clarity: itemData.clarity || 'IF',
+                cut: itemData.cut || 'Excellent'
+            };
+        } else if (category === 'gold') {
+            item = {
+                ...item,
+                sku: itemData.sku || generateSKU('gold'),
+                name: itemData.name || 'Imported Gold',
+                price: parseFloat(itemData.price) || 0,
+                image: null,
+                type: itemData.type || 'Necklace',
+                karat: itemData.karat || '21K',
+                weight: parseFloat(itemData.weight) || 0
+            };
+        } else if (category === 'customers') {
+            item = {
+                ...item,
+                name: itemData.customer_name || itemData.name || 'Imported Customer',
+                phone: itemData.phone || '',
+                address: itemData.address || '',
+                notes: itemData.notes || '',
+                customer_code: itemData.customer_code || itemData.code || generateCustomerCode()
+            };
+        }
+
+        items.push(item);
+    }
+
+    if (items.length > 0) {
+        const { error } = await supabaseClient.from(category).upsert(items);
+        if (error) {
+            alert(t('import_error').replace('{row}', 'bulk').replace('{error}', error.message));
+        } else {
+            alert(t('import_success').replace('{count}', items.length));
+            initApp();
+        }
+    }
 }
 
 function openSettingsModal() {
@@ -1603,11 +1934,56 @@ function openSettingsModal() {
                 <div class="form-group" style="margin-bottom: 1rem;"><label>Address</label><input type="text" id="s-shop-address" value="${shopInfo.address}" required></div>
                 <div class="form-group" style="margin-bottom: 2rem;"><label>Phone Number</label><input type="text" id="s-shop-phone" value="${shopInfo.phone}" required></div>
 
+                <h4 style="margin-bottom: 1rem; color: var(--primary-blue); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="database" style="width: 16px;"></i> Database Management
+                </h4>
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button type="button" class="btn-outline" onclick="exportJSON()" style="flex: 1; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <i data-lucide="download" style="width: 16px; height: 16px;"></i> Backup DB
+                    </button>
+                    <button type="button" class="btn-outline" onclick="importJSON()" style="flex: 1; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                        <i data-lucide="upload" style="width: 16px; height: 16px;"></i> Restore DB
+                    </button>
+                </div>
+
+                <h4 style="margin-bottom: 1rem; color: #ef4444; border-bottom: 1px solid rgba(239,68,68,0.2); padding-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="alert-triangle" style="width: 16px;"></i> ${t('data_management')}
+                </h4>
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button type="button" class="btn-danger-outline" onclick="wipeCategory('diamonds')" style="flex: 1; font-size: 0.8rem;">
+                        ${t('clear_diamonds')}
+                    </button>
+                    <button type="button" class="btn-danger-outline" onclick="wipeCategory('gold')" style="flex: 1; font-size: 0.8rem;">
+                        ${t('clear_gold')}
+                    </button>
+                    <button type="button" class="btn-danger-outline" onclick="wipeCategory('customers')" style="flex: 1; font-size: 0.8rem;">
+                        ${t('clear_customers')}
+                    </button>
+                </div>
+
                 <div style="display: flex; gap: 1rem;"><button type="submit">${t('save')}</button><button type="button" class="btn-outline" onclick="closeModal()">Cancel</button></div>
             </form>
         </div></div>
     `;
     lucide.createIcons();
+}
+
+async function wipeCategory(category) {
+    if (prompt(t('enter_pass')) !== SYSTEM_PASS) {
+        return alert(t('wrong_pass'));
+    }
+
+    if (confirm(t('wipe_confirm'))) {
+        if (confirm("FINAL WARNING: This action cannot be undone. Proceed?")) {
+            const { error, count } = await supabaseClient.from(category).delete().neq('id', 0);
+            if (error) {
+                alert("Error wiping data: " + error.message);
+            } else {
+                alert(t('wipe_success').replace('{count}', count || 'all'));
+                initApp();
+            }
+        }
+    }
 }
 
 // Mobile Sidebar Logic
@@ -1804,6 +2180,18 @@ function renderCustomers(container) {
         }
     });
 
+    // Check for Ready items in Workshop
+    inventory.repairs.forEach(job => {
+        if (job.status === 'ready' && job.customer) {
+            // Find customer by name (since repairs use name strings)
+            const customer = inventory.customers.find(c => c.name === job.customer);
+            if (customer) {
+                const stats = customerStatsMap.get(customer.id);
+                if (stats) stats.hasReadyItem = true;
+            }
+        }
+    });
+
     // Save calculation to a global-ish scope so updateCustomerTable can access it without recalculating
     window.cachedCustomerStats = customerStatsMap;
 
@@ -1814,14 +2202,37 @@ function renderCustomers(container) {
                     <i data-lucide="search"></i>
                     <input type="text" id="customer-search-input" placeholder="${t('search')} ${t('customers')}..." 
                            value="${currentSearch}" 
-                           oninput="handleLocalSearch(this.value, 'customers')">
+                           oninput="handleLocalSearch(this.value, 'customers')"
+                           onkeydown="if(event.key === 'Enter') handleCustomerSearch(this.value)">
                 </div>
                 <div id="customers-local-suggestions" class="local-suggestions hidden"></div>
             </div>
-            <button onclick="openCustomerModal()" style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
-                <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
-                ${t('add_customer')}
-            </button>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <button id="ready-filter-btn" 
+                            onclick="handleCustomerFilter(currentCustomerFilter === 'ready' ? 'all' : 'ready')"
+                            class="btn-outline" 
+                            style="padding: 0.6rem 1rem; border-radius: 10px; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s; ${currentCustomerFilter === 'ready' ? 'background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981;' : ''}">
+                        <i data-lucide="bell" style="width: 16px; height: 16px;"></i>
+                        ${currentCustomerFilter === 'ready' ? t('view_all') : t('ready_filter_title')}
+                        ${Array.from(customerStatsMap.values()).some(s => s.hasReadyItem) ? '<span class="filter-dot"></span>' : ''}
+                    </button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <select id="customer-sort-select" onchange="handleCustomerSort(this.value)" style="padding: 0.6rem 2rem 0.6rem 1rem; font-size: 0.85rem; border-radius: 10px;">
+                        <option value="name_asc" ${currentCustomerSort === 'name_asc' ? 'selected' : ''}>${t('name_az')}</option>
+                        <option value="ltv_desc" ${currentCustomerSort === 'ltv_desc' ? 'selected' : ''}>${t('highest_spent')}</option>
+                        <option value="recent_desc" ${currentCustomerSort === 'recent_desc' ? 'selected' : ''}>${t('recently_bought')}</option>
+                    </select>
+                </div>
+                <button onclick="importCSV('customers')" class="btn-import">
+                    <i data-lucide="upload"></i> ${t('import_csv')}
+                </button>
+                <button onclick="openCustomerModal()" style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+                    <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+                    ${t('add_customer')}
+                </button>
+            </div>
         </div>
 
         <div class="card" style="overflow-x: auto; padding: 0;">
@@ -1849,6 +2260,19 @@ function renderCustomers(container) {
 
 function handleCustomerSearch(query) {
     currentSearch = query;
+    // Auto-close suggestions
+    const suggestions = document.getElementById('customers-local-suggestions');
+    if (suggestions) suggestions.classList.add('hidden');
+    updateCustomerTable();
+}
+
+function handleCustomerFilter(filter) {
+    currentCustomerFilter = filter;
+    updateCustomerTable();
+}
+
+function handleCustomerSort(sortMode) {
+    currentCustomerSort = sortMode;
     updateCustomerTable();
 }
 
@@ -1857,22 +2281,68 @@ function updateCustomerTable() {
     if (!tbody) return;
 
     const searchTerm = currentSearch.toLowerCase();
-    const filtered = inventory.customers.filter(c =>
-        isFuzzyMatch(c.name, searchTerm) ||
-        (c.customer_code && isFuzzyMatch(c.customer_code, searchTerm)) ||
-        (c.phone && isFuzzyMatch(c.phone, searchTerm))
-    ).sort((a, b) => a.name.localeCompare(b.name));
+    const filtered = inventory.customers.filter(c => {
+        const matchSearch = isFuzzyMatch(c.name, searchTerm) ||
+            (c.customer_code && isFuzzyMatch(c.customer_code, searchTerm)) ||
+            (c.phone && isFuzzyMatch(c.phone, searchTerm));
+
+        if (!matchSearch) return false;
+
+        if (currentCustomerFilter === 'ready') {
+            const stats = window.cachedCustomerStats.get(c.id);
+            return stats && stats.hasReadyItem;
+        }
+
+        return true;
+    }).sort((a, b) => {
+        const statsA = window.cachedCustomerStats.get(a.id) || { totalSpent: 0, lastPurchase: 0 };
+        const statsB = window.cachedCustomerStats.get(b.id) || { totalSpent: 0, lastPurchase: 0 };
+
+        if (currentCustomerSort === 'ltv_desc') {
+            return statsB.totalSpent - statsA.totalSpent;
+        } else if (currentCustomerSort === 'recent_desc') {
+            const dateA = statsA.lastPurchase ? new Date(statsA.lastPurchase).getTime() : 0;
+            const dateB = statsB.lastPurchase ? new Date(statsB.lastPurchase).getTime() : 0;
+            return dateB - dateA;
+        } else {
+            return a.name.localeCompare(b.name);
+        }
+    });
 
     tbody.innerHTML = filtered.length === 0 ? `
-        <tr><td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-dim);">
-            ${t('no_items')}
-        </td></tr>
+        <tr>
+            <td colspan="7" style="padding: 6rem 2rem; text-align: center;">
+                <div style="background: rgba(59, 130, 246, 0.1); width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <i data-lucide="${currentCustomerFilter === 'ready' ? 'bell-off' : 'users'}" style="color: #60a5fa; width: 32px; height: 32px;"></i>
+                </div>
+                <h3 style="margin-bottom: 0.5rem; color: var(--text-base);">${currentCustomerFilter === 'ready' ? t('no_pickups') : (searchTerm ? t('no_customer_results') : t('no_customers_yet'))}</h3>
+                ${currentCustomerFilter !== 'ready' ? `
+                    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.95rem;">${searchTerm ? t('no_customer_results_desc') : t('get_started_customer_desc')}</p>
+                    ${!searchTerm ? `
+                        <button onclick="openCustomerModal()" class="btn-premium" style="padding: 0.8rem 2rem; font-size: 0.9rem; background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;">
+                            <i data-lucide="user-plus" style="width: 18px; vertical-align: middle; margin-right: 0.5rem;"></i>
+                            ${t('add_customer')}
+                        </button>
+                    ` : ''}
+                ` : ''}
+            </td>
+        </tr>
     ` : filtered.map(customer => {
         const stats = window.cachedCustomerStats.get(customer.id) || { totalPurchases: 0, totalSpent: 0, lastPurchase: null };
         return `
             <tr onclick="viewCustomerDetail(${customer.id})" style="cursor: pointer;">
                 <td>${customer.customer_code || '-'}</td>
-                <td style="font-weight: 600;">${customer.name}</td>
+                <td>
+                    <div style="font-weight: 600;">${customer.name}</div>
+                    ${stats.hasReadyItem ? `
+                        <div style="display: flex; align-items: center; margin-top: 0.25rem;">
+                            <span class="ready-pickup-badge"><i data-lucide="check-circle" style="width: 10px; height: 10px;"></i> ${t('ready_badge')}</span>
+                            <button class="btn-ready-action" onclick="event.stopPropagation(); markCustomerItemsAsPickedUp('${customer.name.replace(/'/g, "\\'")}')">
+                                ${t('mark_picked_up')}
+                            </button>
+                        </div>
+                    ` : ''}
+                </td>
                 <td>${customer.phone || '-'}</td>
                 <td>${stats.totalPurchases}</td>
                 <td class="${privacyMode_stats ? 'blurred' : ''}">${stats.totalSpent.toLocaleString()} EGP</td>
@@ -1893,6 +2363,35 @@ function updateCustomerTable() {
 
     // Re-create icons for new rows
     lucide.createIcons();
+}
+
+async function markCustomerItemsAsPickedUp(customerName) {
+    if (!confirm(`Mark all items for "${customerName}" as picked up and delivered?`)) return;
+
+    const itemsToUpdate = inventory.repairs.filter(j => j.customer === customerName && j.status === 'ready');
+    if (itemsToUpdate.length === 0) return;
+
+    const updatedItems = itemsToUpdate.map(j => ({
+        ...j,
+        status: 'delivered',
+        is_urgent: false, // Ensure urgency is cleared on pickup
+        delivered_at: new Date().toISOString()
+    }));
+
+    const { error } = await supabaseClient.from('repairs').upsert(updatedItems);
+
+    if (error) {
+        alert("Error updating items: " + error.message);
+    } else {
+        // Optimistic local update to prevent screen flash
+        updatedItems.forEach(u => {
+            const localJob = inventory.repairs.find(rj => rj.id === u.id);
+            if (localJob) {
+                Object.assign(localJob, u); // Copy all updated fields locally
+            }
+        });
+        renderApp(); // Clean re-render without full re-fetch/flash
+    }
 }
 
 function openCustomerModal(customerId = null) {
@@ -1982,14 +2481,22 @@ async function saveCustomer(event, customerId) {
 
         // Handle Return-to-Sale logic
         if (pendingSale && !customerId) {
+            // Update local inventory before re-opening sell modal
+            inventory.customers.unshift(customerData);
             const savedPending = { ...pendingSale, newCustomerId: finalCustomerId };
             closeModal();
-            await initApp();
-            pendingSale = savedPending; // Re-set because initApp might clear it if we weren't careful, but here we re-open
+            renderApp(); // This also triggers partial update where needed
+            pendingSale = savedPending;
             openSellModal(pendingSale.category, pendingSale.id);
         } else {
+            if (customerId) {
+                const idx = inventory.customers.findIndex(c => c.id === customerId);
+                if (idx !== -1) inventory.customers[idx] = { ...inventory.customers[idx], ...customerData };
+            } else {
+                inventory.customers.unshift(customerData);
+            }
             closeModal();
-            initApp();
+            renderApp();
         }
     } catch (error) {
         alert("Error saving customer: " + error.message);
@@ -2120,7 +2627,7 @@ async function confirmBulkVoid() {
     const count = selectedVoidIds.size;
     if (count === 0) return;
 
-    if (!confirm(`Void ${count} sale${count !== 1 ? 's' : ''} and return item${count !== 1 ? 's' : ''} to inventory?`)) return;
+    if (!confirm(`${t('void')} ${count} ${t('sale_plural')} ${t('and_return_items')}?`)) return;
 
     try {
         for (const saleId of selectedVoidIds) {
@@ -2153,144 +2660,174 @@ async function confirmBulkVoid() {
     }
 }
 
-// System Data Seeding Utility
-window.seedSystemData = async function () {
-    if (!currentUser) return alert("Please log in first!");
-    if (!confirm("This will add 50 test customers and 20 diamonds to your database. Proceed?")) return;
 
-    const userId = currentUser.id;
-    const firstNames = ["Ahmed", "Mohamed", "Yassen", "Laila", "Nour", "Sara", "Omar", "Khaled", "Zain", "Hoda", "Mona", "Ali", "Tarek", "Fatma", "Karma"];
-    const lastNames = ["Waled", "Zaki", "Hassan", "Mansour", "Kassab", "Saad", "Gaber", "Ezzat", "Salem", "Amer"];
-    const cities = ["Maadi", "Zamalek", "Heliopolis", "New Cairo", "Sheikh Zayed", "Nasr City"];
+// --- ROYAL HIDDEN GEMS: Shortcuts & Animations ---
 
-    try {
-        // 1. Seed 50 Customers
-        const customers = [];
-        for (let i = 0; i < 50; i++) {
-            const fname = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const lname = lastNames[Math.floor(Math.random() * lastNames.length)];
-            customers.push({
-                id: Date.now() + i,
-                name: `${fname} ${lname}`,
-                customer_code: `C-${1001 + i}`,
-                phone: `01${Math.floor(Math.random() * 9)} ${Math.floor(1000000 + Math.random() * 9000000)}`,
-                email: `${fname.toLowerCase()}.${lname.toLowerCase()}${i}@example.com`,
-                address: `${Math.floor(Math.random() * 100)} Street, ${cities[Math.floor(Math.random() * cities.length)]}, Cairo`,
-                notes: "Seed data customer.",
-                user_id: userId,
-                created_date: new Date().toISOString().split('T')[0]
-            });
-        }
-        await supabaseClient.from('customers').insert(customers);
-
-        // 2. Seed 20 Diamonds
-        const shapes = ["Round", "Princess", "Emerald", "Oval", "Marquise", "Pear"];
-        const images = [
-            "assets/diamond_ring_test_1_1768677664286.png",
-            "assets/diamond_necklace_test_1_1768677678288.png",
-            "assets/diamond_earrings_test_1_1768677691251.png"
-        ];
-        const diamonds = [];
-        for (let i = 0; i < 20; i++) {
-            const carat = (0.5 + Math.random() * 2.5).toFixed(2);
-            diamonds.push({
-                id: Date.now() + 100 + i,
-                sku: `D-${1000 + i}`,
-                name: `${shapes[Math.floor(Math.random() * shapes.length)]} ${carat}ct`,
-                type: shapes[Math.floor(Math.random() * shapes.length)],
-                carat: parseFloat(carat),
-                color: "E", clarity: "VVS1", cut: "Excellent",
-                price: Math.floor(carat * 80000),
-                image: images[i % images.length],
-                user_id: userId
-            });
-        }
-        await supabaseClient.from('diamonds').insert(diamonds);
-
-        // 3. Seed 20 Gold Items
-        const goldNames = ["Vintage Band", "Figaro Chain", "Bangle Bracelet", "Stud Earrings", "Wedding Hoop"];
-        const gold = [];
-        for (let i = 0; i < 20; i++) {
-            const weight = (2 + Math.random() * 15).toFixed(1);
-            gold.push({
-                id: Date.now() + 200 + i,
-                sku: `G-${1000 + i}`,
-                name: goldNames[Math.floor(Math.random() * goldNames.length)],
-                type: "Other",
-                karat: "18k",
-                weight: parseFloat(weight),
-                price: Math.floor(weight * getKaratPrice('18k') * 1.2),
-                image: null,
-                user_id: userId
-            });
-        }
-        await supabaseClient.from('gold').insert(gold);
-
-        alert("✅ Successfully added 50 customers, 20 diamonds, and 20 gold items! Refreshing...");
-        location.reload();
-    } catch (e) {
-        alert("Seeding failed: " + e.message);
+window.addEventListener('keydown', (e) => {
+    // CMD+K on Mac, CTRL+K on Windows/Linux
+    if ((e.metaKey || e.ctrlKey) && e.code === 'KeyK') {
+        e.preventDefault();
+        openCommandPalette();
     }
-};
 
-// One-time cleanup script for legacy "SEED" barcodes
-window.cleanupSKUs = async function () {
-    if (!currentUser) return alert("Please log in first!");
-
-    try {
-        console.log("Starting SKU Cleanup...");
-
-        // 1. Clean Diamonds
-        const { data: diamonds } = await supabaseClient.from('diamonds').select('id, sku, name, image');
-        for (const item of diamonds) {
-            let updates = {};
-
-            // Clean SKU - Catch all variations like D-SEED-1003 or D-SEED1003
-            if (item.sku && /SEED/i.test(item.sku)) {
-                updates.sku = item.sku.replace(/-SEED-/gi, '-').replace(/SEED/gi, '');
-                // Ensure format D-1000 if it was mangled
-                if (!updates.sku.includes('-')) {
-                    updates.sku = updates.sku.slice(0, 1) + '-' + updates.sku.slice(1);
-                }
-            }
-
-            // Clean Name (Remove "Diamond ")
-            if (item.name && /Diamond/i.test(item.name)) {
-                updates.name = item.name.replace(/ Diamond /gi, ' ').replace(/Diamond /gi, '').replace(/ Diamond/gi, '').trim();
-            }
-
-            // Fix Image Path
-            if (item.image && item.image.includes('/brain/')) {
-                const parts = item.image.split('/');
-                const filename = parts[parts.length - 1];
-                updates.image = `assets/${filename}`;
-            }
-
-            if (Object.keys(updates).length > 0) {
-                await supabaseClient.from('diamonds').update(updates).eq('id', item.id);
-                console.log(`Deep Cleaned Diamond ${item.id}:`, updates);
-            }
+    if (commandPaletteActive) {
+        if (e.key === 'Escape') {
+            closeCommandPalette();
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            paletteSelectedIndex = Math.min(paletteSelectedIndex + 1, paletteCurrentMatches.length - 1);
+            renderPaletteItems();
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            paletteSelectedIndex = Math.max(paletteSelectedIndex - 1, 0);
+            renderPaletteItems();
+        } else if (e.key === 'Enter' && paletteSelectedIndex >= 0) {
+            e.preventDefault();
+            const match = paletteCurrentMatches[paletteSelectedIndex];
+            if (match) jumpToPaletteItem(match.type, match.id);
         }
-
-        // 2. Clean Gold
-        const { data: gold } = await supabaseClient.from('gold').select('id, sku, name');
-        for (const item of gold) {
-            let updates = {};
-            if (item.sku && /SEED/i.test(item.sku)) {
-                updates.sku = item.sku.replace(/-SEED-/gi, '-').replace(/SEED/gi, '');
-                if (!updates.sku.includes('-')) {
-                    updates.sku = updates.sku.slice(0, 1) + '-' + updates.sku.slice(1);
-                }
-            }
-            if (Object.keys(updates).length > 0) {
-                await supabaseClient.from('gold').update(updates).eq('id', item.id);
-                console.log(`Deep Cleaned Gold ${item.id}:`, updates);
-            }
-        }
-
-        alert("✅ SKU Cleanup Complete! All 'SEED' words have been removed. Refreshing...");
-        location.reload();
-    } catch (e) {
-        alert("Cleanup failed: " + e.message);
     }
-};
+});
+
+function openCommandPalette() {
+    if (commandPaletteActive) return;
+    commandPaletteActive = true;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'palette-overlay';
+    overlay.className = 'command-palette-overlay';
+    overlay.onclick = (e) => { if (e.target === overlay) closeCommandPalette(); };
+
+    overlay.innerHTML = `
+        <div class="command-palette">
+            <div class="palette-search-container">
+                <i data-lucide="command" style="color: var(--primary-blue); width: 20px;"></i>
+                <input type="text" id="palette-input" class="palette-input" 
+                       placeholder="${currentLang === 'ar' ? 'ابحث في كل شيء...' : 'Search everything...'}" 
+                       autocomplete="off" 
+                       oninput="handlePaletteSearch(this.value)">
+            </div>
+            <div id="palette-results" class="palette-results">
+                <div style="padding: 2rem; text-align: center; color: var(--text-dim); font-size: 0.9rem;">
+                    ${currentLang === 'ar' ? 'ابدأ الكتابة للبحث عن أكواد أو عملاء' : 'Start typing to find SKUs or Customers...'}
+                </div>
+            </div>
+            <div class="palette-shortcut-hint">
+                <span><kbd>Enter</kbd> to select</span>
+                <span><kbd>Esc</kbd> to close</span>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    lucide.createIcons();
+    setTimeout(() => document.getElementById('palette-input').focus(), 10);
+}
+
+function closeCommandPalette() {
+    const overlay = document.getElementById('palette-overlay');
+    if (overlay) overlay.remove();
+    commandPaletteActive = false;
+}
+
+function handlePaletteSearch(query) {
+    const q = query.toLowerCase();
+    paletteCurrentMatches = [];
+    paletteSelectedIndex = -1;
+
+    if (!q) {
+        renderPaletteItems();
+        return;
+    }
+
+    // 1. Gather Matches
+    // Diamonds
+    inventory.diamonds.forEach(item => {
+        if (isFuzzyMatch(item.sku, q) || isFuzzyMatch(item.type, q)) {
+            paletteCurrentMatches.push({ type: 'diamond', label: item.sku, sub: item.type, id: item.id });
+        }
+    });
+
+    // Gold
+    inventory.gold.forEach(item => {
+        if (isFuzzyMatch(item.sku, q) || isFuzzyMatch(item.name, q)) {
+            paletteCurrentMatches.push({ type: 'gold', label: item.sku, sub: item.name, id: item.id });
+        }
+    });
+
+    // Customers
+    inventory.customers.forEach(c => {
+        if (isFuzzyMatch(c.name, q) || (c.customer_code && isFuzzyMatch(c.customer_code, q))) {
+            paletteCurrentMatches.push({ type: 'customer', label: c.name, sub: c.customer_code || 'Client', id: c.id });
+        }
+    });
+
+    // 2. Select first result automatically
+    if (paletteCurrentMatches.length > 0) paletteSelectedIndex = 0;
+
+    renderPaletteItems();
+}
+
+function renderPaletteItems() {
+    const container = document.getElementById('palette-results');
+    if (!container) return;
+
+    if (paletteCurrentMatches.length === 0) {
+        container.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-dim); font-size: 0.9rem;">
+            ${document.getElementById('palette-input')?.value ? t('no_results_found') : (currentLang === 'ar' ? 'ابدأ الكتابة للبحث...' : 'Start typing to find items...')}
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = paletteCurrentMatches.slice(0, 8).map((m, idx) => `
+        <div class="palette-item ${idx === paletteSelectedIndex ? 'selected' : ''}" 
+             onclick="jumpToPaletteItem('${m.type}', ${m.id})">
+            <div class="item-info">
+                <span class="item-type">${m.type}</span>
+                <span class="item-name">${m.label}</span>
+            </div>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">${m.sub}</span>
+        </div>
+    `).join('');
+
+    // Ensure selected item is visible
+    const selectedEl = container.querySelector('.palette-item.selected');
+    if (selectedEl) selectedEl.scrollIntoView({ block: 'nearest' });
+}
+
+function jumpToPaletteItem(type, id) {
+    closeCommandPalette();
+
+    if (type === 'diamond' || type === 'gold') {
+        const cat = type === 'diamond' ? 'diamonds' : 'gold';
+        const item = inventory[cat].find(i => i.id === id);
+        if (!item) return;
+
+        // 1. Set global search to exactly this SKU
+        currentSearch = item.sku;
+
+        // 2. Reset the Range filter to 'All' so we don't hide the result
+        currentInventoryRanges[cat] = 'All';
+
+        // 3. Jump to view and render
+        showView(cat);
+
+        // 4. Force immediate grid update to isolate the item
+        setTimeout(() => {
+            const input = document.getElementById(`${type === 'diamond' ? 'diamond' : 'gold'}-search-input`);
+            if (input) input.value = item.sku;
+            updateInventoryGrid(cat);
+        }, 50);
+
+    } else if (type === 'customer') {
+        const customer = inventory.customers.find(c => c.id === id);
+        if (!customer) return;
+
+        // Jump to customers
+        showView('customers');
+
+        setTimeout(() => {
+            viewCustomerDetail(id);
+        }, 50);
+    }
+}

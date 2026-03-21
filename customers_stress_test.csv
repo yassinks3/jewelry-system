@@ -1,0 +1,1001 @@
+Customer Code,Name,Phone,Address,Notes
+C-1001,Mahmoud Mansour,0153777074,"115 Avenue, Dokki",Prefers WhatsApp
+C-1002,Mona Galal,0127637537,"8 Avenue, Alexandria",Interested in Solitaires
+C-1003,Ali Kamal,0125353027,"72 Avenue, Zamalek",Frequent Gold Buyer
+C-1004,Mahmoud Hassan,0156432382,"90 Street, Nasr City",Interested in Solitaires
+C-1005,Heba Nassar,0116806859,"117 Street, New Cairo",Frequent Gold Buyer
+C-1006,Fatma Salah,0119243609,"11 Tower, Maadi",
+C-1007,Dina Hamid,0157248976,"40 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1008,Heba Fahmy,0115589340,"88 Avenue, Alexandria",Wedding jewelry interest
+C-1009,Mahmoud Taha,0114960361,"128 Street, Maadi",Frequent Gold Buyer
+C-1010,Mostafa El-Sayed,0112476745,"124 Avenue, Sheikh Zayed",Prefers WhatsApp
+C-1011,Omar Salem,0122804583,"44 Tower, Smouha",Frequent Gold Buyer
+C-1012,Dina Mansour,0156216709,"71 Tower, Kafr El Sheikh",
+C-1013,Fatma Nassar,0113862112,"95 Street, Gleem",Wedding jewelry interest
+C-1014,Aya Hassan,0111302632,"135 Avenue, Maadi",Interested in Solitaires
+C-1015,Dina Aziz,0125365809,"73 Avenue, Kafr El Sheikh",
+C-1016,Mariam Nassar,0123728278,"19 Tower, Dokki",Prefers WhatsApp
+C-1017,Mahmoud El-Sayed,0127584886,"58 Street, Sheikh Zayed",Referred by Ahmed
+C-1018,Fatma Rashed,0124867400,"68 Tower, Alexandria",Interested in Solitaires
+C-1019,Mahmoud Rashed,0156064587,"38 Tower, Zamalek",V-VIP Customer
+C-1020,Mona Hassan,0116360319,"2 Avenue, Dokki",Frequent Gold Buyer
+C-1021,Omar Kamal,0128773176,"65 Tower, Sheikh Zayed",Frequent Gold Buyer
+C-1022,Mahmoud Salah,0153005365,"28 Avenue, Nasr City",Interested in Solitaires
+C-1023,Heba Rashed,0106482309,"78 Avenue, Zamalek",Wedding jewelry interest
+C-1024,Mohamed Salem,0114475062,"81 Street, Nasr City",Frequent Gold Buyer
+C-1025,Nour Nassar,0123327504,"21 Street, Nasr City",
+C-1026,Mostafa Salah,0108450633,"18 Avenue, Alexandria",Wedding jewelry interest
+C-1027,Omar Hamid,0153908588,"114 Tower, New Cairo",
+C-1028,Sara Hamid,0111989057,"134 Avenue, Sheikh Zayed",Referred by Ahmed
+C-1029,Dina Salem,0105587925,"78 Street, Maadi",Referred by Ahmed
+C-1030,Fatma Salem,0129612615,"108 Avenue, October City",Frequent Gold Buyer
+C-1031,Heba Mansour,0107150981,"101 Street, Dokki",Interested in Solitaires
+C-1032,Mahmoud Taha,0155845461,"3 Tower, Maadi",V-VIP Customer
+C-1033,Heba Mansour,0119821111,"72 Tower, Heliopolis",
+C-1034,Heba Badawi,0104775233,"132 Tower, Gleem",Prefers WhatsApp
+C-1035,Ibrahim Aziz,0101888402,"114 Tower, Alexandria",V-VIP Customer
+C-1036,Fatma Mansour,0158114633,"18 Tower, Maadi",Interested in Solitaires
+C-1037,Heba Rashed,0121944580,"55 Avenue, Gleem",Referred by Ahmed
+C-1038,Heba Fahmy,0152010035,"85 Street, Gleem",V-VIP Customer
+C-1039,Fatma Mansour,0101326510,"101 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1040,Mona Bakr,0101784101,"105 Tower, Gleem",Frequent Gold Buyer
+C-1041,Youssef Abbas,0154500920,"150 Avenue, Zamalek",Interested in Solitaires
+C-1042,Hassan Hassan,0111125150,"33 Street, Smouha",Frequent Gold Buyer
+C-1043,Mona Hamid,0125151696,"122 Avenue, Heliopolis",Interested in Solitaires
+C-1044,Youssef Mansour,0157743059,"49 Street, Dokki",Prefers WhatsApp
+C-1045,Mona Kamal,0123610851,"45 Street, Alexandria",Wedding jewelry interest
+C-1046,Ibrahim Kamal,0101938098,"128 Street, Smouha",Wedding jewelry interest
+C-1047,Mariam Rashed,0111751656,"150 Tower, Zamalek",Prefers WhatsApp
+C-1048,Ali Badawi,0153282303,"34 Street, Zamalek",V-VIP Customer
+C-1049,Ali Galal,0105465040,"85 Avenue, Heliopolis",V-VIP Customer
+C-1050,Dina Hassan,0159916313,"107 Tower, Sheikh Zayed",
+C-1051,Mariam Fahmy,0159528182,"128 Street, Gleem",V-VIP Customer
+C-1052,Sara Ezzat,0118760563,"55 Street, Gleem",Interested in Solitaires
+C-1053,Ibrahim Ezzat,0128794272,"83 Tower, Maadi",Interested in Solitaires
+C-1054,Hassan Aziz,0126596202,"77 Tower, Gleem",Frequent Gold Buyer
+C-1055,Mariam Hamid,0107539570,"47 Tower, Smouha",V-VIP Customer
+C-1056,Salma Kamal,0101942005,"16 Tower, Maadi",Frequent Gold Buyer
+C-1057,Ibrahim Fahmy,0158245993,"33 Avenue, Dokki",Frequent Gold Buyer
+C-1058,Heba Taha,0114158485,"106 Street, Smouha",Referred by Ahmed
+C-1059,Mohamed Mansour,0109677997,"64 Avenue, Zamalek",Prefers WhatsApp
+C-1060,Youssef Ezzat,0154232279,"60 Avenue, Sheikh Zayed",Referred by Ahmed
+C-1061,Laila Hassan,0104357061,"42 Street, October City",
+C-1062,Nour Rashed,0104763990,"3 Street, Alexandria",Wedding jewelry interest
+C-1063,Salma Ezzat,0156600143,"96 Avenue, Alexandria",Wedding jewelry interest
+C-1064,Heba Khalil,0129968080,"65 Avenue, Sheikh Zayed",Wedding jewelry interest
+C-1065,Dina Bakr,0153653864,"66 Street, Gleem",
+C-1066,Salma Salah,0121516756,"13 Tower, Dokki",Prefers WhatsApp
+C-1067,Ibrahim Galal,0117968399,"22 Avenue, New Cairo",Referred by Ahmed
+C-1068,Mostafa Galal,0155578422,"91 Avenue, Gleem",Wedding jewelry interest
+C-1069,Sara Ezzat,0116994195,"51 Avenue, Zamalek",Frequent Gold Buyer
+C-1070,Mahmoud Ezzat,0119476507,"120 Tower, Heliopolis",Wedding jewelry interest
+C-1071,Fatma Hamid,0106248738,"80 Street, Zamalek",Frequent Gold Buyer
+C-1072,Nour Aziz,0103162364,"72 Avenue, Maadi",Interested in Solitaires
+C-1073,Mahmoud Bakr,0154171678,"31 Tower, Gleem",Referred by Ahmed
+C-1074,Mariam Badawi,0117217837,"12 Street, Nasr City",
+C-1075,Salma Badawi,0121771685,"25 Street, Gleem",
+C-1076,Mariam Ezzat,0107049682,"69 Tower, Heliopolis",Interested in Solitaires
+C-1077,Salma Abbas,0126431706,"129 Avenue, Nasr City",V-VIP Customer
+C-1078,Mona Mansour,0102931799,"150 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1079,Aya Abbas,0112818976,"32 Tower, Maadi",Interested in Solitaires
+C-1080,Omar Hassan,0101914860,"69 Avenue, Kafr El Sheikh",V-VIP Customer
+C-1081,Ibrahim Mansour,0151520753,"59 Street, New Cairo",V-VIP Customer
+C-1082,Mahmoud Aziz,0111812444,"131 Avenue, Heliopolis",Interested in Solitaires
+C-1083,Heba Hassan,0119234216,"7 Avenue, Heliopolis",Prefers WhatsApp
+C-1084,Nour Salem,0115860292,"77 Avenue, Heliopolis",Referred by Ahmed
+C-1085,Nour Abbas,0128930113,"83 Street, Gleem",Prefers WhatsApp
+C-1086,Ibrahim Fahmy,0108279516,"95 Avenue, New Cairo",
+C-1087,Aya Salem,0129420468,"2 Tower, Nasr City",Interested in Solitaires
+C-1088,Ali Salem,0102632811,"81 Tower, Smouha",Prefers WhatsApp
+C-1089,Ali Abbas,0111174734,"48 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1090,Sara Hamid,0124152005,"61 Tower, Smouha",Wedding jewelry interest
+C-1091,Ali Salah,0129220889,"96 Avenue, Gleem",Wedding jewelry interest
+C-1092,Omar Salah,0153596225,"13 Avenue, October City",Frequent Gold Buyer
+C-1093,Ibrahim Khalil,0121012622,"37 Street, Kafr El Sheikh",Interested in Solitaires
+C-1094,Mahmoud Salah,0102688415,"30 Tower, New Cairo",Referred by Ahmed
+C-1095,Hassan Badawi,0127685967,"115 Avenue, Dokki",Frequent Gold Buyer
+C-1096,Aya Ezzat,0129439810,"133 Tower, Zamalek",Frequent Gold Buyer
+C-1097,Salma Aziz,0152435492,"101 Street, Heliopolis",
+C-1098,Dina Khalil,0153399141,"27 Street, Kafr El Sheikh",Prefers WhatsApp
+C-1099,Khaled Aziz,0158661458,"42 Street, Heliopolis",Prefers WhatsApp
+C-1100,Mona Aziz,0154095425,"65 Street, Nasr City",Wedding jewelry interest
+C-1101,Ibrahim Mansour,0158275407,"105 Avenue, Heliopolis",Referred by Ahmed
+C-1102,Mahmoud Galal,0114394902,"16 Avenue, Alexandria",Interested in Solitaires
+C-1103,Hassan Nassar,0127364436,"102 Street, Heliopolis",Wedding jewelry interest
+C-1104,Sara Kamal,0118071948,"47 Street, Zamalek",Interested in Solitaires
+C-1105,Mariam Abbas,0124404424,"117 Avenue, Sheikh Zayed",Wedding jewelry interest
+C-1106,Fatma Hamid,0105200678,"96 Street, Kafr El Sheikh",Wedding jewelry interest
+C-1107,Ali El-Sayed,0127252491,"24 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1108,Sara Zaki,0113482986,"67 Street, Kafr El Sheikh",V-VIP Customer
+C-1109,Salma Kamal,0112970093,"23 Avenue, Kafr El Sheikh",
+C-1110,Mariam Aziz,0106402027,"112 Street, Smouha",Wedding jewelry interest
+C-1111,Mariam Fahmy,0114032509,"20 Street, Heliopolis",V-VIP Customer
+C-1112,Salma Taha,0124695983,"73 Tower, New Cairo",Referred by Ahmed
+C-1113,Omar Zaki,0152550157,"32 Street, October City",Referred by Ahmed
+C-1114,Mostafa Salah,0124949157,"137 Tower, Smouha",Frequent Gold Buyer
+C-1115,Heba Abbas,0122904042,"62 Street, Kafr El Sheikh",Prefers WhatsApp
+C-1116,Mahmoud Hassan,0105517399,"44 Avenue, Heliopolis",Referred by Ahmed
+C-1117,Ahmed Salah,0125391108,"149 Avenue, Smouha",Frequent Gold Buyer
+C-1118,Ibrahim Khalil,0115173346,"119 Street, Alexandria",Referred by Ahmed
+C-1119,Salma Abbas,0155115664,"87 Tower, Maadi",Interested in Solitaires
+C-1120,Laila Rashed,0151493649,"55 Avenue, Heliopolis",Prefers WhatsApp
+C-1121,Dina Ezzat,0129540822,"82 Avenue, Heliopolis",Interested in Solitaires
+C-1122,Aya Hamid,0122612516,"74 Tower, Sheikh Zayed",
+C-1123,Fatma Hassan,0113840854,"16 Street, Smouha",Referred by Ahmed
+C-1124,Ahmed Ezzat,0154554599,"121 Street, Dokki",Interested in Solitaires
+C-1125,Omar Fahmy,0155471964,"142 Avenue, Smouha",V-VIP Customer
+C-1126,Youssef Galal,0158357381,"92 Tower, Maadi",Frequent Gold Buyer
+C-1127,Fatma Badawi,0113416444,"82 Street, October City",Referred by Ahmed
+C-1128,Mahmoud Badawi,0154697779,"62 Tower, October City",Frequent Gold Buyer
+C-1129,Ali Ghanem,0152047530,"18 Street, Gleem",V-VIP Customer
+C-1130,Ibrahim Badawi,0128033188,"46 Avenue, Smouha",Frequent Gold Buyer
+C-1131,Aya Nassar,0125212082,"84 Avenue, Heliopolis",V-VIP Customer
+C-1132,Ibrahim Mansour,0151479701,"22 Avenue, Maadi",V-VIP Customer
+C-1133,Hassan Nassar,0125868211,"113 Tower, Nasr City",Frequent Gold Buyer
+C-1134,Ahmed Badawi,0103484181,"98 Tower, Dokki",Wedding jewelry interest
+C-1135,Ibrahim Salah,0102641467,"128 Avenue, Sheikh Zayed",V-VIP Customer
+C-1136,Ahmed Abbas,0104935987,"130 Avenue, Zamalek",Wedding jewelry interest
+C-1137,Mohamed Mansour,0111570625,"31 Tower, New Cairo",Wedding jewelry interest
+C-1138,Mohamed Ezzat,0155362972,"55 Street, Kafr El Sheikh",Wedding jewelry interest
+C-1139,Aya Aziz,0117641270,"101 Avenue, New Cairo",V-VIP Customer
+C-1140,Dina Taha,0112700253,"69 Avenue, Nasr City",V-VIP Customer
+C-1141,Mahmoud Badawi,0107764644,"57 Street, Gleem",Prefers WhatsApp
+C-1142,Ali Nassar,0115665527,"59 Street, Zamalek",Frequent Gold Buyer
+C-1143,Fatma Badawi,0127413463,"8 Avenue, Dokki",Frequent Gold Buyer
+C-1144,Laila Abbas,0101995121,"44 Tower, Alexandria",V-VIP Customer
+C-1145,Hassan Khalil,0157907140,"65 Street, Heliopolis",Frequent Gold Buyer
+C-1146,Mohamed El-Sayed,0129628239,"44 Tower, Alexandria",Prefers WhatsApp
+C-1147,Mostafa Rashed,0154561807,"80 Street, Heliopolis",Interested in Solitaires
+C-1148,Laila Zaki,0158163991,"82 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1149,Ali Salah,0156115970,"72 Tower, Heliopolis",Interested in Solitaires
+C-1150,Mostafa Hamid,0127266965,"121 Tower, Zamalek",V-VIP Customer
+C-1151,Fatma Mansour,0128707391,"108 Avenue, Kafr El Sheikh",
+C-1152,Mona Rashed,0111778726,"90 Street, Smouha",V-VIP Customer
+C-1153,Mohamed Taha,0127585811,"129 Tower, Alexandria",V-VIP Customer
+C-1154,Mohamed Abbas,0116714556,"78 Street, New Cairo",Frequent Gold Buyer
+C-1155,Laila Taha,0118455508,"150 Street, Sheikh Zayed",Wedding jewelry interest
+C-1156,Mariam Bakr,0158143796,"32 Tower, Maadi",Interested in Solitaires
+C-1157,Salma Rashed,0117266138,"122 Tower, Sheikh Zayed",V-VIP Customer
+C-1158,Ahmed Fahmy,0109651221,"53 Street, New Cairo",
+C-1159,Mahmoud Hamid,0118469737,"131 Tower, Gleem",Interested in Solitaires
+C-1160,Youssef Fahmy,0153045020,"50 Avenue, Zamalek",
+C-1161,Sara Ezzat,0106474884,"45 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1162,Fatma Hamid,0129821359,"134 Tower, Kafr El Sheikh",Prefers WhatsApp
+C-1163,Khaled Salah,0122106925,"114 Street, New Cairo",Interested in Solitaires
+C-1164,Laila Nassar,0153121806,"42 Street, Maadi",
+C-1165,Nour Fahmy,0101159487,"148 Avenue, New Cairo",Frequent Gold Buyer
+C-1166,Ahmed Hassan,0123279830,"110 Avenue, New Cairo",Referred by Ahmed
+C-1167,Heba Taha,0157430677,"87 Avenue, New Cairo",Frequent Gold Buyer
+C-1168,Mariam El-Sayed,0106218545,"15 Street, Maadi",Interested in Solitaires
+C-1169,Aya Abbas,0127240478,"146 Avenue, Smouha",V-VIP Customer
+C-1170,Mostafa Ezzat,0121006684,"69 Tower, Gleem",Frequent Gold Buyer
+C-1171,Khaled Rashed,0106476607,"5 Street, Alexandria",V-VIP Customer
+C-1172,Fatma Ghanem,0107944635,"150 Tower, Nasr City",Prefers WhatsApp
+C-1173,Youssef Mansour,0123636642,"105 Tower, Kafr El Sheikh",V-VIP Customer
+C-1174,Laila Hassan,0122832970,"98 Street, October City",Frequent Gold Buyer
+C-1175,Nour Hamid,0102945223,"133 Street, Smouha",Frequent Gold Buyer
+C-1176,Khaled Ezzat,0107626695,"127 Street, New Cairo",V-VIP Customer
+C-1177,Mostafa Hamid,0111987219,"93 Tower, Nasr City",V-VIP Customer
+C-1178,Nour Bakr,0112828679,"70 Street, October City",Frequent Gold Buyer
+C-1179,Sara Hamid,0124176424,"139 Avenue, Zamalek",
+C-1180,Mostafa Hassan,0107446458,"65 Street, Zamalek",Frequent Gold Buyer
+C-1181,Ahmed Abbas,0116640062,"105 Street, Alexandria",Interested in Solitaires
+C-1182,Sara Fahmy,0119928707,"136 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1183,Sara Zaki,0154732816,"102 Tower, Sheikh Zayed",Referred by Ahmed
+C-1184,Hassan Galal,0102261332,"33 Avenue, New Cairo",Referred by Ahmed
+C-1185,Fatma Taha,0119263401,"16 Tower, Gleem",V-VIP Customer
+C-1186,Aya El-Sayed,0117430771,"143 Street, New Cairo",
+C-1187,Omar Fahmy,0152157935,"56 Avenue, Dokki",Interested in Solitaires
+C-1188,Nour Rashed,0158617867,"41 Tower, Alexandria",Referred by Ahmed
+C-1189,Laila Hassan,0101379910,"75 Tower, Sheikh Zayed",Interested in Solitaires
+C-1190,Nour Ghanem,0123473074,"71 Street, Gleem",Referred by Ahmed
+C-1191,Mostafa Rashed,0121897619,"1 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1192,Laila Fahmy,0121350503,"149 Street, Smouha",Interested in Solitaires
+C-1193,Sara Aziz,0103994921,"81 Street, Heliopolis",Prefers WhatsApp
+C-1194,Mona Hamid,0118973262,"123 Avenue, October City",
+C-1195,Sara Salah,0113118525,"145 Tower, Heliopolis",Wedding jewelry interest
+C-1196,Omar Galal,0116710971,"98 Street, New Cairo",
+C-1197,Aya Hassan,0159786365,"117 Tower, Maadi",Referred by Ahmed
+C-1198,Khaled Fahmy,0125711849,"7 Tower, Heliopolis",V-VIP Customer
+C-1199,Mostafa Hamid,0107655903,"145 Street, Zamalek",V-VIP Customer
+C-1200,Sara Salah,0123250426,"7 Tower, Gleem",Interested in Solitaires
+C-1201,Mariam Nassar,0127885369,"109 Tower, New Cairo",Prefers WhatsApp
+C-1202,Nour Ezzat,0106304510,"118 Street, Nasr City",Interested in Solitaires
+C-1203,Ali Fahmy,0158871821,"61 Street, Dokki",V-VIP Customer
+C-1204,Ahmed Zaki,0116093889,"125 Tower, Dokki",Referred by Ahmed
+C-1205,Laila Ghanem,0112643603,"28 Avenue, Smouha",V-VIP Customer
+C-1206,Mahmoud Hamid,0157151607,"72 Avenue, Gleem",V-VIP Customer
+C-1207,Hassan Kamal,0124479593,"44 Street, Nasr City",
+C-1208,Sara Kamal,0114397518,"33 Street, Gleem",Interested in Solitaires
+C-1209,Fatma Bakr,0112361946,"58 Tower, Gleem",Frequent Gold Buyer
+C-1210,Mahmoud Salah,0115749062,"80 Avenue, Kafr El Sheikh",
+C-1211,Salma Aziz,0116607976,"12 Tower, Dokki",
+C-1212,Fatma Khalil,0118763577,"74 Avenue, Nasr City",Prefers WhatsApp
+C-1213,Heba Rashed,0128226384,"93 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1214,Nour Hassan,0156987517,"94 Avenue, Heliopolis",V-VIP Customer
+C-1215,Youssef Hassan,0127397908,"89 Tower, Kafr El Sheikh",Referred by Ahmed
+C-1216,Mahmoud Abbas,0101623338,"79 Tower, Zamalek",Wedding jewelry interest
+C-1217,Fatma Hassan,0103839834,"53 Tower, Smouha",Frequent Gold Buyer
+C-1218,Hassan Galal,0129393058,"94 Avenue, New Cairo",V-VIP Customer
+C-1219,Ibrahim Badawi,0104530445,"17 Street, Smouha",Frequent Gold Buyer
+C-1220,Salma Bakr,0121505891,"119 Tower, Smouha",Wedding jewelry interest
+C-1221,Aya Khalil,0121607417,"99 Tower, Kafr El Sheikh",Wedding jewelry interest
+C-1222,Nour Nassar,0114796811,"125 Tower, Smouha",V-VIP Customer
+C-1223,Dina Aziz,0111297365,"126 Avenue, Alexandria",
+C-1224,Ibrahim Kamal,0127618379,"69 Street, Zamalek",Wedding jewelry interest
+C-1225,Mariam Salah,0126780176,"44 Avenue, Maadi",Prefers WhatsApp
+C-1226,Mostafa Taha,0127360581,"59 Street, New Cairo",Interested in Solitaires
+C-1227,Laila Salah,0125614908,"113 Avenue, Sheikh Zayed",Wedding jewelry interest
+C-1228,Omar Ghanem,0103938014,"63 Tower, New Cairo",Interested in Solitaires
+C-1229,Hassan Zaki,0126043524,"144 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1230,Dina Zaki,0156128596,"71 Street, Heliopolis",V-VIP Customer
+C-1231,Heba Khalil,0107638762,"25 Tower, October City",Interested in Solitaires
+C-1232,Mona El-Sayed,0152728987,"46 Tower, Zamalek",Frequent Gold Buyer
+C-1233,Nour Zaki,0154288759,"29 Avenue, Alexandria",Frequent Gold Buyer
+C-1234,Aya Aziz,0127718237,"41 Tower, Gleem",V-VIP Customer
+C-1235,Heba Salah,0153950544,"8 Street, Smouha",Interested in Solitaires
+C-1236,Omar Kamal,0107136089,"81 Tower, Nasr City",Wedding jewelry interest
+C-1237,Omar Badawi,0103250447,"99 Avenue, Kafr El Sheikh",Interested in Solitaires
+C-1238,Mona Fahmy,0111790716,"71 Street, Heliopolis",Wedding jewelry interest
+C-1239,Dina Mansour,0113440083,"100 Tower, New Cairo",Wedding jewelry interest
+C-1240,Salma Zaki,0118987908,"113 Avenue, Alexandria",
+C-1241,Heba Salah,0129560625,"92 Street, Nasr City",Frequent Gold Buyer
+C-1242,Fatma Salem,0113897988,"66 Tower, New Cairo",Interested in Solitaires
+C-1243,Ali Khalil,0114612549,"64 Tower, New Cairo",Prefers WhatsApp
+C-1244,Ahmed Ezzat,0156079235,"65 Street, Alexandria",
+C-1245,Heba Abbas,0114320130,"40 Avenue, New Cairo",Wedding jewelry interest
+C-1246,Mohamed Nassar,0106811288,"52 Avenue, Nasr City",V-VIP Customer
+C-1247,Mohamed Galal,0119194161,"95 Tower, Kafr El Sheikh",V-VIP Customer
+C-1248,Fatma Galal,0105227071,"57 Tower, October City",V-VIP Customer
+C-1249,Youssef Galal,0107525405,"10 Street, Heliopolis",Frequent Gold Buyer
+C-1250,Laila Badawi,0118076161,"22 Street, Smouha",Interested in Solitaires
+C-1251,Mohamed Hassan,0157308654,"113 Tower, Dokki",V-VIP Customer
+C-1252,Mahmoud Hamid,0117148292,"95 Tower, October City",Wedding jewelry interest
+C-1253,Dina Ghanem,0125235176,"14 Avenue, Kafr El Sheikh",Frequent Gold Buyer
+C-1254,Ali Rashed,0111758100,"133 Avenue, Smouha",Wedding jewelry interest
+C-1255,Aya Kamal,0107268314,"143 Avenue, Gleem",Referred by Ahmed
+C-1256,Nour Badawi,0156915535,"137 Avenue, Maadi",Referred by Ahmed
+C-1257,Mostafa Hamid,0154770183,"95 Avenue, Sheikh Zayed",Prefers WhatsApp
+C-1258,Hassan Aziz,0102288764,"66 Avenue, October City",V-VIP Customer
+C-1259,Mohamed Hamid,0128389786,"115 Avenue, Zamalek",Referred by Ahmed
+C-1260,Ali Abbas,0116857628,"108 Avenue, Smouha",
+C-1261,Fatma Mansour,0112015683,"138 Tower, Maadi",Referred by Ahmed
+C-1262,Ahmed Salem,0111553289,"5 Street, Smouha",
+C-1263,Mostafa Fahmy,0118057884,"134 Tower, Smouha",Prefers WhatsApp
+C-1264,Mostafa Abbas,0127161642,"61 Tower, Smouha",Wedding jewelry interest
+C-1265,Heba Galal,0159843700,"57 Street, Gleem",Interested in Solitaires
+C-1266,Ahmed Kamal,0104998602,"41 Tower, Heliopolis",Interested in Solitaires
+C-1267,Youssef Rashed,0117039867,"42 Avenue, Zamalek",V-VIP Customer
+C-1268,Mostafa Nassar,0152147505,"47 Tower, Kafr El Sheikh",V-VIP Customer
+C-1269,Mariam Galal,0101028560,"124 Street, Heliopolis",Referred by Ahmed
+C-1270,Mahmoud Badawi,0101117162,"90 Avenue, New Cairo",
+C-1271,Mahmoud Kamal,0123480723,"145 Street, October City",V-VIP Customer
+C-1272,Youssef Ezzat,0151089777,"101 Street, Gleem",Prefers WhatsApp
+C-1273,Fatma Hamid,0159644999,"137 Avenue, Smouha",
+C-1274,Hassan Abbas,0157352058,"4 Avenue, Smouha",Prefers WhatsApp
+C-1275,Mariam Fahmy,0108220670,"54 Tower, Zamalek",Wedding jewelry interest
+C-1276,Mohamed Ghanem,0121466881,"113 Avenue, Smouha",Frequent Gold Buyer
+C-1277,Mohamed Zaki,0122413047,"73 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1278,Mariam Salem,0129996858,"45 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1279,Ibrahim Salem,0129021299,"55 Avenue, Smouha",Prefers WhatsApp
+C-1280,Youssef Zaki,0122507504,"56 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1281,Khaled Hassan,0111471276,"97 Avenue, Zamalek",Referred by Ahmed
+C-1282,Salma Abbas,0128545550,"93 Street, Maadi",
+C-1283,Mohamed Zaki,0157253722,"42 Street, Dokki",Wedding jewelry interest
+C-1284,Khaled Aziz,0109168124,"91 Street, Alexandria",V-VIP Customer
+C-1285,Youssef Zaki,0105602542,"144 Avenue, Dokki",Wedding jewelry interest
+C-1286,Youssef Khalil,0109129040,"80 Street, Gleem",V-VIP Customer
+C-1287,Ali Zaki,0117930047,"11 Tower, Zamalek",Referred by Ahmed
+C-1288,Mostafa Galal,0158235458,"45 Street, Smouha",Prefers WhatsApp
+C-1289,Ahmed El-Sayed,0106600194,"71 Avenue, Zamalek",Interested in Solitaires
+C-1290,Mostafa Fahmy,0106339073,"119 Tower, Kafr El Sheikh",
+C-1291,Ibrahim Salah,0153341035,"30 Avenue, Zamalek",Referred by Ahmed
+C-1292,Fatma Aziz,0153899252,"103 Tower, Zamalek",Prefers WhatsApp
+C-1293,Mohamed Badawi,0106192951,"53 Tower, Sheikh Zayed",Referred by Ahmed
+C-1294,Heba Ghanem,0119655776,"86 Avenue, October City",Interested in Solitaires
+C-1295,Dina Bakr,0122870085,"140 Tower, New Cairo",
+C-1296,Mariam Khalil,0104168534,"106 Avenue, Zamalek",V-VIP Customer
+C-1297,Mahmoud Salah,0151941089,"91 Avenue, Nasr City",Wedding jewelry interest
+C-1298,Hassan Abbas,0158886620,"139 Avenue, October City",Interested in Solitaires
+C-1299,Youssef Zaki,0119114029,"106 Tower, New Cairo",V-VIP Customer
+C-1300,Fatma Khalil,0101024993,"131 Tower, Nasr City",Interested in Solitaires
+C-1301,Mostafa Hassan,0118222405,"110 Street, Gleem",
+C-1302,Ibrahim Ghanem,0111582632,"24 Avenue, Zamalek",Interested in Solitaires
+C-1303,Khaled Hamid,0114059625,"49 Street, Heliopolis",Prefers WhatsApp
+C-1304,Heba Salem,0124119690,"105 Tower, Dokki",Wedding jewelry interest
+C-1305,Hassan Aziz,0101232557,"77 Street, Gleem",Prefers WhatsApp
+C-1306,Laila Badawi,0102971407,"44 Tower, Dokki",Wedding jewelry interest
+C-1307,Fatma El-Sayed,0155343136,"94 Avenue, Dokki",Prefers WhatsApp
+C-1308,Nour Fahmy,0106994910,"127 Street, Sheikh Zayed",V-VIP Customer
+C-1309,Salma Bakr,0152624939,"114 Street, Smouha",Referred by Ahmed
+C-1310,Hassan Ezzat,0112848904,"103 Tower, Smouha",Referred by Ahmed
+C-1311,Aya Galal,0109924475,"13 Avenue, Smouha",Prefers WhatsApp
+C-1312,Sara Abbas,0151484739,"3 Tower, Smouha",
+C-1313,Sara El-Sayed,0106057039,"54 Tower, Dokki",Prefers WhatsApp
+C-1314,Youssef Bakr,0158213453,"31 Street, Kafr El Sheikh",
+C-1315,Dina Fahmy,0129540095,"117 Street, Alexandria",Frequent Gold Buyer
+C-1316,Ali Taha,0123778183,"108 Avenue, Maadi",V-VIP Customer
+C-1317,Omar Fahmy,0127310724,"113 Avenue, October City",Interested in Solitaires
+C-1318,Mostafa Aziz,0154973697,"103 Street, Maadi",Referred by Ahmed
+C-1319,Nour Khalil,0101073508,"13 Avenue, October City",Frequent Gold Buyer
+C-1320,Salma Ghanem,0101997022,"118 Avenue, Zamalek",Referred by Ahmed
+C-1321,Aya Kamal,0156397993,"24 Street, Gleem",V-VIP Customer
+C-1322,Mohamed Hassan,0154246300,"11 Avenue, Kafr El Sheikh",Prefers WhatsApp
+C-1323,Heba Salem,0113675883,"104 Tower, Kafr El Sheikh",
+C-1324,Ali Ghanem,0152106887,"140 Tower, Sheikh Zayed",Prefers WhatsApp
+C-1325,Mariam Salah,0153200146,"140 Street, Kafr El Sheikh",V-VIP Customer
+C-1326,Dina Salah,0121276268,"138 Avenue, Zamalek",Frequent Gold Buyer
+C-1327,Laila Hassan,0159170664,"149 Avenue, Heliopolis",Interested in Solitaires
+C-1328,Heba Rashed,0127738448,"108 Street, Kafr El Sheikh",Wedding jewelry interest
+C-1329,Nour Salah,0107634500,"52 Street, Maadi",Wedding jewelry interest
+C-1330,Mariam El-Sayed,0119637731,"122 Street, Smouha",Referred by Ahmed
+C-1331,Ibrahim Mansour,0125227425,"72 Street, Maadi",Frequent Gold Buyer
+C-1332,Ali Salem,0109256245,"62 Tower, Maadi",Wedding jewelry interest
+C-1333,Salma Abbas,0107306424,"43 Avenue, Heliopolis",
+C-1334,Dina Hassan,0116666826,"82 Street, Kafr El Sheikh",Interested in Solitaires
+C-1335,Mostafa Taha,0116773400,"40 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1336,Ahmed Zaki,0158746788,"44 Tower, Kafr El Sheikh",Prefers WhatsApp
+C-1337,Khaled Rashed,0155232832,"67 Street, Alexandria",Referred by Ahmed
+C-1338,Mahmoud Aziz,0116774198,"77 Street, Maadi",Prefers WhatsApp
+C-1339,Heba Ezzat,0113296193,"65 Avenue, Dokki",Frequent Gold Buyer
+C-1340,Omar El-Sayed,0108087819,"78 Avenue, Zamalek",Wedding jewelry interest
+C-1341,Salma Hamid,0128614823,"4 Avenue, Smouha",V-VIP Customer
+C-1342,Mohamed Salem,0127493863,"135 Tower, Nasr City",Interested in Solitaires
+C-1343,Mona Aziz,0108854784,"8 Tower, Maadi",Prefers WhatsApp
+C-1344,Sara Hamid,0104885220,"46 Street, Smouha",Frequent Gold Buyer
+C-1345,Mohamed Ezzat,0152296633,"94 Tower, New Cairo",Referred by Ahmed
+C-1346,Fatma Hamid,0109211994,"136 Avenue, Gleem",Interested in Solitaires
+C-1347,Mohamed Zaki,0125058665,"48 Tower, Alexandria",Referred by Ahmed
+C-1348,Nour Galal,0108771515,"104 Tower, October City",Referred by Ahmed
+C-1349,Mahmoud Rashed,0115502817,"20 Tower, Sheikh Zayed",Interested in Solitaires
+C-1350,Ali Hamid,0121720847,"73 Street, Zamalek",Prefers WhatsApp
+C-1351,Ahmed Rashed,0118655577,"8 Tower, New Cairo",Interested in Solitaires
+C-1352,Salma Aziz,0127071169,"19 Avenue, New Cairo",Interested in Solitaires
+C-1353,Ahmed Taha,0158154173,"96 Tower, October City",
+C-1354,Khaled Bakr,0154717264,"94 Avenue, Nasr City",V-VIP Customer
+C-1355,Youssef Fahmy,0159021018,"90 Street, Dokki",Interested in Solitaires
+C-1356,Sara Salem,0155519458,"143 Street, Nasr City",Prefers WhatsApp
+C-1357,Youssef Rashed,0114878969,"38 Street, Kafr El Sheikh",Referred by Ahmed
+C-1358,Mostafa Khalil,0158060118,"79 Street, Maadi",Referred by Ahmed
+C-1359,Nour Abbas,0124027775,"20 Street, Gleem",Interested in Solitaires
+C-1360,Fatma Fahmy,0119894169,"127 Avenue, Sheikh Zayed",Referred by Ahmed
+C-1361,Sara Fahmy,0101430867,"26 Avenue, Maadi",Frequent Gold Buyer
+C-1362,Hassan Bakr,0125868630,"24 Avenue, New Cairo",Prefers WhatsApp
+C-1363,Heba Mansour,0108899125,"62 Tower, Maadi",V-VIP Customer
+C-1364,Mohamed Abbas,0107374622,"145 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1365,Ali Abbas,0122620504,"32 Tower, Smouha",Wedding jewelry interest
+C-1366,Aya Zaki,0105465908,"15 Avenue, Kafr El Sheikh",Frequent Gold Buyer
+C-1367,Ahmed Salah,0152259758,"2 Tower, Nasr City",Prefers WhatsApp
+C-1368,Nour Khalil,0103747909,"52 Street, Maadi",Frequent Gold Buyer
+C-1369,Nour Ezzat,0159166106,"90 Avenue, October City",V-VIP Customer
+C-1370,Mariam Aziz,0116851860,"25 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1371,Omar Badawi,0107448925,"145 Tower, Zamalek",Referred by Ahmed
+C-1372,Salma Nassar,0128534840,"129 Avenue, Zamalek",Prefers WhatsApp
+C-1373,Ahmed Fahmy,0159975679,"137 Street, New Cairo",Frequent Gold Buyer
+C-1374,Sara Salem,0126692104,"63 Street, Kafr El Sheikh",V-VIP Customer
+C-1375,Khaled Hassan,0129745614,"87 Avenue, Maadi",Interested in Solitaires
+C-1376,Khaled Bakr,0129650339,"148 Tower, October City",Frequent Gold Buyer
+C-1377,Heba El-Sayed,0155018036,"116 Avenue, Sheikh Zayed",
+C-1378,Mohamed Abbas,0155034760,"99 Street, Gleem",
+C-1379,Dina Aziz,0126764218,"48 Street, New Cairo",
+C-1380,Sara Salem,0128065339,"79 Street, Heliopolis",Interested in Solitaires
+C-1381,Dina Ghanem,0113650167,"10 Street, Zamalek",Referred by Ahmed
+C-1382,Nour Abbas,0117295221,"58 Tower, October City",V-VIP Customer
+C-1383,Heba Khalil,0153587894,"4 Tower, Gleem",V-VIP Customer
+C-1384,Mohamed Salem,0123504381,"108 Tower, October City",Frequent Gold Buyer
+C-1385,Nour Hassan,0117836796,"113 Street, Nasr City",Wedding jewelry interest
+C-1386,Khaled Badawi,0158147268,"114 Avenue, Alexandria",V-VIP Customer
+C-1387,Khaled Rashed,0101262921,"147 Street, Dokki",
+C-1388,Mohamed Aziz,0109466592,"13 Street, Smouha",Prefers WhatsApp
+C-1389,Heba Zaki,0151212423,"58 Street, Nasr City",V-VIP Customer
+C-1390,Nour Abbas,0115006765,"139 Avenue, Alexandria",Referred by Ahmed
+C-1391,Khaled El-Sayed,0119389146,"88 Avenue, Kafr El Sheikh",Referred by Ahmed
+C-1392,Aya Hassan,0122749282,"5 Tower, Kafr El Sheikh",Referred by Ahmed
+C-1393,Mohamed Rashed,0117765745,"39 Tower, Gleem",Wedding jewelry interest
+C-1394,Heba Hamid,0154496548,"136 Tower, Heliopolis",Wedding jewelry interest
+C-1395,Mahmoud Aziz,0109019948,"61 Street, Maadi",Interested in Solitaires
+C-1396,Mahmoud Badawi,0117253089,"102 Avenue, Gleem",Interested in Solitaires
+C-1397,Mahmoud Badawi,0102186404,"146 Avenue, New Cairo",Frequent Gold Buyer
+C-1398,Fatma Ghanem,0111568489,"131 Tower, Maadi",Referred by Ahmed
+C-1399,Sara Taha,0102866773,"145 Avenue, Nasr City",
+C-1400,Khaled Khalil,0114070184,"142 Tower, Maadi",V-VIP Customer
+C-1401,Heba Aziz,0152589117,"10 Street, New Cairo",Referred by Ahmed
+C-1402,Ahmed Kamal,0123570860,"69 Tower, Smouha",Frequent Gold Buyer
+C-1403,Fatma Bakr,0101340838,"40 Street, Smouha",Interested in Solitaires
+C-1404,Khaled Salah,0104701480,"95 Tower, Zamalek",Interested in Solitaires
+C-1405,Hassan Hamid,0152208711,"55 Avenue, Dokki",V-VIP Customer
+C-1406,Omar Rashed,0113207811,"71 Tower, Sheikh Zayed",Prefers WhatsApp
+C-1407,Sara Galal,0128707824,"32 Street, Maadi",V-VIP Customer
+C-1408,Aya El-Sayed,0157787321,"93 Avenue, Smouha",
+C-1409,Ibrahim Abbas,0118101874,"113 Avenue, New Cairo",Referred by Ahmed
+C-1410,Fatma El-Sayed,0157343047,"5 Street, Kafr El Sheikh",Referred by Ahmed
+C-1411,Mahmoud Salem,0102655427,"95 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1412,Mahmoud Hamid,0111498447,"96 Avenue, Sheikh Zayed",V-VIP Customer
+C-1413,Aya Galal,0104190239,"41 Tower, Heliopolis",Referred by Ahmed
+C-1414,Ahmed Ezzat,0153597628,"72 Avenue, Gleem",V-VIP Customer
+C-1415,Hassan Kamal,0127440418,"139 Avenue, Alexandria",Frequent Gold Buyer
+C-1416,Ahmed Rashed,0115206613,"63 Street, Maadi",
+C-1417,Khaled Zaki,0103069811,"17 Avenue, Alexandria",
+C-1418,Mohamed Nassar,0111431978,"96 Tower, Maadi",Wedding jewelry interest
+C-1419,Mona Ghanem,0121396768,"3 Tower, Gleem",Prefers WhatsApp
+C-1420,Sara Zaki,0123403989,"115 Tower, Zamalek",
+C-1421,Hassan Zaki,0107077781,"130 Avenue, Nasr City",Interested in Solitaires
+C-1422,Mona Mansour,0154587910,"47 Street, Smouha",Wedding jewelry interest
+C-1423,Omar Hassan,0152325402,"107 Avenue, Gleem",
+C-1424,Ahmed Mansour,0118080591,"141 Avenue, Smouha",Prefers WhatsApp
+C-1425,Nour Taha,0152599681,"17 Street, Heliopolis",Referred by Ahmed
+C-1426,Mona Bakr,0119727371,"150 Street, October City",Wedding jewelry interest
+C-1427,Omar Bakr,0103383298,"46 Avenue, Alexandria",
+C-1428,Mostafa Galal,0118875050,"90 Street, Maadi",Prefers WhatsApp
+C-1429,Aya Kamal,0153731458,"90 Tower, Maadi",
+C-1430,Youssef Mansour,0153709257,"37 Street, Nasr City",Frequent Gold Buyer
+C-1431,Laila Fahmy,0155326884,"102 Tower, Nasr City",
+C-1432,Nour Hamid,0154222990,"101 Tower, Nasr City",Wedding jewelry interest
+C-1433,Omar Ezzat,0155665143,"97 Avenue, Nasr City",Referred by Ahmed
+C-1434,Ali El-Sayed,0108252378,"82 Street, Sheikh Zayed",Referred by Ahmed
+C-1435,Heba Hamid,0127446263,"38 Tower, Nasr City",Wedding jewelry interest
+C-1436,Mohamed Zaki,0116524054,"10 Avenue, Maadi",Prefers WhatsApp
+C-1437,Aya Galal,0113689196,"27 Avenue, Sheikh Zayed",Prefers WhatsApp
+C-1438,Fatma Hassan,0109966243,"27 Tower, Alexandria",Wedding jewelry interest
+C-1439,Mostafa Taha,0125861105,"105 Tower, Dokki",Wedding jewelry interest
+C-1440,Dina Hamid,0153978521,"139 Tower, Alexandria",Frequent Gold Buyer
+C-1441,Mona Hamid,0129044505,"43 Tower, Gleem",Wedding jewelry interest
+C-1442,Hassan Badawi,0102016885,"10 Avenue, Nasr City",
+C-1443,Mohamed Hassan,0129118737,"103 Tower, Zamalek",Prefers WhatsApp
+C-1444,Mahmoud Kamal,0154374031,"145 Tower, Maadi",Wedding jewelry interest
+C-1445,Fatma El-Sayed,0151063453,"50 Avenue, New Cairo",Frequent Gold Buyer
+C-1446,Aya Khalil,0126204430,"23 Tower, Zamalek",Frequent Gold Buyer
+C-1447,Mariam Kamal,0116170653,"7 Tower, Nasr City",
+C-1448,Mahmoud Abbas,0158579176,"84 Tower, Nasr City",Frequent Gold Buyer
+C-1449,Ahmed Hassan,0158790169,"84 Tower, Alexandria",Interested in Solitaires
+C-1450,Nour Ezzat,0101688120,"101 Tower, October City",Prefers WhatsApp
+C-1451,Khaled Salah,0119971876,"97 Avenue, Nasr City",Interested in Solitaires
+C-1452,Ali Ghanem,0114193928,"87 Street, Kafr El Sheikh",Frequent Gold Buyer
+C-1453,Ahmed Hamid,0158576222,"7 Tower, Zamalek",Frequent Gold Buyer
+C-1454,Mariam Fahmy,0127735521,"64 Street, Alexandria",Prefers WhatsApp
+C-1455,Ali Hamid,0156667896,"146 Tower, Heliopolis",
+C-1456,Laila Hassan,0153541751,"67 Avenue, Smouha",
+C-1457,Mostafa Badawi,0106225315,"18 Avenue, Nasr City",Wedding jewelry interest
+C-1458,Youssef Nassar,0158988065,"101 Tower, Nasr City",V-VIP Customer
+C-1459,Mostafa Ghanem,0118758916,"99 Tower, Kafr El Sheikh",Frequent Gold Buyer
+C-1460,Fatma Khalil,0156612043,"74 Tower, Heliopolis",Prefers WhatsApp
+C-1461,Mona Ghanem,0152000057,"84 Tower, Nasr City",
+C-1462,Mohamed Zaki,0115855650,"66 Street, Kafr El Sheikh",Frequent Gold Buyer
+C-1463,Sara Ezzat,0121111113,"30 Avenue, Dokki",V-VIP Customer
+C-1464,Laila Nassar,0108137686,"89 Avenue, Sheikh Zayed",Wedding jewelry interest
+C-1465,Mahmoud Badawi,0156845012,"7 Street, Smouha",Prefers WhatsApp
+C-1466,Ahmed Badawi,0104858691,"14 Tower, Kafr El Sheikh",Wedding jewelry interest
+C-1467,Ibrahim Badawi,0125844826,"62 Tower, October City",Referred by Ahmed
+C-1468,Fatma Aziz,0117952289,"48 Tower, Gleem",Prefers WhatsApp
+C-1469,Omar Hassan,0127933002,"90 Tower, Alexandria",
+C-1470,Hassan Aziz,0114305716,"11 Tower, Maadi",Referred by Ahmed
+C-1471,Youssef Galal,0153117610,"127 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1472,Sara Salah,0102219055,"134 Avenue, Maadi",
+C-1473,Khaled Badawi,0109005249,"88 Tower, New Cairo",Frequent Gold Buyer
+C-1474,Mohamed Kamal,0104584320,"135 Tower, New Cairo",Interested in Solitaires
+C-1475,Mona Badawi,0117088521,"15 Street, Alexandria",Referred by Ahmed
+C-1476,Nour Taha,0107159122,"124 Avenue, Sheikh Zayed",Wedding jewelry interest
+C-1477,Ibrahim Badawi,0104290818,"147 Avenue, Sheikh Zayed",V-VIP Customer
+C-1478,Laila Zaki,0116977145,"33 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1479,Khaled Hamid,0108955457,"134 Street, October City",
+C-1480,Sara Bakr,0124929536,"99 Street, Zamalek",Prefers WhatsApp
+C-1481,Laila Hamid,0156787008,"26 Street, Heliopolis",Prefers WhatsApp
+C-1482,Ibrahim Kamal,0118041804,"44 Avenue, Alexandria",Prefers WhatsApp
+C-1483,Nour Taha,0103642574,"76 Street, Heliopolis",Wedding jewelry interest
+C-1484,Hassan Hamid,0127773089,"137 Street, Smouha",Interested in Solitaires
+C-1485,Mohamed Fahmy,0116679126,"129 Avenue, New Cairo",Wedding jewelry interest
+C-1486,Nour Zaki,0106023741,"113 Avenue, Kafr El Sheikh",
+C-1487,Nour Badawi,0114438452,"69 Street, Sheikh Zayed",V-VIP Customer
+C-1488,Mohamed Rashed,0109946622,"28 Avenue, Dokki",Interested in Solitaires
+C-1489,Nour Badawi,0117094928,"46 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1490,Youssef Galal,0112763485,"11 Tower, Alexandria",Interested in Solitaires
+C-1491,Hassan Bakr,0116499701,"9 Street, Dokki",Referred by Ahmed
+C-1492,Fatma Abbas,0153662983,"19 Street, New Cairo",Frequent Gold Buyer
+C-1493,Fatma Taha,0155261177,"111 Tower, Sheikh Zayed",V-VIP Customer
+C-1494,Dina Ghanem,0107923284,"26 Street, Zamalek",Interested in Solitaires
+C-1495,Mostafa Taha,0102685006,"12 Street, Nasr City",Interested in Solitaires
+C-1496,Mahmoud Taha,0156774378,"10 Tower, October City",V-VIP Customer
+C-1497,Sara Mansour,0119734695,"11 Street, Alexandria",Interested in Solitaires
+C-1498,Mona Khalil,0102125303,"108 Street, Kafr El Sheikh",V-VIP Customer
+C-1499,Mariam Rashed,0105547130,"111 Tower, Smouha",Frequent Gold Buyer
+C-1500,Mariam Salah,0116874169,"70 Avenue, Nasr City",V-VIP Customer
+C-1501,Heba Taha,0152580101,"3 Street, Zamalek",Prefers WhatsApp
+C-1502,Mahmoud Abbas,0127334603,"144 Tower, Alexandria",Prefers WhatsApp
+C-1503,Sara Aziz,0119546240,"142 Tower, Kafr El Sheikh",V-VIP Customer
+C-1504,Nour Hamid,0103493500,"137 Street, New Cairo",Referred by Ahmed
+C-1505,Mariam Khalil,0157622579,"119 Tower, Maadi",Prefers WhatsApp
+C-1506,Salma Badawi,0153286656,"136 Avenue, Maadi",Interested in Solitaires
+C-1507,Ali Galal,0111254718,"28 Avenue, Nasr City",V-VIP Customer
+C-1508,Ahmed El-Sayed,0122368106,"136 Avenue, Nasr City",Interested in Solitaires
+C-1509,Youssef Hassan,0126631955,"68 Avenue, Gleem",Prefers WhatsApp
+C-1510,Nour Mansour,0107747810,"51 Tower, Kafr El Sheikh",Prefers WhatsApp
+C-1511,Sara Badawi,0116068408,"32 Tower, October City",Interested in Solitaires
+C-1512,Ahmed Abbas,0156501841,"7 Avenue, Sheikh Zayed",Prefers WhatsApp
+C-1513,Mohamed Taha,0109592433,"34 Avenue, Nasr City",Frequent Gold Buyer
+C-1514,Mahmoud Hassan,0109257261,"132 Street, Smouha",Referred by Ahmed
+C-1515,Ibrahim Fahmy,0119603335,"110 Tower, October City",
+C-1516,Mona El-Sayed,0119253211,"143 Street, Nasr City",Referred by Ahmed
+C-1517,Ibrahim Taha,0116886019,"94 Avenue, October City",Frequent Gold Buyer
+C-1518,Ali El-Sayed,0106905935,"9 Street, Smouha",V-VIP Customer
+C-1519,Mona Khalil,0111681807,"54 Avenue, New Cairo",Prefers WhatsApp
+C-1520,Mahmoud Taha,0109249737,"62 Avenue, Dokki",Referred by Ahmed
+C-1521,Ali Badawi,0128271695,"101 Avenue, Nasr City",Frequent Gold Buyer
+C-1522,Mahmoud Taha,0126250339,"33 Tower, Zamalek",Frequent Gold Buyer
+C-1523,Nour Zaki,0112698443,"47 Street, October City",Frequent Gold Buyer
+C-1524,Mohamed Taha,0152077679,"6 Tower, Zamalek",Interested in Solitaires
+C-1525,Khaled Mansour,0156343688,"129 Street, Smouha",
+C-1526,Ali Ghanem,0159078751,"96 Street, Nasr City",Prefers WhatsApp
+C-1527,Dina Salah,0129526377,"16 Street, Dokki",
+C-1528,Salma Galal,0102196810,"73 Avenue, Gleem",Interested in Solitaires
+C-1529,Youssef Ezzat,0125691449,"33 Avenue, Sheikh Zayed",Prefers WhatsApp
+C-1530,Ibrahim Khalil,0116439107,"93 Street, October City",Interested in Solitaires
+C-1531,Nour Fahmy,0114151079,"17 Tower, Dokki",Interested in Solitaires
+C-1532,Mariam Hassan,0112756166,"38 Tower, Smouha",Wedding jewelry interest
+C-1533,Dina El-Sayed,0151243067,"140 Tower, Nasr City",V-VIP Customer
+C-1534,Laila Fahmy,0123334975,"29 Tower, October City",Prefers WhatsApp
+C-1535,Omar Nassar,0126631409,"47 Tower, Nasr City",
+C-1536,Mohamed Zaki,0101258964,"145 Tower, Sheikh Zayed",Interested in Solitaires
+C-1537,Aya Hassan,0156720664,"60 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1538,Sara Nassar,0156810501,"68 Tower, Dokki",Referred by Ahmed
+C-1539,Ahmed Aziz,0111807565,"43 Street, Maadi",Referred by Ahmed
+C-1540,Mahmoud Mansour,0127753607,"61 Tower, Zamalek",
+C-1541,Heba Salem,0124772624,"100 Street, Maadi",Referred by Ahmed
+C-1542,Mohamed Hassan,0119573886,"30 Avenue, Zamalek",Prefers WhatsApp
+C-1543,Dina Salah,0106617631,"69 Tower, Kafr El Sheikh",
+C-1544,Mostafa Aziz,0119540547,"98 Street, Smouha",
+C-1545,Hassan Abbas,0157529520,"112 Tower, Zamalek",
+C-1546,Heba El-Sayed,0124368503,"53 Avenue, Gleem",
+C-1547,Khaled Bakr,0128988433,"38 Street, Smouha",Wedding jewelry interest
+C-1548,Aya Aziz,0157484155,"85 Street, Sheikh Zayed",Referred by Ahmed
+C-1549,Mona Zaki,0114215318,"122 Street, Gleem",Prefers WhatsApp
+C-1550,Youssef Salah,0111130569,"40 Tower, Dokki",Wedding jewelry interest
+C-1551,Mahmoud Taha,0109007303,"124 Tower, Maadi",Referred by Ahmed
+C-1552,Salma Badawi,0119803438,"25 Avenue, New Cairo",Wedding jewelry interest
+C-1553,Salma Mansour,0109289304,"39 Avenue, Dokki",Interested in Solitaires
+C-1554,Omar Nassar,0151270275,"136 Avenue, Dokki",Prefers WhatsApp
+C-1555,Mariam Aziz,0108718928,"122 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1556,Hassan Ghanem,0104155683,"74 Tower, Heliopolis",Interested in Solitaires
+C-1557,Nour Rashed,0115412584,"108 Street, October City",Referred by Ahmed
+C-1558,Salma Salem,0156060819,"28 Tower, October City",Interested in Solitaires
+C-1559,Sara Khalil,0122448028,"106 Tower, Smouha",Interested in Solitaires
+C-1560,Mohamed Mansour,0151345634,"101 Street, Smouha",Interested in Solitaires
+C-1561,Ali Hassan,0122970428,"69 Tower, New Cairo",Frequent Gold Buyer
+C-1562,Heba El-Sayed,0113772632,"43 Avenue, Zamalek",V-VIP Customer
+C-1563,Mariam Nassar,0153031963,"42 Tower, Alexandria",
+C-1564,Mostafa Ezzat,0153661049,"148 Avenue, Smouha",Referred by Ahmed
+C-1565,Ali Salem,0159989852,"59 Street, New Cairo",V-VIP Customer
+C-1566,Youssef Galal,0124831935,"136 Tower, Nasr City",Referred by Ahmed
+C-1567,Youssef El-Sayed,0103526271,"112 Tower, Smouha",Prefers WhatsApp
+C-1568,Mona Ghanem,0129362892,"119 Tower, Smouha",V-VIP Customer
+C-1569,Omar Galal,0152401495,"142 Street, Kafr El Sheikh",Referred by Ahmed
+C-1570,Ibrahim Zaki,0117175104,"38 Tower, Gleem",Wedding jewelry interest
+C-1571,Salma Ghanem,0117550602,"16 Tower, Kafr El Sheikh",
+C-1572,Mostafa Rashed,0157463558,"37 Street, Maadi",Frequent Gold Buyer
+C-1573,Mohamed Ghanem,0126235984,"11 Street, Sheikh Zayed",Interested in Solitaires
+C-1574,Nour Abbas,0102821782,"55 Tower, Maadi",V-VIP Customer
+C-1575,Ibrahim Khalil,0115360759,"119 Street, New Cairo",Interested in Solitaires
+C-1576,Ali Nassar,0155442248,"120 Avenue, Sheikh Zayed",V-VIP Customer
+C-1577,Mahmoud Salah,0158049988,"69 Tower, Nasr City",V-VIP Customer
+C-1578,Omar Rashed,0102748981,"76 Avenue, Smouha",Frequent Gold Buyer
+C-1579,Ahmed Hassan,0153908311,"127 Avenue, Zamalek",V-VIP Customer
+C-1580,Nour Galal,0154540598,"32 Tower, Heliopolis",Interested in Solitaires
+C-1581,Ali Salah,0111869670,"143 Street, New Cairo",V-VIP Customer
+C-1582,Mahmoud Aziz,0107856908,"98 Tower, Zamalek",Referred by Ahmed
+C-1583,Hassan Nassar,0128240375,"104 Street, October City",Wedding jewelry interest
+C-1584,Mahmoud Zaki,0155919958,"147 Street, Maadi",Wedding jewelry interest
+C-1585,Mostafa Hassan,0104598174,"26 Tower, Gleem",Referred by Ahmed
+C-1586,Ali El-Sayed,0118786310,"7 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1587,Omar Abbas,0152364524,"62 Tower, Kafr El Sheikh",Wedding jewelry interest
+C-1588,Ahmed Rashed,0103603138,"45 Street, Zamalek",V-VIP Customer
+C-1589,Ahmed Kamal,0101178327,"4 Street, Smouha",Interested in Solitaires
+C-1590,Heba El-Sayed,0122350842,"80 Street, Nasr City",V-VIP Customer
+C-1591,Mona Badawi,0113317784,"101 Tower, Heliopolis",
+C-1592,Hassan Abbas,0108806463,"83 Avenue, Zamalek",Prefers WhatsApp
+C-1593,Mahmoud El-Sayed,0116399087,"85 Avenue, Heliopolis",V-VIP Customer
+C-1594,Ibrahim Salah,0128422737,"63 Street, Gleem",Prefers WhatsApp
+C-1595,Nour Ezzat,0102952220,"150 Avenue, Nasr City",Wedding jewelry interest
+C-1596,Omar El-Sayed,0105648268,"50 Street, Heliopolis",Referred by Ahmed
+C-1597,Mostafa Abbas,0123146360,"144 Tower, Zamalek",Prefers WhatsApp
+C-1598,Hassan Salem,0127727086,"136 Tower, Dokki",Prefers WhatsApp
+C-1599,Heba Ghanem,0117541633,"9 Avenue, Alexandria",Frequent Gold Buyer
+C-1600,Ibrahim Zaki,0104649363,"17 Tower, Alexandria",Wedding jewelry interest
+C-1601,Salma Aziz,0154020741,"55 Street, Nasr City",V-VIP Customer
+C-1602,Sara Fahmy,0108042252,"69 Avenue, Gleem",Frequent Gold Buyer
+C-1603,Mona Taha,0119433480,"70 Avenue, Dokki",Interested in Solitaires
+C-1604,Mariam Hassan,0109375271,"42 Avenue, New Cairo",Frequent Gold Buyer
+C-1605,Mohamed Kamal,0116930634,"2 Avenue, Kafr El Sheikh",V-VIP Customer
+C-1606,Mostafa Salah,0117507341,"12 Avenue, Smouha",Frequent Gold Buyer
+C-1607,Hassan Salah,0127537578,"9 Street, Zamalek",Frequent Gold Buyer
+C-1608,Khaled Badawi,0128084116,"60 Avenue, Dokki",Referred by Ahmed
+C-1609,Mohamed Khalil,0159421180,"146 Avenue, Gleem",
+C-1610,Ahmed Ghanem,0109342028,"57 Avenue, Gleem",
+C-1611,Mona Zaki,0155496895,"91 Tower, Smouha",
+C-1612,Salma Khalil,0129780056,"103 Avenue, New Cairo",Referred by Ahmed
+C-1613,Mohamed Rashed,0119110832,"137 Tower, Sheikh Zayed",Wedding jewelry interest
+C-1614,Fatma Ghanem,0123014875,"119 Avenue, Zamalek",Referred by Ahmed
+C-1615,Mohamed Bakr,0158738676,"109 Avenue, Maadi",Interested in Solitaires
+C-1616,Aya Rashed,0127209851,"49 Street, Dokki",Frequent Gold Buyer
+C-1617,Mahmoud Nassar,0155472701,"58 Tower, Sheikh Zayed",
+C-1618,Mostafa Kamal,0156124647,"13 Avenue, Dokki",Prefers WhatsApp
+C-1619,Omar Badawi,0158940406,"100 Tower, October City",Prefers WhatsApp
+C-1620,Mona Hamid,0126363863,"24 Street, Zamalek",Frequent Gold Buyer
+C-1621,Ibrahim Bakr,0111394574,"85 Street, Heliopolis",V-VIP Customer
+C-1622,Dina Badawi,0151136190,"116 Street, Zamalek",Frequent Gold Buyer
+C-1623,Mostafa Mansour,0118249659,"80 Street, October City",V-VIP Customer
+C-1624,Dina Kamal,0121676569,"105 Street, Zamalek",Interested in Solitaires
+C-1625,Sara Aziz,0153710504,"81 Tower, Alexandria",V-VIP Customer
+C-1626,Ali Mansour,0129179736,"70 Tower, Zamalek",Wedding jewelry interest
+C-1627,Ahmed Hassan,0104607711,"67 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1628,Mohamed Hamid,0118811588,"75 Tower, Dokki",Prefers WhatsApp
+C-1629,Ahmed Salem,0112214119,"54 Tower, Nasr City",Prefers WhatsApp
+C-1630,Omar Ezzat,0125669987,"142 Avenue, New Cairo",Referred by Ahmed
+C-1631,Mariam Hamid,0111217946,"35 Tower, Heliopolis",Frequent Gold Buyer
+C-1632,Mohamed El-Sayed,0114161650,"83 Tower, Gleem",Frequent Gold Buyer
+C-1633,Fatma Ezzat,0111053995,"80 Tower, Maadi",V-VIP Customer
+C-1634,Laila Salem,0153213005,"111 Tower, October City",V-VIP Customer
+C-1635,Hassan El-Sayed,0129722997,"140 Tower, Alexandria",Wedding jewelry interest
+C-1636,Ibrahim Mansour,0152711589,"53 Street, Zamalek",Prefers WhatsApp
+C-1637,Fatma Aziz,0102908616,"25 Tower, Heliopolis",V-VIP Customer
+C-1638,Ahmed Ezzat,0157386212,"132 Street, Kafr El Sheikh",Referred by Ahmed
+C-1639,Aya Mansour,0107452477,"42 Street, Smouha",
+C-1640,Khaled Salem,0104896929,"53 Tower, Sheikh Zayed",Interested in Solitaires
+C-1641,Ali Hassan,0106157171,"7 Street, Nasr City",Wedding jewelry interest
+C-1642,Heba Rashed,0114393774,"20 Street, Gleem",Interested in Solitaires
+C-1643,Hassan Galal,0122204352,"126 Avenue, Alexandria",Referred by Ahmed
+C-1644,Mariam Abbas,0154738247,"36 Tower, Kafr El Sheikh",V-VIP Customer
+C-1645,Fatma Khalil,0129191401,"78 Avenue, Zamalek",Wedding jewelry interest
+C-1646,Mahmoud Bakr,0154996887,"136 Street, New Cairo",
+C-1647,Fatma Khalil,0122835743,"133 Avenue, Gleem",Wedding jewelry interest
+C-1648,Ahmed Ezzat,0129783943,"5 Avenue, Kafr El Sheikh",V-VIP Customer
+C-1649,Ali Galal,0119257785,"125 Avenue, Kafr El Sheikh",
+C-1650,Khaled Aziz,0121309770,"64 Street, Kafr El Sheikh",
+C-1651,Ali Kamal,0125638649,"46 Tower, Nasr City",Prefers WhatsApp
+C-1652,Aya Zaki,0106844549,"84 Tower, Maadi",V-VIP Customer
+C-1653,Mahmoud Salem,0122913869,"75 Tower, Nasr City",Frequent Gold Buyer
+C-1654,Dina Hamid,0117226610,"89 Street, Zamalek",Frequent Gold Buyer
+C-1655,Laila Ghanem,0159148675,"51 Street, Dokki",Frequent Gold Buyer
+C-1656,Ali Galal,0114215520,"130 Street, Gleem",Wedding jewelry interest
+C-1657,Dina Abbas,0101606787,"141 Avenue, Nasr City",Prefers WhatsApp
+C-1658,Hassan Galal,0101734537,"119 Tower, Nasr City",Interested in Solitaires
+C-1659,Mostafa Abbas,0152614694,"53 Avenue, Heliopolis",Wedding jewelry interest
+C-1660,Aya Bakr,0104363269,"85 Tower, Heliopolis",Frequent Gold Buyer
+C-1661,Dina Nassar,0115342628,"142 Avenue, Smouha",Frequent Gold Buyer
+C-1662,Khaled Hassan,0153309717,"150 Street, Sheikh Zayed",Prefers WhatsApp
+C-1663,Khaled Mansour,0118344276,"91 Tower, Gleem",Wedding jewelry interest
+C-1664,Fatma Abbas,0121755287,"52 Tower, Smouha",Interested in Solitaires
+C-1665,Ali El-Sayed,0116992192,"94 Street, Heliopolis",Interested in Solitaires
+C-1666,Ahmed Ghanem,0152595434,"116 Tower, Nasr City",Referred by Ahmed
+C-1667,Aya Abbas,0102729277,"35 Tower, New Cairo",V-VIP Customer
+C-1668,Heba Fahmy,0112742436,"57 Avenue, Dokki",Interested in Solitaires
+C-1669,Ibrahim Nassar,0114887729,"89 Avenue, Nasr City",Frequent Gold Buyer
+C-1670,Mostafa Ghanem,0154430812,"81 Tower, Gleem",Wedding jewelry interest
+C-1671,Sara Hamid,0124523139,"50 Tower, Alexandria",V-VIP Customer
+C-1672,Hassan Hamid,0158552626,"85 Avenue, Nasr City",Prefers WhatsApp
+C-1673,Salma El-Sayed,0128045119,"43 Avenue, Dokki",
+C-1674,Sara Aziz,0119726238,"67 Street, Kafr El Sheikh",Wedding jewelry interest
+C-1675,Aya El-Sayed,0119863419,"120 Avenue, October City",Wedding jewelry interest
+C-1676,Salma Hassan,0105257251,"150 Tower, Heliopolis",Prefers WhatsApp
+C-1677,Fatma Badawi,0117271663,"139 Avenue, New Cairo",Prefers WhatsApp
+C-1678,Mohamed Rashed,0152535579,"92 Street, Dokki",
+C-1679,Nour Kamal,0107451556,"62 Avenue, Heliopolis",
+C-1680,Mahmoud Nassar,0158280896,"68 Avenue, Dokki",Frequent Gold Buyer
+C-1681,Sara Ezzat,0153641084,"132 Street, Gleem",
+C-1682,Ibrahim Hamid,0157779278,"45 Avenue, Maadi",Interested in Solitaires
+C-1683,Mostafa Rashed,0114127886,"36 Tower, Heliopolis",Wedding jewelry interest
+C-1684,Salma Mansour,0153325332,"124 Avenue, Heliopolis",Wedding jewelry interest
+C-1685,Ali Nassar,0152304907,"18 Avenue, October City",Wedding jewelry interest
+C-1686,Laila Zaki,0156915041,"34 Avenue, Nasr City",
+C-1687,Youssef Salem,0156738411,"116 Avenue, Zamalek",
+C-1688,Ahmed Mansour,0126643739,"92 Tower, Kafr El Sheikh",V-VIP Customer
+C-1689,Mostafa Galal,0155468994,"91 Tower, Kafr El Sheikh",Referred by Ahmed
+C-1690,Mona Zaki,0125292289,"56 Tower, Dokki",Interested in Solitaires
+C-1691,Ibrahim Salem,0153015757,"84 Avenue, Alexandria",
+C-1692,Fatma Galal,0109513547,"28 Avenue, Zamalek",
+C-1693,Heba Abbas,0157180285,"12 Avenue, Heliopolis",Prefers WhatsApp
+C-1694,Mariam Salem,0121450719,"14 Avenue, Nasr City",
+C-1695,Youssef Nassar,0102096125,"79 Avenue, Gleem",Interested in Solitaires
+C-1696,Mostafa Fahmy,0107518636,"55 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1697,Ibrahim Nassar,0103932678,"144 Tower, New Cairo",
+C-1698,Dina El-Sayed,0111401407,"103 Tower, Nasr City",V-VIP Customer
+C-1699,Dina Nassar,0113649759,"4 Avenue, Maadi",Referred by Ahmed
+C-1700,Hassan Salah,0129846701,"79 Avenue, Dokki",Prefers WhatsApp
+C-1701,Aya Salem,0122199187,"57 Street, New Cairo",Referred by Ahmed
+C-1702,Mahmoud Taha,0157663965,"30 Tower, October City",Prefers WhatsApp
+C-1703,Heba Khalil,0125262656,"109 Street, Heliopolis",V-VIP Customer
+C-1704,Khaled Nassar,0156996098,"35 Avenue, Nasr City",Prefers WhatsApp
+C-1705,Ahmed Nassar,0106018764,"40 Avenue, Nasr City",Wedding jewelry interest
+C-1706,Khaled Hamid,0157887888,"19 Avenue, Zamalek",Interested in Solitaires
+C-1707,Omar Zaki,0108339228,"121 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1708,Mona Taha,0121227759,"39 Street, New Cairo",Interested in Solitaires
+C-1709,Mariam Fahmy,0103718145,"149 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1710,Mona Kamal,0106605949,"34 Avenue, Nasr City",Interested in Solitaires
+C-1711,Sara Fahmy,0107886070,"74 Tower, Nasr City",V-VIP Customer
+C-1712,Heba Abbas,0113703358,"21 Avenue, Heliopolis",Referred by Ahmed
+C-1713,Hassan Taha,0117728579,"68 Tower, Dokki",Frequent Gold Buyer
+C-1714,Omar Nassar,0113550345,"1 Tower, Smouha",
+C-1715,Ali Taha,0127812483,"63 Tower, Smouha",Frequent Gold Buyer
+C-1716,Omar Ghanem,0119464392,"150 Street, New Cairo",Frequent Gold Buyer
+C-1717,Ibrahim Kamal,0155138879,"150 Street, New Cairo",Interested in Solitaires
+C-1718,Mohamed Hassan,0112057935,"126 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1719,Mahmoud Khalil,0118102442,"6 Avenue, October City",Wedding jewelry interest
+C-1720,Salma Salem,0122223683,"32 Tower, Alexandria",Prefers WhatsApp
+C-1721,Omar Bakr,0106672993,"127 Street, Alexandria",V-VIP Customer
+C-1722,Aya El-Sayed,0113467299,"32 Avenue, New Cairo",Frequent Gold Buyer
+C-1723,Mahmoud Galal,0103620115,"134 Tower, Zamalek",Wedding jewelry interest
+C-1724,Ibrahim Abbas,0105500364,"82 Avenue, Nasr City",Prefers WhatsApp
+C-1725,Laila Abbas,0126666182,"52 Street, New Cairo",
+C-1726,Dina Badawi,0105522685,"41 Avenue, New Cairo",V-VIP Customer
+C-1727,Fatma Rashed,0128866008,"83 Street, Heliopolis",Frequent Gold Buyer
+C-1728,Omar Rashed,0127978945,"132 Tower, New Cairo",Interested in Solitaires
+C-1729,Mohamed Fahmy,0127052478,"64 Avenue, Kafr El Sheikh",Prefers WhatsApp
+C-1730,Fatma Galal,0118077130,"90 Street, Heliopolis",Frequent Gold Buyer
+C-1731,Mahmoud Salem,0157399298,"135 Street, Smouha",
+C-1732,Youssef Hamid,0121780532,"147 Street, Alexandria",
+C-1733,Hassan Ezzat,0119032941,"58 Street, Alexandria",V-VIP Customer
+C-1734,Mostafa Fahmy,0103198008,"36 Avenue, October City",Referred by Ahmed
+C-1735,Hassan Rashed,0129883385,"34 Street, Sheikh Zayed",V-VIP Customer
+C-1736,Hassan Badawi,0125422399,"127 Street, Dokki",Referred by Ahmed
+C-1737,Heba Kamal,0119311827,"76 Tower, Dokki",Frequent Gold Buyer
+C-1738,Youssef Bakr,0115224707,"136 Avenue, Heliopolis",Referred by Ahmed
+C-1739,Laila Galal,0155151189,"86 Tower, Maadi",Referred by Ahmed
+C-1740,Omar Hassan,0121193041,"21 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1741,Aya Ghanem,0113397046,"19 Tower, Heliopolis",Interested in Solitaires
+C-1742,Aya Hassan,0156707871,"9 Street, Maadi",Prefers WhatsApp
+C-1743,Mohamed Khalil,0101893295,"64 Avenue, October City",Prefers WhatsApp
+C-1744,Fatma Rashed,0126090092,"51 Avenue, Smouha",Prefers WhatsApp
+C-1745,Mohamed Salem,0159610292,"19 Tower, Gleem",Frequent Gold Buyer
+C-1746,Dina Salah,0112583371,"40 Street, Alexandria",Wedding jewelry interest
+C-1747,Omar Abbas,0111863760,"65 Avenue, New Cairo",Frequent Gold Buyer
+C-1748,Heba Taha,0112019680,"74 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1749,Omar Hamid,0116350704,"88 Tower, Dokki",V-VIP Customer
+C-1750,Heba Nassar,0108296750,"135 Tower, New Cairo",Frequent Gold Buyer
+C-1751,Khaled Ezzat,0119742155,"95 Tower, Zamalek",Frequent Gold Buyer
+C-1752,Ahmed Khalil,0127710510,"15 Tower, Dokki",
+C-1753,Sara Nassar,0111694014,"34 Tower, Maadi",Frequent Gold Buyer
+C-1754,Mohamed Ghanem,0113661381,"21 Avenue, Heliopolis",V-VIP Customer
+C-1755,Heba Khalil,0121551357,"133 Tower, Kafr El Sheikh",Wedding jewelry interest
+C-1756,Salma Mansour,0129934582,"136 Street, Alexandria",Wedding jewelry interest
+C-1757,Aya Abbas,0114948604,"95 Street, New Cairo",Wedding jewelry interest
+C-1758,Ahmed Zaki,0111850381,"112 Tower, Kafr El Sheikh",Frequent Gold Buyer
+C-1759,Ibrahim Nassar,0158845321,"110 Avenue, Alexandria",Prefers WhatsApp
+C-1760,Ali Fahmy,0101945991,"3 Street, Nasr City",Wedding jewelry interest
+C-1761,Youssef Abbas,0118266548,"58 Avenue, Smouha",Frequent Gold Buyer
+C-1762,Ali El-Sayed,0106563591,"73 Street, Nasr City",
+C-1763,Mahmoud Salah,0112353265,"144 Street, Nasr City",Frequent Gold Buyer
+C-1764,Khaled Fahmy,0119028385,"76 Street, New Cairo",
+C-1765,Mona El-Sayed,0121354396,"124 Tower, Maadi",Interested in Solitaires
+C-1766,Heba Hassan,0127997170,"51 Avenue, Kafr El Sheikh",Referred by Ahmed
+C-1767,Youssef Kamal,0115717259,"69 Tower, New Cairo",Prefers WhatsApp
+C-1768,Heba Salem,0129657566,"98 Tower, New Cairo",V-VIP Customer
+C-1769,Hassan Ezzat,0151446299,"71 Street, Kafr El Sheikh",V-VIP Customer
+C-1770,Mohamed Fahmy,0125140737,"130 Street, Kafr El Sheikh",Interested in Solitaires
+C-1771,Mona El-Sayed,0155748005,"72 Avenue, October City",Interested in Solitaires
+C-1772,Aya Salem,0119725374,"102 Avenue, Maadi",Frequent Gold Buyer
+C-1773,Laila Hassan,0113191677,"89 Street, October City",Referred by Ahmed
+C-1774,Sara Bakr,0112152493,"141 Street, New Cairo",Referred by Ahmed
+C-1775,Youssef Hamid,0102978727,"64 Tower, Dokki",Referred by Ahmed
+C-1776,Ali Salem,0103339995,"145 Street, Alexandria",Frequent Gold Buyer
+C-1777,Khaled Abbas,0103545018,"78 Tower, Gleem",Referred by Ahmed
+C-1778,Dina El-Sayed,0117333485,"109 Street, Zamalek",
+C-1779,Mahmoud Aziz,0116961871,"88 Avenue, New Cairo",
+C-1780,Omar El-Sayed,0123015870,"136 Tower, Maadi",V-VIP Customer
+C-1781,Dina Badawi,0112387468,"29 Tower, Smouha",
+C-1782,Laila Mansour,0115893320,"109 Street, Smouha",V-VIP Customer
+C-1783,Dina Mansour,0109700844,"126 Street, Smouha",Referred by Ahmed
+C-1784,Omar Galal,0114016662,"147 Tower, Heliopolis",V-VIP Customer
+C-1785,Youssef Khalil,0112737297,"115 Street, Nasr City",V-VIP Customer
+C-1786,Youssef Abbas,0102607338,"79 Avenue, Zamalek",Wedding jewelry interest
+C-1787,Mohamed Aziz,0109165744,"127 Tower, Heliopolis",Wedding jewelry interest
+C-1788,Sara Zaki,0112780696,"24 Street, Maadi",Referred by Ahmed
+C-1789,Ibrahim Salah,0102143775,"116 Tower, Dokki",
+C-1790,Mahmoud Kamal,0126080528,"51 Avenue, New Cairo",
+C-1791,Omar Hassan,0108816978,"37 Street, Nasr City",Prefers WhatsApp
+C-1792,Fatma Ghanem,0111628095,"29 Tower, New Cairo",V-VIP Customer
+C-1793,Mona Fahmy,0158187150,"110 Street, October City",Wedding jewelry interest
+C-1794,Mona Badawi,0124908914,"79 Tower, Dokki",Wedding jewelry interest
+C-1795,Mohamed Abbas,0108902301,"53 Street, October City",V-VIP Customer
+C-1796,Mohamed Aziz,0101165473,"111 Street, October City",V-VIP Customer
+C-1797,Mohamed Rashed,0101559487,"95 Avenue, October City",Frequent Gold Buyer
+C-1798,Salma Ghanem,0115582062,"40 Street, Nasr City",Frequent Gold Buyer
+C-1799,Ibrahim Rashed,0108966057,"26 Tower, October City",
+C-1800,Nour Rashed,0112254800,"98 Tower, Gleem",Prefers WhatsApp
+C-1801,Khaled El-Sayed,0122922281,"38 Avenue, Zamalek",Referred by Ahmed
+C-1802,Salma Zaki,0116662206,"102 Avenue, Kafr El Sheikh",Interested in Solitaires
+C-1803,Aya Taha,0126725738,"1 Street, Dokki",V-VIP Customer
+C-1804,Hassan Ezzat,0101529698,"42 Tower, New Cairo",
+C-1805,Fatma Khalil,0101027560,"69 Avenue, New Cairo",V-VIP Customer
+C-1806,Heba Aziz,0105754354,"41 Tower, Alexandria",V-VIP Customer
+C-1807,Mohamed Zaki,0122464685,"94 Avenue, New Cairo",Prefers WhatsApp
+C-1808,Khaled Khalil,0159228824,"104 Avenue, Dokki",Prefers WhatsApp
+C-1809,Heba Ezzat,0156162334,"56 Street, Dokki",Frequent Gold Buyer
+C-1810,Omar El-Sayed,0154233070,"129 Street, Kafr El Sheikh",Prefers WhatsApp
+C-1811,Nour El-Sayed,0115721518,"143 Tower, Heliopolis",Wedding jewelry interest
+C-1812,Ali Ezzat,0124437956,"14 Avenue, Alexandria",Frequent Gold Buyer
+C-1813,Mohamed Bakr,0157244207,"50 Street, New Cairo",Prefers WhatsApp
+C-1814,Salma El-Sayed,0111279361,"60 Street, Heliopolis",Referred by Ahmed
+C-1815,Sara Badawi,0114143261,"72 Tower, Smouha",Interested in Solitaires
+C-1816,Nour Galal,0115818739,"122 Tower, Zamalek",Prefers WhatsApp
+C-1817,Sara Aziz,0119192151,"12 Tower, Sheikh Zayed",V-VIP Customer
+C-1818,Aya Bakr,0151941471,"88 Tower, Alexandria",Prefers WhatsApp
+C-1819,Mohamed Mansour,0116330990,"98 Street, Smouha",Referred by Ahmed
+C-1820,Omar Hassan,0155481200,"62 Street, Zamalek",Frequent Gold Buyer
+C-1821,Youssef Salah,0123911040,"77 Avenue, Smouha",Referred by Ahmed
+C-1822,Mariam Fahmy,0101359720,"115 Street, Sheikh Zayed",Interested in Solitaires
+C-1823,Dina Bakr,0122806203,"9 Avenue, Sheikh Zayed",Referred by Ahmed
+C-1824,Sara Abbas,0127431321,"43 Avenue, Gleem",Wedding jewelry interest
+C-1825,Mahmoud Hamid,0114706924,"76 Tower, October City",Interested in Solitaires
+C-1826,Nour Hassan,0151042058,"9 Street, Nasr City",Interested in Solitaires
+C-1827,Youssef Hamid,0114113432,"125 Tower, Gleem",Prefers WhatsApp
+C-1828,Mohamed Rashed,0116685549,"42 Street, Smouha",Prefers WhatsApp
+C-1829,Omar Bakr,0109267729,"118 Avenue, Maadi",Referred by Ahmed
+C-1830,Ibrahim Khalil,0126107147,"40 Tower, Nasr City",Prefers WhatsApp
+C-1831,Fatma Kamal,0153781442,"142 Street, Gleem",Interested in Solitaires
+C-1832,Mostafa Khalil,0153822681,"20 Tower, Zamalek",Wedding jewelry interest
+C-1833,Aya Khalil,0126974735,"41 Tower, Gleem",Interested in Solitaires
+C-1834,Fatma El-Sayed,0109688730,"132 Tower, Nasr City",Prefers WhatsApp
+C-1835,Mostafa Hassan,0118128717,"78 Avenue, Gleem",Frequent Gold Buyer
+C-1836,Mona Zaki,0111545336,"49 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1837,Khaled Khalil,0123428421,"33 Street, October City",Interested in Solitaires
+C-1838,Omar Fahmy,0122045905,"85 Avenue, Smouha",Interested in Solitaires
+C-1839,Khaled Ghanem,0122688626,"122 Tower, October City",Frequent Gold Buyer
+C-1840,Ibrahim Fahmy,0104619603,"53 Avenue, Nasr City",Referred by Ahmed
+C-1841,Ibrahim Ezzat,0114406630,"4 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1842,Nour Aziz,0119947997,"35 Avenue, Zamalek",Interested in Solitaires
+C-1843,Mona Ghanem,0123964724,"10 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1844,Hassan Taha,0157686294,"68 Street, Maadi",Frequent Gold Buyer
+C-1845,Sara Kamal,0116566237,"7 Street, October City",Referred by Ahmed
+C-1846,Omar Fahmy,0151221551,"146 Avenue, Alexandria",
+C-1847,Mariam Nassar,0126311192,"4 Street, Gleem",Wedding jewelry interest
+C-1848,Nour Ghanem,0111019686,"56 Tower, Nasr City",Wedding jewelry interest
+C-1849,Dina Badawi,0101332738,"62 Tower, Maadi",Referred by Ahmed
+C-1850,Dina Fahmy,0108920331,"132 Tower, Kafr El Sheikh",V-VIP Customer
+C-1851,Ali Zaki,0109161858,"39 Avenue, Maadi",Prefers WhatsApp
+C-1852,Mostafa Aziz,0104299958,"30 Tower, Nasr City",Frequent Gold Buyer
+C-1853,Heba Rashed,0152745860,"11 Tower, New Cairo",Referred by Ahmed
+C-1854,Mohamed Aziz,0155745527,"16 Street, New Cairo",
+C-1855,Dina Rashed,0154617288,"84 Tower, New Cairo",Wedding jewelry interest
+C-1856,Khaled Kamal,0122370751,"128 Avenue, Dokki",Prefers WhatsApp
+C-1857,Laila Aziz,0125101705,"104 Tower, Sheikh Zayed",Prefers WhatsApp
+C-1858,Ahmed Kamal,0116795686,"24 Avenue, Zamalek",Interested in Solitaires
+C-1859,Mohamed Salem,0105674474,"53 Street, Kafr El Sheikh",Wedding jewelry interest
+C-1860,Ali Bakr,0128065320,"148 Tower, Heliopolis",Prefers WhatsApp
+C-1861,Fatma Hamid,0155377704,"18 Tower, Maadi",Referred by Ahmed
+C-1862,Nour Nassar,0103773094,"4 Tower, Maadi",V-VIP Customer
+C-1863,Mariam Ezzat,0152844304,"93 Street, Nasr City",Wedding jewelry interest
+C-1864,Mariam El-Sayed,0103042033,"133 Tower, Smouha",Prefers WhatsApp
+C-1865,Dina Nassar,0103828299,"142 Street, Gleem",Wedding jewelry interest
+C-1866,Mariam Khalil,0111672311,"67 Tower, Heliopolis",Prefers WhatsApp
+C-1867,Youssef Khalil,0108416983,"133 Avenue, Nasr City",Interested in Solitaires
+C-1868,Mona El-Sayed,0153851200,"115 Avenue, Nasr City",
+C-1869,Youssef Fahmy,0156268197,"24 Avenue, Maadi",Prefers WhatsApp
+C-1870,Mohamed Badawi,0114914462,"142 Street, Kafr El Sheikh",Interested in Solitaires
+C-1871,Youssef Nassar,0122979806,"103 Tower, Zamalek",Referred by Ahmed
+C-1872,Mariam Ghanem,0103677117,"99 Street, Sheikh Zayed",Interested in Solitaires
+C-1873,Mahmoud Bakr,0159841227,"28 Tower, Nasr City",V-VIP Customer
+C-1874,Fatma Ghanem,0129419278,"46 Avenue, Kafr El Sheikh",
+C-1875,Youssef Hamid,0151916018,"93 Tower, Maadi",V-VIP Customer
+C-1876,Sara Salah,0108698551,"19 Street, Heliopolis",Referred by Ahmed
+C-1877,Mohamed Khalil,0116251402,"36 Avenue, Heliopolis",Referred by Ahmed
+C-1878,Mahmoud Rashed,0157964846,"79 Tower, Dokki",
+C-1879,Omar Nassar,0152966793,"36 Tower, Smouha",Prefers WhatsApp
+C-1880,Sara Kamal,0125291029,"66 Avenue, Gleem",Prefers WhatsApp
+C-1881,Aya Hassan,0126145096,"98 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1882,Heba Bakr,0151752804,"96 Tower, Kafr El Sheikh",Frequent Gold Buyer
+C-1883,Youssef Nassar,0118400420,"87 Avenue, Smouha",Interested in Solitaires
+C-1884,Laila Zaki,0126508087,"138 Street, Heliopolis",Referred by Ahmed
+C-1885,Ali Nassar,0116538888,"20 Tower, New Cairo",Referred by Ahmed
+C-1886,Ibrahim Fahmy,0103335905,"53 Avenue, Nasr City",Wedding jewelry interest
+C-1887,Hassan Khalil,0104637370,"115 Street, Nasr City",
+C-1888,Salma Mansour,0102244044,"1 Avenue, Maadi",V-VIP Customer
+C-1889,Khaled Ezzat,0102067613,"134 Tower, Nasr City",Interested in Solitaires
+C-1890,Mariam Bakr,0154401552,"132 Street, Heliopolis",Wedding jewelry interest
+C-1891,Laila El-Sayed,0124602405,"104 Avenue, October City",V-VIP Customer
+C-1892,Fatma Ghanem,0122531721,"142 Avenue, Gleem",V-VIP Customer
+C-1893,Mariam Abbas,0126442652,"39 Tower, Heliopolis",Wedding jewelry interest
+C-1894,Mariam El-Sayed,0155598015,"141 Street, New Cairo",V-VIP Customer
+C-1895,Dina Abbas,0159772976,"20 Street, Dokki",V-VIP Customer
+C-1896,Laila Mansour,0114381944,"19 Tower, Nasr City",V-VIP Customer
+C-1897,Hassan Khalil,0126253727,"65 Street, New Cairo",Prefers WhatsApp
+C-1898,Fatma Hamid,0103736636,"26 Tower, Kafr El Sheikh",Frequent Gold Buyer
+C-1899,Youssef Salah,0159860261,"15 Avenue, New Cairo",Frequent Gold Buyer
+C-1900,Ibrahim Taha,0156406730,"126 Street, Heliopolis",Frequent Gold Buyer
+C-1901,Fatma Abbas,0157442889,"101 Street, Dokki",Prefers WhatsApp
+C-1902,Ibrahim Abbas,0123540776,"69 Avenue, Maadi",Referred by Ahmed
+C-1903,Youssef Ghanem,0113317148,"73 Street, Kafr El Sheikh",Frequent Gold Buyer
+C-1904,Sara Nassar,0122017924,"102 Avenue, Dokki",Referred by Ahmed
+C-1905,Youssef Taha,0152395028,"146 Street, Heliopolis",Prefers WhatsApp
+C-1906,Mostafa El-Sayed,0119837442,"99 Avenue, October City",Wedding jewelry interest
+C-1907,Sara Salah,0151640730,"77 Avenue, Smouha",Prefers WhatsApp
+C-1908,Hassan Salah,0104590203,"85 Avenue, Sheikh Zayed",Frequent Gold Buyer
+C-1909,Youssef Rashed,0126155928,"51 Street, Heliopolis",Prefers WhatsApp
+C-1910,Laila Khalil,0159170420,"10 Street, Smouha",Frequent Gold Buyer
+C-1911,Nour Salah,0117949170,"96 Tower, Sheikh Zayed",Prefers WhatsApp
+C-1912,Laila Salem,0122919859,"116 Street, October City",Referred by Ahmed
+C-1913,Youssef Abbas,0117309233,"110 Avenue, Sheikh Zayed",
+C-1914,Ibrahim Salem,0121313080,"147 Street, Dokki",Interested in Solitaires
+C-1915,Ibrahim Mansour,0123071430,"53 Tower, Heliopolis",
+C-1916,Mariam Nassar,0154801778,"1 Street, Sheikh Zayed",Wedding jewelry interest
+C-1917,Ibrahim Galal,0114094887,"44 Tower, Kafr El Sheikh",V-VIP Customer
+C-1918,Dina Taha,0107664719,"28 Street, Alexandria",
+C-1919,Mohamed Ezzat,0115060340,"108 Street, Gleem",Referred by Ahmed
+C-1920,Sara Badawi,0121787452,"30 Street, New Cairo",Frequent Gold Buyer
+C-1921,Omar Salah,0152917513,"82 Avenue, Kafr El Sheikh",Wedding jewelry interest
+C-1922,Hassan Abbas,0125785506,"6 Avenue, Kafr El Sheikh",Interested in Solitaires
+C-1923,Mostafa Rashed,0158370696,"125 Street, Kafr El Sheikh",Referred by Ahmed
+C-1924,Mahmoud Kamal,0118919627,"102 Street, Kafr El Sheikh",Frequent Gold Buyer
+C-1925,Sara Kamal,0111446523,"43 Street, Sheikh Zayed",
+C-1926,Aya Zaki,0109399392,"103 Avenue, Heliopolis",Interested in Solitaires
+C-1927,Heba Salem,0119697703,"135 Avenue, Smouha",V-VIP Customer
+C-1928,Hassan Mansour,0115117390,"30 Avenue, Gleem",Wedding jewelry interest
+C-1929,Dina Galal,0117742067,"96 Street, October City",Frequent Gold Buyer
+C-1930,Mariam Galal,0156628625,"94 Tower, New Cairo",
+C-1931,Laila Mansour,0115842846,"80 Avenue, Maadi",
+C-1932,Mahmoud Rashed,0152718493,"76 Tower, Nasr City",V-VIP Customer
+C-1933,Mahmoud Hamid,0124696263,"66 Avenue, October City",Frequent Gold Buyer
+C-1934,Ibrahim Galal,0123643930,"10 Tower, October City",Wedding jewelry interest
+C-1935,Nour Rashed,0157753107,"35 Avenue, Maadi",Prefers WhatsApp
+C-1936,Nour Bakr,0107962193,"70 Avenue, New Cairo",
+C-1937,Ibrahim Nassar,0158927102,"26 Tower, Sheikh Zayed",V-VIP Customer
+C-1938,Mostafa Zaki,0156803922,"146 Tower, October City",Interested in Solitaires
+C-1939,Youssef Nassar,0115514017,"122 Street, Heliopolis",V-VIP Customer
+C-1940,Mona Hamid,0106084452,"21 Tower, New Cairo",V-VIP Customer
+C-1941,Mostafa Nassar,0107473103,"15 Street, Dokki",Wedding jewelry interest
+C-1942,Ibrahim Badawi,0107527343,"31 Street, October City",Frequent Gold Buyer
+C-1943,Salma Hamid,0123046308,"8 Avenue, Maadi",
+C-1944,Salma Khalil,0155273465,"64 Avenue, New Cairo",Referred by Ahmed
+C-1945,Salma Hamid,0154357585,"127 Avenue, Alexandria",Interested in Solitaires
+C-1946,Aya Salah,0121916146,"46 Avenue, Heliopolis",Interested in Solitaires
+C-1947,Khaled Taha,0118431514,"56 Street, Smouha",Frequent Gold Buyer
+C-1948,Khaled Ghanem,0128618462,"129 Tower, Kafr El Sheikh",Interested in Solitaires
+C-1949,Mona Kamal,0125651683,"118 Avenue, October City",Frequent Gold Buyer
+C-1950,Mona Hamid,0153179282,"2 Avenue, Zamalek",Frequent Gold Buyer
+C-1951,Laila Galal,0129988653,"97 Street, Kafr El Sheikh",Interested in Solitaires
+C-1952,Omar Hassan,0121133758,"91 Avenue, October City",Prefers WhatsApp
+C-1953,Ibrahim Hamid,0106889889,"113 Avenue, Smouha",
+C-1954,Sara Galal,0157108423,"98 Avenue, Sheikh Zayed",Interested in Solitaires
+C-1955,Sara Salem,0109276340,"6 Street, Sheikh Zayed",Frequent Gold Buyer
+C-1956,Laila Badawi,0103372888,"36 Avenue, Maadi",Interested in Solitaires
+C-1957,Heba Ezzat,0129162407,"62 Avenue, Alexandria",
+C-1958,Sara Abbas,0124733390,"4 Street, Maadi",Wedding jewelry interest
+C-1959,Ahmed El-Sayed,0153761143,"131 Street, Nasr City",Prefers WhatsApp
+C-1960,Fatma Taha,0156673465,"120 Street, Nasr City",Referred by Ahmed
+C-1961,Sara Kamal,0159558073,"26 Street, Heliopolis",Frequent Gold Buyer
+C-1962,Fatma Ezzat,0125191482,"45 Avenue, Smouha",
+C-1963,Laila Salem,0153271366,"16 Tower, Maadi",Wedding jewelry interest
+C-1964,Mahmoud Nassar,0102209860,"14 Avenue, Nasr City",Interested in Solitaires
+C-1965,Mostafa Khalil,0125529320,"129 Tower, Smouha",
+C-1966,Laila Khalil,0158618222,"134 Tower, Alexandria",Wedding jewelry interest
+C-1967,Hassan Rashed,0108615221,"129 Street, Smouha",
+C-1968,Sara Abbas,0152973647,"25 Street, Nasr City",Frequent Gold Buyer
+C-1969,Khaled Galal,0154175085,"52 Tower, New Cairo",Prefers WhatsApp
+C-1970,Mariam Ezzat,0123391940,"123 Avenue, Heliopolis",V-VIP Customer
+C-1971,Sara Galal,0111871803,"25 Street, Sheikh Zayed",V-VIP Customer
+C-1972,Sara Zaki,0123658229,"39 Street, Maadi",Referred by Ahmed
+C-1973,Aya Taha,0157982739,"79 Tower, New Cairo",Prefers WhatsApp
+C-1974,Nour El-Sayed,0152367311,"133 Street, Gleem",Prefers WhatsApp
+C-1975,Aya Ezzat,0157535935,"114 Tower, Gleem",V-VIP Customer
+C-1976,Mahmoud Mansour,0111992028,"10 Street, Alexandria",V-VIP Customer
+C-1977,Mariam El-Sayed,0126586833,"70 Tower, Sheikh Zayed",
+C-1978,Khaled Taha,0114111853,"99 Avenue, Maadi",Referred by Ahmed
+C-1979,Mohamed El-Sayed,0126226819,"45 Avenue, Smouha",Interested in Solitaires
+C-1980,Nour Salem,0109306106,"20 Tower, Gleem",Interested in Solitaires
+C-1981,Ahmed Ghanem,0115415946,"110 Street, Sheikh Zayed",Prefers WhatsApp
+C-1982,Laila Aziz,0113460039,"92 Avenue, Maadi",
+C-1983,Nour Aziz,0125491719,"20 Street, October City",Referred by Ahmed
+C-1984,Aya Zaki,0112815165,"28 Street, Maadi",V-VIP Customer
+C-1985,Mohamed Ezzat,0104764195,"118 Street, Maadi",Frequent Gold Buyer
+C-1986,Ali Mansour,0124302137,"128 Street, New Cairo",V-VIP Customer
+C-1987,Ali Badawi,0104800490,"133 Avenue, October City",Referred by Ahmed
+C-1988,Nour Zaki,0101425778,"8 Avenue, Smouha",
+C-1989,Dina Zaki,0107189674,"144 Avenue, Alexandria",Wedding jewelry interest
+C-1990,Salma Taha,0123226563,"75 Avenue, Smouha",Interested in Solitaires
+C-1991,Ahmed Rashed,0158343043,"65 Street, Dokki",V-VIP Customer
+C-1992,Ahmed Kamal,0106108497,"47 Avenue, Heliopolis",V-VIP Customer
+C-1993,Mariam Zaki,0105348563,"94 Tower, Sheikh Zayed",Prefers WhatsApp
+C-1994,Fatma Khalil,0121442825,"103 Avenue, Smouha",Frequent Gold Buyer
+C-1995,Mostafa Galal,0158451915,"17 Street, Gleem",
+C-1996,Mona Bakr,0102960044,"77 Street, Kafr El Sheikh",Interested in Solitaires
+C-1997,Heba Salah,0108506038,"43 Street, Gleem",Wedding jewelry interest
+C-1998,Mariam Badawi,0101446844,"63 Avenue, Maadi",V-VIP Customer
+C-1999,Sara Hassan,0113545170,"143 Street, Alexandria",Wedding jewelry interest
+C-2000,Nour Aziz,0111497740,"85 Avenue, Alexandria",Wedding jewelry interest

@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Idar Jewelry | Premium Management</title>
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;800&display=swap"
         rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -61,16 +62,11 @@
 
         <!-- Main Content -->
         <main class="content">
-            <header>
+            <header style="margin-bottom: 0;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <button id="menu-toggle" class="mobile-only" onclick="toggleSidebar()">
                         <i data-lucide="menu"></i>
                     </button>
-                    <h1 id="view-title">Dashboard</h1>
-                </div>
-                <div class="user-profile">
-                    <span>Admin</span>
-                    <div class="avatar"></div>
                 </div>
             </header>
 
@@ -83,7 +79,7 @@
     <!-- Modals -->
     <div id="modal-container" class="hidden"></div>
 
-    <script src="app.js?v=1.0.3"></script>
+    <script src="/app.js"></script>
     <script>
         lucide.createIcons();
     </script>

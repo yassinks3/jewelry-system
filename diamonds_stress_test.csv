@@ -1,0 +1,501 @@
+SKU,Name,Item Type,Shape,Carat,Color,Clarity,Cut,Price
+D-1001,Premium Cushion Solitaire,Necklace,Round,0.56,F,VS1,Excellent,467867
+D-1002,Premium Radiant Ring,Necklace,Emerald,1.02,F,VVS2,Good,380530
+D-1003,Premium Round Earrings,Necklace,Marquise,0.73,H,SI1,Fair,168707
+D-1004,Premium Emerald Bracelet,Bracelet,Oval,3.35,E,VVS2,Fair,450156
+D-1005,Premium Heart Ring,Bracelet,Oval,3.28,D,VVS1,Excellent,90905
+D-1006,Premium Heart Earrings,Necklace,Cushion,2.92,E,VVS2,Very Good,374839
+D-1007,Premium Heart Necklace,Ring,Marquise,3.6,E,VVS2,Excellent,307858
+D-1008,Premium Marquise Ring,Bracelet,Marquise,0.76,H,IF,Very Good,131427
+D-1009,Premium Marquise Necklace,Earrings,Round,3.42,H,SI1,Good,169130
+D-1010,Premium Cushion Earrings,Necklace,Radiant,3.74,D,VS1,Fair,279378
+D-1011,Premium Radiant Earrings,Ring,Round,1.42,E,SI1,Excellent,171671
+D-1012,Premium Radiant Solitaire,Solitaire,Emerald,2.05,D,VS2,Very Good,432986
+D-1013,Premium Pear Necklace,Earrings,Princess,3.0,G,VVS1,Fair,100275
+D-1014,Premium Pear Ring,Necklace,Heart,4.74,I,VVS1,Fair,302067
+D-1015,Premium Heart Ring,Necklace,Round,2.67,H,IF,Very Good,36625
+D-1016,Premium Pear Bracelet,Ring,Princess,4.15,H,VVS2,Good,229948
+D-1017,Premium Heart Earrings,Solitaire,Heart,4.01,G,VVS1,Good,325201
+D-1018,Premium Round Earrings,Solitaire,Pear,1.16,G,SI1,Very Good,494828
+D-1019,Premium Cushion Bracelet,Earrings,Round,1.46,D,VS1,Very Good,335364
+D-1020,Premium Cushion Necklace,Solitaire,Pear,2.28,G,IF,Excellent,389305
+D-1021,Premium Emerald Earrings,Necklace,Marquise,4.45,F,VS2,Fair,107786
+D-1022,Premium Round Earrings,Bracelet,Emerald,4.88,G,SI1,Excellent,110509
+D-1023,Premium Princess Earrings,Necklace,Marquise,2.51,J,SI2,Excellent,171766
+D-1024,Premium Emerald Necklace,Necklace,Pear,2.89,D,SI2,Fair,293338
+D-1025,Premium Round Bracelet,Necklace,Princess,3.83,I,SI2,Good,36558
+D-1026,Premium Marquise Necklace,Necklace,Pear,1.79,F,VS2,Very Good,38957
+D-1027,Premium Round Bracelet,Bracelet,Round,1.08,D,IF,Good,463341
+D-1028,Premium Oval Solitaire,Bracelet,Cushion,1.96,I,VS2,Excellent,155734
+D-1029,Premium Round Solitaire,Solitaire,Emerald,0.87,I,VS2,Fair,369887
+D-1030,Premium Pear Bracelet,Earrings,Marquise,2.49,D,VVS1,Very Good,404589
+D-1031,Premium Radiant Ring,Necklace,Emerald,0.97,H,SI1,Excellent,212296
+D-1032,Premium Marquise Ring,Necklace,Cushion,4.54,F,VS2,Fair,445332
+D-1033,Premium Pear Necklace,Bracelet,Princess,4.87,G,VVS1,Excellent,340152
+D-1034,Premium Princess Necklace,Necklace,Radiant,4.75,F,VS2,Very Good,347030
+D-1035,Premium Emerald Necklace,Necklace,Heart,1.76,J,SI2,Excellent,476724
+D-1036,Premium Emerald Necklace,Ring,Heart,4.85,D,IF,Good,371697
+D-1037,Premium Radiant Ring,Bracelet,Oval,4.6,E,SI1,Fair,40652
+D-1038,Premium Radiant Earrings,Ring,Marquise,1.22,H,VVS2,Excellent,178611
+D-1039,Premium Heart Solitaire,Earrings,Oval,3.99,E,SI1,Very Good,62127
+D-1040,Premium Marquise Ring,Solitaire,Emerald,1.99,J,VS2,Fair,301147
+D-1041,Premium Radiant Necklace,Necklace,Oval,2.21,D,SI2,Excellent,204729
+D-1042,Premium Radiant Bracelet,Earrings,Radiant,0.92,G,IF,Very Good,196926
+D-1043,Premium Cushion Solitaire,Necklace,Heart,2.41,E,VVS1,Good,72059
+D-1044,Premium Pear Ring,Earrings,Round,1.86,J,VVS1,Excellent,100008
+D-1045,Premium Heart Earrings,Earrings,Round,4.29,G,IF,Good,79070
+D-1046,Premium Marquise Ring,Solitaire,Heart,2.5,I,SI1,Very Good,88015
+D-1047,Premium Cushion Necklace,Ring,Princess,1.62,D,VVS1,Fair,28999
+D-1048,Premium Oval Bracelet,Bracelet,Cushion,3.56,D,VS2,Excellent,314159
+D-1049,Premium Emerald Necklace,Solitaire,Oval,3.75,F,SI1,Very Good,352673
+D-1050,Premium Oval Solitaire,Ring,Emerald,1.5,F,IF,Good,133241
+D-1051,Premium Heart Ring,Solitaire,Heart,3.52,F,VS1,Fair,303695
+D-1052,Premium Princess Earrings,Necklace,Marquise,2.69,H,IF,Very Good,427674
+D-1053,Premium Cushion Necklace,Necklace,Radiant,1.58,D,VS2,Very Good,89830
+D-1054,Premium Radiant Earrings,Ring,Princess,2.5,D,SI2,Very Good,446725
+D-1055,Premium Pear Necklace,Ring,Round,4.08,E,SI1,Fair,201660
+D-1056,Premium Princess Solitaire,Earrings,Marquise,3.04,F,SI2,Fair,126193
+D-1057,Premium Pear Earrings,Ring,Round,4.96,H,VS1,Good,138082
+D-1058,Premium Marquise Earrings,Ring,Radiant,2.4,J,VVS1,Very Good,225373
+D-1059,Premium Marquise Earrings,Solitaire,Round,4.63,G,VVS1,Very Good,437732
+D-1060,Premium Round Necklace,Ring,Emerald,4.41,D,VS2,Good,193973
+D-1061,Premium Cushion Ring,Bracelet,Oval,3.88,G,VVS2,Good,162019
+D-1062,Premium Heart Solitaire,Bracelet,Radiant,4.04,I,SI1,Very Good,447311
+D-1063,Premium Cushion Solitaire,Ring,Marquise,3.97,I,SI1,Excellent,115341
+D-1064,Premium Radiant Earrings,Ring,Round,3.51,F,VVS1,Fair,348670
+D-1065,Premium Marquise Necklace,Necklace,Emerald,1.52,G,SI1,Good,25215
+D-1066,Premium Pear Ring,Necklace,Oval,3.73,I,VS1,Excellent,440375
+D-1067,Premium Cushion Necklace,Ring,Radiant,3.07,H,VVS1,Good,41598
+D-1068,Premium Heart Ring,Ring,Emerald,2.61,G,VVS1,Very Good,419394
+D-1069,Premium Princess Solitaire,Ring,Round,0.67,I,SI2,Fair,494850
+D-1070,Premium Cushion Earrings,Solitaire,Marquise,2.73,H,SI1,Very Good,109779
+D-1071,Premium Round Ring,Necklace,Radiant,3.28,D,VVS2,Very Good,190551
+D-1072,Premium Heart Solitaire,Necklace,Heart,3.34,I,VS1,Good,469820
+D-1073,Premium Princess Bracelet,Earrings,Round,0.84,I,VVS2,Very Good,98420
+D-1074,Premium Princess Necklace,Ring,Cushion,0.99,I,VS2,Excellent,112570
+D-1075,Premium Marquise Solitaire,Earrings,Cushion,2.39,D,VVS2,Fair,166521
+D-1076,Premium Round Ring,Bracelet,Princess,1.12,I,SI1,Excellent,29943
+D-1077,Premium Emerald Necklace,Solitaire,Princess,0.6,F,VVS2,Excellent,123160
+D-1078,Premium Round Ring,Earrings,Heart,4.67,E,VS1,Good,415265
+D-1079,Premium Emerald Earrings,Ring,Emerald,3.46,G,VS1,Excellent,181206
+D-1080,Premium Cushion Solitaire,Bracelet,Radiant,3.1,F,VVS2,Excellent,335153
+D-1081,Premium Marquise Solitaire,Ring,Heart,3.61,D,IF,Excellent,486989
+D-1082,Premium Radiant Earrings,Ring,Pear,3.52,D,VS1,Fair,403033
+D-1083,Premium Marquise Earrings,Bracelet,Radiant,4.84,I,SI1,Good,465625
+D-1084,Premium Round Earrings,Ring,Cushion,1.52,D,VS2,Excellent,114745
+D-1085,Premium Radiant Solitaire,Solitaire,Marquise,0.84,E,VS2,Very Good,424470
+D-1086,Premium Princess Solitaire,Bracelet,Oval,4.8,J,VVS2,Good,132203
+D-1087,Premium Marquise Ring,Necklace,Emerald,1.61,I,VS1,Very Good,341379
+D-1088,Premium Princess Earrings,Necklace,Round,3.92,H,SI1,Excellent,24115
+D-1089,Premium Pear Necklace,Earrings,Round,4.04,I,VS1,Good,481631
+D-1090,Premium Emerald Bracelet,Necklace,Marquise,2.54,G,VVS1,Excellent,50599
+D-1091,Premium Princess Earrings,Bracelet,Princess,0.57,H,SI2,Fair,95537
+D-1092,Premium Round Bracelet,Earrings,Marquise,0.65,H,IF,Excellent,299206
+D-1093,Premium Emerald Necklace,Solitaire,Marquise,1.5,H,VVS1,Excellent,263529
+D-1094,Premium Pear Earrings,Necklace,Round,2.83,D,VS1,Fair,246710
+D-1095,Premium Marquise Solitaire,Bracelet,Radiant,0.59,D,VS1,Very Good,314170
+D-1096,Premium Pear Ring,Earrings,Emerald,3.81,D,VVS1,Fair,415154
+D-1097,Premium Emerald Solitaire,Necklace,Princess,1.98,F,SI1,Fair,423213
+D-1098,Premium Heart Solitaire,Bracelet,Cushion,0.53,J,VS1,Fair,269338
+D-1099,Premium Marquise Necklace,Necklace,Oval,1.19,D,IF,Very Good,267725
+D-1100,Premium Cushion Necklace,Necklace,Pear,3.59,D,SI2,Good,389224
+D-1101,Premium Round Ring,Necklace,Round,3.47,I,VS2,Excellent,50273
+D-1102,Premium Heart Necklace,Ring,Oval,3.57,H,IF,Good,475617
+D-1103,Premium Round Ring,Bracelet,Pear,3.43,H,SI2,Fair,205407
+D-1104,Premium Oval Solitaire,Bracelet,Radiant,0.95,E,VS1,Very Good,55113
+D-1105,Premium Heart Bracelet,Ring,Oval,4.8,J,SI1,Fair,29036
+D-1106,Premium Heart Earrings,Solitaire,Cushion,1.63,D,VVS1,Good,48443
+D-1107,Premium Round Solitaire,Solitaire,Cushion,2.96,D,SI1,Excellent,114187
+D-1108,Premium Cushion Earrings,Necklace,Radiant,0.97,E,IF,Good,343328
+D-1109,Premium Marquise Ring,Necklace,Princess,3.7,D,SI2,Fair,141273
+D-1110,Premium Oval Ring,Earrings,Marquise,2.44,G,SI2,Excellent,453294
+D-1111,Premium Princess Ring,Ring,Oval,3.1,E,VS2,Good,428625
+D-1112,Premium Oval Earrings,Earrings,Heart,3.33,D,VVS2,Very Good,411705
+D-1113,Premium Oval Necklace,Solitaire,Marquise,2.71,F,VVS1,Excellent,348220
+D-1114,Premium Oval Necklace,Solitaire,Marquise,3.66,F,IF,Good,306057
+D-1115,Premium Emerald Bracelet,Earrings,Oval,1.65,D,SI2,Fair,278614
+D-1116,Premium Round Bracelet,Necklace,Cushion,1.52,E,VS1,Fair,328897
+D-1117,Premium Marquise Bracelet,Necklace,Oval,0.59,F,VS2,Good,366329
+D-1118,Premium Pear Solitaire,Necklace,Marquise,3.34,D,VVS1,Good,150750
+D-1119,Premium Radiant Necklace,Earrings,Cushion,4.94,J,VS2,Good,214692
+D-1120,Premium Cushion Earrings,Necklace,Heart,4.08,D,SI2,Excellent,61238
+D-1121,Premium Princess Earrings,Earrings,Round,2.75,F,VVS1,Fair,286675
+D-1122,Premium Oval Bracelet,Solitaire,Cushion,3.38,E,VS2,Good,34040
+D-1123,Premium Radiant Solitaire,Earrings,Cushion,4.04,H,VVS1,Fair,439223
+D-1124,Premium Oval Bracelet,Ring,Princess,4.84,J,VVS2,Very Good,93590
+D-1125,Premium Oval Ring,Solitaire,Pear,2.72,G,VVS1,Good,305360
+D-1126,Premium Cushion Solitaire,Solitaire,Princess,3.69,D,SI1,Excellent,15471
+D-1127,Premium Radiant Necklace,Solitaire,Radiant,3.64,I,VS2,Good,132963
+D-1128,Premium Heart Earrings,Bracelet,Emerald,2.02,E,VS1,Very Good,347725
+D-1129,Premium Emerald Necklace,Solitaire,Oval,4.45,F,VVS1,Very Good,32705
+D-1130,Premium Princess Earrings,Necklace,Marquise,4.21,E,VVS2,Excellent,172893
+D-1131,Premium Cushion Earrings,Ring,Pear,2.91,J,IF,Good,377574
+D-1132,Premium Pear Ring,Necklace,Cushion,1.7,F,VVS1,Fair,18929
+D-1133,Premium Oval Earrings,Necklace,Radiant,4.09,F,SI2,Excellent,285484
+D-1134,Premium Heart Bracelet,Bracelet,Pear,1.85,F,VVS2,Good,230027
+D-1135,Premium Heart Necklace,Solitaire,Oval,4.07,G,VVS2,Very Good,218916
+D-1136,Premium Radiant Bracelet,Bracelet,Cushion,2.71,G,VVS1,Excellent,373408
+D-1137,Premium Emerald Necklace,Necklace,Heart,0.67,H,VVS1,Good,319401
+D-1138,Premium Cushion Earrings,Earrings,Round,2.71,G,IF,Fair,159981
+D-1139,Premium Oval Solitaire,Ring,Pear,2.69,I,VS1,Fair,60208
+D-1140,Premium Round Necklace,Bracelet,Radiant,1.87,G,VS1,Fair,183141
+D-1141,Premium Princess Bracelet,Ring,Cushion,4.22,I,VS1,Fair,391545
+D-1142,Premium Marquise Ring,Bracelet,Oval,1.22,E,VS1,Excellent,489766
+D-1143,Premium Oval Earrings,Earrings,Oval,4.92,J,VVS2,Fair,50486
+D-1144,Premium Pear Necklace,Bracelet,Round,3.76,G,VVS2,Good,103796
+D-1145,Premium Emerald Ring,Earrings,Oval,4.21,J,IF,Good,493039
+D-1146,Premium Pear Necklace,Ring,Round,4.5,G,SI1,Fair,455334
+D-1147,Premium Emerald Necklace,Earrings,Cushion,2.96,E,SI1,Good,63290
+D-1148,Premium Marquise Necklace,Ring,Round,3.63,F,SI1,Very Good,480155
+D-1149,Premium Cushion Bracelet,Solitaire,Heart,0.99,I,VS2,Good,51469
+D-1150,Premium Princess Solitaire,Bracelet,Cushion,4.01,E,VVS2,Fair,272315
+D-1151,Premium Heart Earrings,Necklace,Marquise,3.84,I,IF,Very Good,257433
+D-1152,Premium Princess Ring,Solitaire,Emerald,4.57,I,SI1,Excellent,113325
+D-1153,Premium Emerald Solitaire,Bracelet,Emerald,2.73,F,SI1,Very Good,426620
+D-1154,Premium Radiant Earrings,Earrings,Heart,3.69,G,VVS1,Fair,373604
+D-1155,Premium Marquise Bracelet,Earrings,Emerald,2.91,J,VS2,Fair,93795
+D-1156,Premium Round Ring,Bracelet,Emerald,2.3,H,VS2,Fair,110785
+D-1157,Premium Oval Earrings,Solitaire,Pear,2.11,F,VVS1,Very Good,457433
+D-1158,Premium Pear Earrings,Necklace,Emerald,3.95,I,VS1,Fair,130785
+D-1159,Premium Radiant Ring,Necklace,Marquise,2.48,H,VVS1,Fair,267549
+D-1160,Premium Round Necklace,Ring,Heart,1.8,E,VVS2,Excellent,26801
+D-1161,Premium Oval Necklace,Solitaire,Pear,3.19,F,VS1,Good,147800
+D-1162,Premium Round Solitaire,Earrings,Marquise,1.03,I,VS2,Good,17313
+D-1163,Premium Cushion Ring,Ring,Oval,0.55,D,VS1,Excellent,183855
+D-1164,Premium Round Necklace,Ring,Heart,3.25,J,SI2,Very Good,194823
+D-1165,Premium Round Solitaire,Ring,Princess,4.32,G,SI2,Good,476068
+D-1166,Premium Emerald Ring,Ring,Heart,2.49,E,VS1,Fair,258188
+D-1167,Premium Princess Earrings,Bracelet,Radiant,1.28,E,SI1,Very Good,442205
+D-1168,Premium Cushion Ring,Ring,Emerald,1.18,E,VVS2,Very Good,262497
+D-1169,Premium Oval Earrings,Earrings,Emerald,0.81,I,SI2,Excellent,251334
+D-1170,Premium Oval Solitaire,Ring,Pear,3.03,G,VVS1,Very Good,209760
+D-1171,Premium Radiant Ring,Earrings,Emerald,1.1,D,VS2,Very Good,480284
+D-1172,Premium Emerald Necklace,Necklace,Cushion,2.28,I,VVS1,Good,35933
+D-1173,Premium Emerald Bracelet,Necklace,Emerald,2.96,D,VVS1,Good,338583
+D-1174,Premium Round Ring,Ring,Heart,4.46,E,SI1,Excellent,248273
+D-1175,Premium Marquise Bracelet,Solitaire,Radiant,4.24,H,IF,Good,425646
+D-1176,Premium Radiant Earrings,Necklace,Marquise,2.17,F,VS1,Excellent,494861
+D-1177,Premium Emerald Necklace,Bracelet,Radiant,1.16,J,VVS2,Fair,244477
+D-1178,Premium Heart Solitaire,Solitaire,Marquise,1.71,H,SI2,Very Good,418178
+D-1179,Premium Princess Ring,Bracelet,Round,4.8,D,VS2,Very Good,466005
+D-1180,Premium Heart Necklace,Ring,Princess,2.97,E,VVS2,Excellent,462653
+D-1181,Premium Oval Earrings,Bracelet,Heart,1.91,G,VS1,Excellent,459862
+D-1182,Premium Radiant Ring,Bracelet,Marquise,4.42,D,SI2,Excellent,364171
+D-1183,Premium Heart Necklace,Bracelet,Princess,4.25,H,VVS1,Very Good,110478
+D-1184,Premium Heart Necklace,Bracelet,Emerald,4.35,E,SI2,Very Good,467232
+D-1185,Premium Oval Ring,Bracelet,Marquise,3.75,J,IF,Fair,269094
+D-1186,Premium Round Solitaire,Necklace,Cushion,1.47,J,SI1,Fair,391201
+D-1187,Premium Radiant Necklace,Earrings,Radiant,4.2,F,SI2,Very Good,202264
+D-1188,Premium Cushion Solitaire,Necklace,Marquise,3.36,F,VS2,Fair,120877
+D-1189,Premium Oval Earrings,Ring,Cushion,1.38,G,VS2,Fair,245141
+D-1190,Premium Emerald Ring,Bracelet,Pear,2.59,I,SI2,Excellent,473898
+D-1191,Premium Oval Solitaire,Earrings,Oval,3.15,F,VVS1,Good,107245
+D-1192,Premium Marquise Bracelet,Necklace,Cushion,1.53,H,SI1,Very Good,67139
+D-1193,Premium Pear Ring,Earrings,Cushion,1.03,J,VS1,Fair,492952
+D-1194,Premium Pear Solitaire,Ring,Heart,4.82,E,VVS2,Excellent,126799
+D-1195,Premium Emerald Ring,Necklace,Cushion,2.27,D,VVS1,Very Good,235868
+D-1196,Premium Oval Bracelet,Necklace,Round,0.91,G,IF,Good,232150
+D-1197,Premium Pear Ring,Earrings,Cushion,3.89,G,SI1,Very Good,379979
+D-1198,Premium Oval Earrings,Necklace,Cushion,2.34,J,SI1,Excellent,217391
+D-1199,Premium Pear Necklace,Bracelet,Heart,4.79,J,SI2,Good,410548
+D-1200,Premium Emerald Earrings,Ring,Heart,1.95,F,VS2,Very Good,109340
+D-1201,Premium Round Necklace,Necklace,Round,3.56,G,IF,Fair,68129
+D-1202,Premium Oval Bracelet,Necklace,Round,4.96,G,VVS2,Good,312034
+D-1203,Premium Cushion Solitaire,Earrings,Marquise,4.32,E,SI1,Very Good,360827
+D-1204,Premium Pear Ring,Necklace,Emerald,4.48,J,SI1,Fair,109789
+D-1205,Premium Marquise Solitaire,Solitaire,Oval,2.48,J,VS1,Very Good,224172
+D-1206,Premium Radiant Earrings,Bracelet,Cushion,2.1,D,VS1,Fair,232827
+D-1207,Premium Round Ring,Solitaire,Pear,2.63,D,SI1,Good,345303
+D-1208,Premium Princess Earrings,Ring,Cushion,3.89,H,SI2,Fair,258193
+D-1209,Premium Cushion Solitaire,Solitaire,Round,2.6,D,VS1,Good,236396
+D-1210,Premium Pear Earrings,Bracelet,Emerald,3.54,I,IF,Good,279514
+D-1211,Premium Emerald Solitaire,Necklace,Pear,1.86,H,SI2,Excellent,386403
+D-1212,Premium Pear Ring,Solitaire,Cushion,2.68,E,SI2,Fair,104837
+D-1213,Premium Oval Ring,Necklace,Emerald,2.77,G,IF,Good,243317
+D-1214,Premium Cushion Earrings,Ring,Cushion,1.18,E,VVS2,Excellent,198951
+D-1215,Premium Radiant Solitaire,Necklace,Emerald,3.08,D,IF,Very Good,335479
+D-1216,Premium Marquise Bracelet,Bracelet,Emerald,4.65,G,VS1,Very Good,376132
+D-1217,Premium Oval Earrings,Solitaire,Oval,3.71,F,VS2,Excellent,241555
+D-1218,Premium Oval Solitaire,Bracelet,Heart,3.44,D,VVS2,Fair,19034
+D-1219,Premium Oval Earrings,Earrings,Heart,2.56,I,VVS1,Fair,351179
+D-1220,Premium Cushion Ring,Bracelet,Marquise,3.12,D,VS1,Excellent,255125
+D-1221,Premium Marquise Ring,Earrings,Oval,1.67,G,VVS1,Fair,70720
+D-1222,Premium Cushion Earrings,Bracelet,Marquise,4.1,I,SI1,Good,78920
+D-1223,Premium Cushion Necklace,Earrings,Marquise,2.32,F,VS1,Fair,309961
+D-1224,Premium Round Earrings,Solitaire,Oval,3.56,G,VVS1,Very Good,313357
+D-1225,Premium Marquise Ring,Necklace,Heart,4.55,D,VS2,Fair,485860
+D-1226,Premium Emerald Bracelet,Earrings,Princess,1.34,J,VVS1,Very Good,271242
+D-1227,Premium Radiant Ring,Ring,Emerald,1.53,E,IF,Fair,177980
+D-1228,Premium Pear Solitaire,Ring,Emerald,2.96,E,VVS1,Very Good,320236
+D-1229,Premium Pear Bracelet,Ring,Heart,3.47,F,VVS2,Very Good,373240
+D-1230,Premium Heart Necklace,Bracelet,Pear,2.24,E,VS1,Good,37332
+D-1231,Premium Princess Solitaire,Necklace,Oval,3.34,G,VVS2,Good,294772
+D-1232,Premium Princess Ring,Necklace,Pear,4.75,E,VVS1,Fair,135383
+D-1233,Premium Princess Ring,Solitaire,Cushion,1.48,J,VVS2,Good,57340
+D-1234,Premium Cushion Solitaire,Ring,Princess,0.91,E,VS1,Very Good,133846
+D-1235,Premium Heart Earrings,Solitaire,Heart,1.72,G,SI2,Good,243015
+D-1236,Premium Marquise Bracelet,Bracelet,Oval,3.23,J,VS2,Very Good,227093
+D-1237,Premium Radiant Ring,Ring,Round,2.99,F,VVS2,Very Good,227422
+D-1238,Premium Marquise Earrings,Necklace,Round,3.29,F,IF,Good,314025
+D-1239,Premium Pear Ring,Ring,Round,4.95,J,VS1,Very Good,201247
+D-1240,Premium Emerald Solitaire,Solitaire,Round,2.15,H,SI1,Fair,410053
+D-1241,Premium Heart Solitaire,Solitaire,Pear,0.6,H,VVS1,Good,236773
+D-1242,Premium Pear Earrings,Necklace,Pear,1.69,I,VS2,Very Good,208890
+D-1243,Premium Marquise Earrings,Ring,Radiant,2.91,D,VS2,Good,30354
+D-1244,Premium Pear Solitaire,Ring,Oval,1.88,F,VVS2,Fair,471962
+D-1245,Premium Round Solitaire,Solitaire,Marquise,4.41,F,VS1,Fair,478134
+D-1246,Premium Oval Bracelet,Solitaire,Round,2.88,I,SI1,Fair,360294
+D-1247,Premium Marquise Necklace,Necklace,Pear,4.08,F,VVS1,Good,458085
+D-1248,Premium Heart Earrings,Bracelet,Heart,2.42,J,SI2,Good,454255
+D-1249,Premium Round Bracelet,Ring,Round,3.37,J,IF,Very Good,116815
+D-1250,Premium Marquise Bracelet,Necklace,Pear,2.98,D,SI2,Good,487711
+D-1251,Premium Marquise Ring,Solitaire,Oval,2.58,I,VS2,Good,483782
+D-1252,Premium Radiant Ring,Solitaire,Marquise,1.2,I,IF,Excellent,450425
+D-1253,Premium Marquise Bracelet,Bracelet,Radiant,1.6,G,IF,Very Good,53641
+D-1254,Premium Oval Earrings,Solitaire,Heart,1.01,H,VVS1,Excellent,98753
+D-1255,Premium Marquise Bracelet,Bracelet,Radiant,3.18,E,VS2,Excellent,190879
+D-1256,Premium Marquise Bracelet,Ring,Radiant,4.1,H,VVS2,Excellent,23644
+D-1257,Premium Radiant Solitaire,Bracelet,Emerald,3.13,G,SI1,Very Good,494767
+D-1258,Premium Radiant Bracelet,Earrings,Heart,3.7,G,VVS1,Very Good,405858
+D-1259,Premium Oval Ring,Necklace,Round,3.97,H,SI2,Excellent,142922
+D-1260,Premium Oval Ring,Earrings,Princess,1.67,E,VS2,Fair,319378
+D-1261,Premium Radiant Necklace,Earrings,Pear,2.34,E,VVS1,Good,445223
+D-1262,Premium Round Necklace,Solitaire,Pear,0.93,E,VS1,Very Good,42273
+D-1263,Premium Oval Necklace,Ring,Emerald,2.14,J,IF,Very Good,194623
+D-1264,Premium Cushion Bracelet,Earrings,Princess,4.19,F,VVS1,Good,435454
+D-1265,Premium Radiant Solitaire,Bracelet,Emerald,2.33,J,SI1,Very Good,110692
+D-1266,Premium Pear Ring,Earrings,Radiant,2.71,G,IF,Fair,167634
+D-1267,Premium Radiant Necklace,Solitaire,Princess,2.91,F,VS1,Very Good,307614
+D-1268,Premium Princess Earrings,Earrings,Oval,2.71,E,VVS2,Fair,479477
+D-1269,Premium Princess Earrings,Solitaire,Emerald,1.04,F,VS2,Fair,159653
+D-1270,Premium Marquise Ring,Solitaire,Radiant,2.5,F,VS2,Very Good,65115
+D-1271,Premium Marquise Solitaire,Solitaire,Oval,4.36,E,VS2,Excellent,15253
+D-1272,Premium Heart Solitaire,Necklace,Pear,1.43,G,SI1,Fair,359629
+D-1273,Premium Princess Earrings,Bracelet,Radiant,2.72,D,VVS2,Very Good,204728
+D-1274,Premium Round Earrings,Necklace,Round,2.45,D,IF,Good,233962
+D-1275,Premium Emerald Earrings,Solitaire,Cushion,4.69,H,SI1,Very Good,480385
+D-1276,Premium Cushion Ring,Ring,Radiant,2.65,J,VS2,Excellent,39506
+D-1277,Premium Emerald Ring,Solitaire,Radiant,0.5,J,SI1,Excellent,151357
+D-1278,Premium Princess Bracelet,Earrings,Emerald,4.17,I,VVS1,Very Good,58059
+D-1279,Premium Emerald Earrings,Necklace,Emerald,2.67,F,VS2,Excellent,480281
+D-1280,Premium Princess Ring,Necklace,Princess,3.36,E,VS1,Fair,392959
+D-1281,Premium Marquise Ring,Bracelet,Round,1.09,D,VS1,Excellent,244191
+D-1282,Premium Pear Ring,Solitaire,Emerald,4.54,J,SI2,Good,368393
+D-1283,Premium Radiant Necklace,Necklace,Radiant,3.27,F,IF,Excellent,426789
+D-1284,Premium Oval Bracelet,Bracelet,Radiant,0.98,E,VVS2,Very Good,206956
+D-1285,Premium Radiant Earrings,Bracelet,Oval,1.15,I,IF,Excellent,25977
+D-1286,Premium Radiant Necklace,Bracelet,Round,4.53,F,SI2,Excellent,181030
+D-1287,Premium Cushion Bracelet,Solitaire,Heart,4.64,D,IF,Good,492837
+D-1288,Premium Marquise Necklace,Earrings,Emerald,2.2,E,SI2,Very Good,216845
+D-1289,Premium Cushion Solitaire,Ring,Emerald,4.48,I,VVS2,Very Good,285693
+D-1290,Premium Emerald Bracelet,Earrings,Pear,4.72,J,VVS1,Excellent,285527
+D-1291,Premium Heart Bracelet,Bracelet,Heart,4.33,J,SI2,Good,189832
+D-1292,Premium Cushion Necklace,Solitaire,Round,2.23,F,VVS1,Fair,338391
+D-1293,Premium Cushion Bracelet,Solitaire,Cushion,2.63,F,VVS1,Excellent,360299
+D-1294,Premium Radiant Bracelet,Solitaire,Pear,1.66,J,SI1,Excellent,244869
+D-1295,Premium Emerald Solitaire,Solitaire,Marquise,2.83,D,VVS2,Good,390575
+D-1296,Premium Round Bracelet,Necklace,Marquise,3.27,H,VVS1,Very Good,451873
+D-1297,Premium Marquise Necklace,Ring,Marquise,2.6,E,VS1,Good,332281
+D-1298,Premium Princess Necklace,Necklace,Oval,0.53,F,SI1,Excellent,311341
+D-1299,Premium Princess Solitaire,Solitaire,Cushion,1.13,E,VVS1,Good,301616
+D-1300,Premium Oval Necklace,Bracelet,Heart,4.89,I,SI1,Fair,354261
+D-1301,Premium Pear Solitaire,Earrings,Cushion,2.19,E,VS1,Very Good,393674
+D-1302,Premium Cushion Solitaire,Necklace,Emerald,3.1,H,IF,Excellent,471802
+D-1303,Premium Heart Solitaire,Earrings,Cushion,2.27,J,SI2,Good,58765
+D-1304,Premium Princess Solitaire,Ring,Heart,4.61,F,VS2,Fair,75698
+D-1305,Premium Round Ring,Earrings,Marquise,2.55,J,SI2,Fair,206202
+D-1306,Premium Round Earrings,Earrings,Radiant,4.09,G,VVS1,Fair,391067
+D-1307,Premium Oval Bracelet,Necklace,Oval,0.95,H,VVS1,Good,250740
+D-1308,Premium Princess Ring,Bracelet,Pear,4.18,D,VVS1,Fair,435467
+D-1309,Premium Heart Ring,Necklace,Princess,3.8,G,SI1,Very Good,207706
+D-1310,Premium Round Earrings,Earrings,Round,2.42,E,VS1,Good,334603
+D-1311,Premium Emerald Ring,Ring,Heart,4.84,I,VS2,Very Good,361714
+D-1312,Premium Round Bracelet,Solitaire,Princess,4.92,G,VS1,Fair,213337
+D-1313,Premium Oval Necklace,Ring,Princess,4.75,G,VVS1,Very Good,399939
+D-1314,Premium Emerald Necklace,Solitaire,Radiant,2.33,G,SI2,Fair,279616
+D-1315,Premium Heart Ring,Bracelet,Marquise,4.86,F,VS2,Good,272081
+D-1316,Premium Princess Bracelet,Ring,Marquise,4.52,I,VVS2,Excellent,271559
+D-1317,Premium Marquise Bracelet,Bracelet,Cushion,1.66,E,VVS1,Very Good,146576
+D-1318,Premium Princess Earrings,Ring,Princess,3.89,F,VS2,Very Good,146408
+D-1319,Premium Marquise Ring,Earrings,Pear,0.71,J,SI1,Excellent,292252
+D-1320,Premium Marquise Ring,Ring,Marquise,1.54,I,VVS1,Very Good,225897
+D-1321,Premium Pear Earrings,Necklace,Round,2.12,F,VS1,Good,34038
+D-1322,Premium Radiant Earrings,Solitaire,Heart,2.84,E,SI2,Excellent,77502
+D-1323,Premium Oval Bracelet,Bracelet,Pear,2.57,F,SI1,Good,83126
+D-1324,Premium Marquise Necklace,Solitaire,Marquise,4.11,E,VVS1,Very Good,244840
+D-1325,Premium Pear Necklace,Earrings,Oval,3.15,D,VS2,Excellent,427377
+D-1326,Premium Radiant Bracelet,Necklace,Oval,2.48,J,VVS2,Very Good,383382
+D-1327,Premium Princess Ring,Ring,Princess,1.39,I,VS1,Good,105006
+D-1328,Premium Marquise Ring,Earrings,Oval,3.14,H,VVS1,Good,175013
+D-1329,Premium Round Bracelet,Bracelet,Emerald,4.03,F,VS1,Good,242512
+D-1330,Premium Emerald Ring,Solitaire,Pear,2.71,J,SI1,Excellent,18774
+D-1331,Premium Emerald Bracelet,Ring,Round,4.61,J,VS2,Excellent,336903
+D-1332,Premium Princess Solitaire,Solitaire,Princess,2.37,H,VS1,Excellent,244135
+D-1333,Premium Radiant Ring,Earrings,Cushion,1.29,G,IF,Very Good,483158
+D-1334,Premium Oval Solitaire,Necklace,Oval,3.69,H,SI1,Good,221229
+D-1335,Premium Round Solitaire,Bracelet,Marquise,2.74,I,IF,Excellent,271129
+D-1336,Premium Radiant Earrings,Solitaire,Oval,4.83,H,VS1,Good,409508
+D-1337,Premium Round Necklace,Bracelet,Radiant,4.2,D,VVS1,Excellent,116462
+D-1338,Premium Radiant Ring,Earrings,Pear,2.6,G,SI2,Very Good,283129
+D-1339,Premium Pear Bracelet,Necklace,Marquise,3.35,E,VVS2,Fair,318155
+D-1340,Premium Heart Solitaire,Ring,Oval,3.8,J,SI2,Excellent,153418
+D-1341,Premium Princess Bracelet,Solitaire,Oval,1.13,F,VS1,Excellent,386485
+D-1342,Premium Pear Earrings,Earrings,Princess,2.18,G,IF,Very Good,390559
+D-1343,Premium Emerald Bracelet,Bracelet,Round,1.64,G,SI2,Very Good,478866
+D-1344,Premium Round Bracelet,Earrings,Radiant,3.15,F,SI1,Excellent,98294
+D-1345,Premium Oval Earrings,Solitaire,Radiant,2.79,E,IF,Excellent,419010
+D-1346,Premium Radiant Earrings,Earrings,Heart,1.38,F,SI1,Fair,54244
+D-1347,Premium Emerald Necklace,Solitaire,Oval,3.05,D,VS1,Good,70830
+D-1348,Premium Princess Bracelet,Solitaire,Radiant,1.89,E,VS2,Good,363372
+D-1349,Premium Pear Bracelet,Ring,Pear,2.43,E,VVS2,Excellent,203515
+D-1350,Premium Round Earrings,Earrings,Round,0.79,I,VS2,Very Good,318141
+D-1351,Premium Princess Ring,Bracelet,Cushion,2.68,J,VVS2,Fair,414091
+D-1352,Premium Radiant Solitaire,Ring,Pear,0.75,E,SI2,Good,437182
+D-1353,Premium Radiant Ring,Solitaire,Round,2.16,D,VS1,Excellent,231615
+D-1354,Premium Princess Ring,Solitaire,Radiant,3.7,E,SI2,Fair,165105
+D-1355,Premium Emerald Bracelet,Solitaire,Princess,3.58,E,VS2,Good,271704
+D-1356,Premium Pear Earrings,Solitaire,Round,4.61,G,IF,Fair,44565
+D-1357,Premium Pear Solitaire,Necklace,Pear,4.91,F,VS2,Excellent,312162
+D-1358,Premium Heart Ring,Necklace,Oval,3.04,G,VVS1,Good,128812
+D-1359,Premium Princess Bracelet,Earrings,Marquise,4.27,E,VS1,Very Good,315327
+D-1360,Premium Marquise Ring,Ring,Marquise,2.6,F,VVS2,Fair,249248
+D-1361,Premium Radiant Bracelet,Ring,Oval,1.49,I,SI2,Good,124537
+D-1362,Premium Heart Bracelet,Ring,Pear,4.04,E,VVS1,Very Good,256455
+D-1363,Premium Emerald Solitaire,Solitaire,Princess,4.05,F,SI2,Very Good,297905
+D-1364,Premium Oval Bracelet,Bracelet,Princess,2.86,F,VVS1,Excellent,153078
+D-1365,Premium Oval Solitaire,Necklace,Pear,2.08,F,IF,Excellent,63021
+D-1366,Premium Cushion Earrings,Necklace,Cushion,2.24,I,VS1,Very Good,242377
+D-1367,Premium Princess Ring,Ring,Oval,2.24,J,VS2,Fair,207224
+D-1368,Premium Princess Solitaire,Solitaire,Cushion,2.4,G,VS2,Excellent,210289
+D-1369,Premium Marquise Solitaire,Necklace,Round,1.81,J,VVS1,Very Good,154218
+D-1370,Premium Round Earrings,Earrings,Heart,2.44,H,VS1,Very Good,246606
+D-1371,Premium Pear Earrings,Necklace,Pear,2.15,E,SI1,Very Good,472185
+D-1372,Premium Emerald Earrings,Necklace,Emerald,0.5,D,VVS1,Excellent,404146
+D-1373,Premium Round Solitaire,Bracelet,Marquise,0.91,G,VS1,Good,310569
+D-1374,Premium Marquise Solitaire,Solitaire,Emerald,0.78,G,VS2,Good,325189
+D-1375,Premium Princess Bracelet,Necklace,Round,3.28,J,VVS1,Good,322006
+D-1376,Premium Round Earrings,Solitaire,Princess,4.06,I,VVS2,Fair,257561
+D-1377,Premium Princess Necklace,Necklace,Oval,4.47,E,IF,Fair,270010
+D-1378,Premium Princess Bracelet,Solitaire,Marquise,3.25,J,SI2,Good,217633
+D-1379,Premium Cushion Solitaire,Solitaire,Cushion,3.99,G,VVS1,Excellent,489136
+D-1380,Premium Marquise Ring,Necklace,Princess,2.04,I,IF,Very Good,489857
+D-1381,Premium Radiant Solitaire,Bracelet,Marquise,1.23,G,IF,Very Good,235415
+D-1382,Premium Marquise Solitaire,Ring,Emerald,2.48,G,SI2,Good,424343
+D-1383,Premium Round Earrings,Bracelet,Round,3.22,F,VS2,Fair,117423
+D-1384,Premium Princess Necklace,Earrings,Cushion,0.92,E,VS1,Excellent,235729
+D-1385,Premium Cushion Solitaire,Bracelet,Cushion,4.56,F,SI1,Fair,469598
+D-1386,Premium Marquise Bracelet,Earrings,Marquise,4.09,F,IF,Very Good,311819
+D-1387,Premium Pear Ring,Ring,Princess,4.9,J,VVS1,Good,249406
+D-1388,Premium Radiant Ring,Necklace,Heart,2.85,I,IF,Fair,177562
+D-1389,Premium Marquise Solitaire,Bracelet,Heart,3.76,D,VS2,Good,265639
+D-1390,Premium Cushion Earrings,Bracelet,Heart,2.6,E,SI2,Excellent,473803
+D-1391,Premium Cushion Earrings,Necklace,Round,4.69,D,VVS2,Very Good,198505
+D-1392,Premium Oval Earrings,Bracelet,Heart,4.7,J,VS2,Excellent,386775
+D-1393,Premium Oval Earrings,Earrings,Oval,2.72,I,VVS1,Excellent,89845
+D-1394,Premium Emerald Necklace,Necklace,Radiant,4.56,I,IF,Excellent,494559
+D-1395,Premium Heart Ring,Necklace,Pear,2.89,D,IF,Very Good,175889
+D-1396,Premium Oval Ring,Necklace,Radiant,1.17,F,VVS2,Fair,344227
+D-1397,Premium Cushion Earrings,Bracelet,Princess,2.8,G,VVS1,Very Good,475395
+D-1398,Premium Oval Solitaire,Bracelet,Heart,4.53,E,SI1,Fair,367741
+D-1399,Premium Oval Ring,Ring,Emerald,2.22,I,VVS2,Fair,484948
+D-1400,Premium Pear Solitaire,Earrings,Oval,4.41,H,IF,Fair,187912
+D-1401,Premium Emerald Bracelet,Bracelet,Round,1.45,H,SI1,Good,327827
+D-1402,Premium Oval Earrings,Bracelet,Round,1.97,J,SI2,Very Good,177750
+D-1403,Premium Cushion Necklace,Bracelet,Cushion,3.26,G,IF,Very Good,133717
+D-1404,Premium Round Earrings,Ring,Emerald,2.84,G,SI2,Excellent,426758
+D-1405,Premium Heart Necklace,Necklace,Emerald,4.96,I,VVS1,Fair,192421
+D-1406,Premium Marquise Necklace,Ring,Pear,1.66,E,VS1,Fair,244750
+D-1407,Premium Heart Necklace,Bracelet,Radiant,2.98,H,VS1,Fair,374921
+D-1408,Premium Round Necklace,Earrings,Radiant,2.34,F,VS2,Very Good,480771
+D-1409,Premium Radiant Necklace,Ring,Princess,4.8,E,VVS2,Very Good,198813
+D-1410,Premium Oval Bracelet,Solitaire,Emerald,0.99,G,VVS1,Good,290085
+D-1411,Premium Oval Solitaire,Bracelet,Pear,1.5,H,SI2,Good,76252
+D-1412,Premium Heart Solitaire,Necklace,Oval,1.92,G,SI2,Excellent,101140
+D-1413,Premium Cushion Ring,Necklace,Heart,0.95,F,VVS2,Excellent,286211
+D-1414,Premium Cushion Bracelet,Necklace,Heart,3.74,F,VS2,Very Good,124571
+D-1415,Premium Cushion Ring,Ring,Oval,4.59,J,VVS1,Excellent,43992
+D-1416,Premium Marquise Earrings,Solitaire,Oval,4.64,F,VVS1,Fair,394205
+D-1417,Premium Emerald Bracelet,Solitaire,Round,1.78,I,SI2,Fair,363161
+D-1418,Premium Radiant Necklace,Earrings,Heart,2.69,E,SI1,Excellent,398460
+D-1419,Premium Radiant Bracelet,Ring,Cushion,2.51,G,SI2,Fair,225302
+D-1420,Premium Round Necklace,Solitaire,Radiant,2.9,I,SI2,Very Good,88582
+D-1421,Premium Emerald Bracelet,Ring,Round,1.02,D,SI2,Good,321767
+D-1422,Premium Radiant Solitaire,Necklace,Round,4.01,D,VS1,Good,223828
+D-1423,Premium Marquise Solitaire,Bracelet,Radiant,1.04,F,VVS2,Excellent,405330
+D-1424,Premium Emerald Bracelet,Necklace,Radiant,0.58,D,IF,Good,238524
+D-1425,Premium Heart Solitaire,Necklace,Radiant,3.84,J,VS1,Fair,168023
+D-1426,Premium Radiant Earrings,Bracelet,Radiant,1.25,J,SI1,Good,206929
+D-1427,Premium Radiant Bracelet,Ring,Oval,4.05,J,VS1,Very Good,341353
+D-1428,Premium Emerald Bracelet,Bracelet,Round,0.67,I,SI2,Very Good,58035
+D-1429,Premium Marquise Necklace,Earrings,Round,2.34,J,IF,Good,245127
+D-1430,Premium Cushion Necklace,Necklace,Princess,1.52,I,VVS1,Excellent,495753
+D-1431,Premium Pear Earrings,Necklace,Oval,2.65,I,SI2,Excellent,153710
+D-1432,Premium Marquise Ring,Earrings,Pear,4.45,F,VS1,Good,146457
+D-1433,Premium Emerald Necklace,Solitaire,Heart,4.35,H,VS2,Good,198413
+D-1434,Premium Princess Necklace,Ring,Princess,2.78,G,SI1,Good,374622
+D-1435,Premium Oval Necklace,Ring,Emerald,1.5,G,IF,Excellent,58708
+D-1436,Premium Round Bracelet,Necklace,Cushion,1.93,G,IF,Good,107766
+D-1437,Premium Marquise Solitaire,Earrings,Cushion,2.21,D,SI2,Good,476363
+D-1438,Premium Pear Ring,Bracelet,Oval,3.72,I,VS1,Good,145617
+D-1439,Premium Marquise Ring,Solitaire,Emerald,4.35,I,IF,Good,314590
+D-1440,Premium Cushion Solitaire,Ring,Heart,4.71,G,SI2,Fair,298896
+D-1441,Premium Marquise Bracelet,Solitaire,Oval,3.8,D,VS2,Good,161808
+D-1442,Premium Heart Ring,Necklace,Emerald,3.62,F,SI2,Excellent,26542
+D-1443,Premium Emerald Solitaire,Earrings,Marquise,1.52,H,VVS1,Excellent,121609
+D-1444,Premium Oval Earrings,Solitaire,Round,2.23,F,VS2,Very Good,272999
+D-1445,Premium Radiant Solitaire,Necklace,Heart,2.22,E,VVS1,Excellent,404357
+D-1446,Premium Marquise Ring,Necklace,Pear,4.57,D,IF,Very Good,343585
+D-1447,Premium Princess Bracelet,Necklace,Marquise,4.98,D,IF,Very Good,76423
+D-1448,Premium Heart Ring,Bracelet,Round,3.43,D,VS1,Fair,114944
+D-1449,Premium Emerald Ring,Necklace,Princess,4.41,I,SI2,Good,22548
+D-1450,Premium Oval Necklace,Ring,Cushion,1.58,D,VVS2,Fair,298476
+D-1451,Premium Pear Ring,Bracelet,Pear,0.99,E,VS1,Very Good,425340
+D-1452,Premium Round Necklace,Ring,Oval,4.05,D,SI1,Fair,377062
+D-1453,Premium Radiant Necklace,Bracelet,Princess,3.96,I,VS1,Good,54823
+D-1454,Premium Round Solitaire,Solitaire,Round,1.0,D,VVS2,Fair,361036
+D-1455,Premium Radiant Necklace,Necklace,Heart,1.27,I,IF,Fair,83941
+D-1456,Premium Heart Earrings,Necklace,Round,2.5,G,SI1,Fair,362715
+D-1457,Premium Round Bracelet,Earrings,Cushion,3.59,J,VS2,Good,47141
+D-1458,Premium Oval Earrings,Necklace,Heart,4.76,D,VVS1,Very Good,435042
+D-1459,Premium Princess Necklace,Earrings,Oval,1.95,E,VS1,Very Good,350802
+D-1460,Premium Marquise Ring,Ring,Pear,2.62,J,VS2,Fair,243041
+D-1461,Premium Marquise Necklace,Earrings,Heart,4.8,I,IF,Fair,134507
+D-1462,Premium Pear Ring,Earrings,Cushion,2.32,G,IF,Very Good,433518
+D-1463,Premium Radiant Solitaire,Bracelet,Marquise,3.97,J,SI2,Excellent,236290
+D-1464,Premium Pear Solitaire,Solitaire,Pear,2.45,D,IF,Very Good,40135
+D-1465,Premium Oval Necklace,Ring,Marquise,3.76,J,VS2,Excellent,128387
+D-1466,Premium Oval Solitaire,Solitaire,Round,3.35,E,VVS1,Excellent,102970
+D-1467,Premium Cushion Solitaire,Bracelet,Emerald,4.95,J,VVS2,Fair,147398
+D-1468,Premium Cushion Earrings,Solitaire,Cushion,0.59,G,VVS1,Excellent,488852
+D-1469,Premium Cushion Earrings,Solitaire,Radiant,2.18,E,VVS2,Fair,292904
+D-1470,Premium Oval Ring,Necklace,Heart,3.85,D,VVS1,Very Good,213732
+D-1471,Premium Radiant Bracelet,Solitaire,Heart,0.65,D,VVS2,Fair,104012
+D-1472,Premium Heart Solitaire,Earrings,Round,1.48,H,VS2,Good,360737
+D-1473,Premium Princess Ring,Ring,Marquise,4.99,D,VVS1,Excellent,71263
+D-1474,Premium Marquise Bracelet,Necklace,Radiant,0.67,G,SI2,Fair,69905
+D-1475,Premium Emerald Earrings,Bracelet,Oval,2.61,G,VS1,Excellent,257703
+D-1476,Premium Oval Solitaire,Necklace,Pear,2.13,I,VS1,Very Good,484329
+D-1477,Premium Radiant Solitaire,Ring,Princess,3.13,F,VS1,Very Good,262954
+D-1478,Premium Marquise Earrings,Earrings,Oval,3.8,E,SI2,Excellent,100435
+D-1479,Premium Cushion Bracelet,Bracelet,Radiant,2.49,E,VS1,Good,152298
+D-1480,Premium Emerald Earrings,Bracelet,Round,4.55,F,IF,Very Good,158568
+D-1481,Premium Emerald Necklace,Necklace,Round,2.02,F,SI1,Very Good,52119
+D-1482,Premium Radiant Ring,Ring,Emerald,4.06,H,VS1,Very Good,476155
+D-1483,Premium Heart Necklace,Ring,Heart,2.12,F,SI1,Good,238293
+D-1484,Premium Princess Solitaire,Solitaire,Emerald,1.86,D,VVS1,Excellent,99546
+D-1485,Premium Cushion Earrings,Bracelet,Round,1.41,D,VVS2,Excellent,225407
+D-1486,Premium Princess Bracelet,Ring,Princess,3.55,E,SI1,Excellent,33619
+D-1487,Premium Cushion Solitaire,Earrings,Princess,4.68,G,VS2,Excellent,96644
+D-1488,Premium Emerald Necklace,Ring,Round,3.38,F,SI2,Good,398809
+D-1489,Premium Oval Ring,Earrings,Princess,3.27,D,VVS1,Fair,314181
+D-1490,Premium Oval Ring,Bracelet,Oval,3.36,J,SI1,Very Good,41985
+D-1491,Premium Oval Necklace,Necklace,Princess,1.75,I,VVS2,Good,434467
+D-1492,Premium Cushion Earrings,Earrings,Emerald,3.53,J,IF,Fair,135998
+D-1493,Premium Princess Bracelet,Ring,Round,4.13,E,VVS2,Very Good,193531
+D-1494,Premium Princess Solitaire,Solitaire,Princess,4.88,E,IF,Very Good,307675
+D-1495,Premium Radiant Bracelet,Bracelet,Radiant,1.68,E,SI1,Excellent,338780
+D-1496,Premium Heart Ring,Earrings,Round,4.83,D,SI2,Very Good,397881
+D-1497,Premium Cushion Bracelet,Solitaire,Radiant,4.93,I,SI2,Very Good,222588
+D-1498,Premium Round Solitaire,Bracelet,Oval,3.14,E,IF,Fair,342943
+D-1499,Premium Emerald Solitaire,Bracelet,Pear,1.62,F,VVS1,Excellent,454868
+D-1500,Premium Round Solitaire,Ring,Cushion,3.06,D,SI2,Very Good,451348
