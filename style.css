@@ -1616,6 +1616,11 @@ table tbody tr:last-child td {
         display: flex;
     }
 
+    .content {
+        padding: 1rem;
+        padding-top: 5rem; /* Space for the hamburger menu */
+    }
+
     #app {
         flex-direction: column;
     }

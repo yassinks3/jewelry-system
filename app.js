@@ -650,8 +650,6 @@ function renderDashboard(container) {
     const alerts = checkStockLevels();
 
     container.innerHTML = `
-        <div style="margin-top: -1rem;"></div> <!-- Pull content up -->
-
         ${alerts.length > 0 ? `
         <div class="glass-card hero-card animate-fade-in" style="margin-bottom: 2rem; border-left: 4px solid #ef4444;">
             <div style="display: flex; gap: 1rem; align-items: center;">
