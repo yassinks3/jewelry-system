@@ -2035,10 +2035,15 @@ async function refreshDataOnly() {
 
 async function handleLogin(event) {
     event.preventDefault();
-    const email = document.getElementById('login-email').value;
+    let loginInput = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     const btn = document.getElementById('login-btn');
     const errorDiv = document.getElementById('login-error');
+
+    // Shorthand support: if no @ domain, assume @idar.com
+    if (!loginInput.includes('@')) {
+        loginInput += "@idar.com";
+    }
 
     btn.disabled = true;
     const originalText = btn.innerText;
@@ -2046,7 +2051,7 @@ async function handleLogin(event) {
     errorDiv.innerText = "";
 
     try {
-        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        const { error } = await supabaseClient.auth.signInWithPassword({ email: loginInput, password });
         if (error) throw error;
         initApp();
     } catch (error) {
