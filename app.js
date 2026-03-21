@@ -998,15 +998,15 @@ function openDiamondModal(param = null) {
             </div>
             <form id="diamond-form" onsubmit="saveDiamond(event, ${editItem ? editItem.id : null})">
                 <div class="modal-form-grid">
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('image')}</label><input type="file" id="d-image" accept="image/*" class="file-input"></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('type')}</label><select id="d-item-type" required>${['Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'].map(tg => `<option ${(editItem && editItem.item_type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase().replace(' ', '_'))}</option>`).join('')}</select></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('image')}</label><input type="file" id="d-image" accept="image/*" class="file-input"></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('type')}</label><select id="d-item-type" required>${['Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'].map(tg => `<option ${(editItem && editItem.item_type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase().replace(' ', '_'))}</option>`).join('')}</select></div>
                     <div class="form-group" style="grid-column: span 3;"><label>${t('shape')}</label><select id="d-shape" required>${['Round', 'Princess', 'Emerald', 'Asscher', 'Cushion', 'Marquise', 'Oval', 'Pear', 'Radiant', 'Heart'].map(s => `<option ${editItem && editItem.type === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
                     <div class="form-group" style="grid-column: span 3;"><label>${t('color')}</label><select id="d-color" required>${['D', 'E', 'F', 'G', 'H', 'I', 'J'].map(c => `<option ${editItem && editItem.color === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('cut')}</label><select id="d-cut" required>${['Excellent', 'Very Good', 'Good', 'Fair'].map(ct => `<option ${editItem && editItem.cut === ct ? 'selected' : ''}>${ct}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>${t('carat')}</label><input type="number" id="d-carat" step="any" value="${editItem ? editItem.carat : ''}" required></div>
-                    <div class="form-group"><label>${t('clarity')}</label><select id="d-clarity" required>${['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1'].map(cl => `<option ${editItem && editItem.clarity === cl ? 'selected' : ''}>${cl}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.7rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('cut')}</label><select id="d-cut" required>${['Excellent', 'Very Good', 'Good', 'Fair'].map(ct => `<option ${editItem && editItem.cut === ct ? 'selected' : ''}>${ct}</option>`).join('')}</select></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('carat')}</label><input type="number" id="d-carat" step="any" value="${editItem ? editItem.carat : ''}" required></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('clarity')}</label><select id="d-clarity" required>${['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1'].map(cl => `<option ${editItem && editItem.clarity === cl ? 'selected' : ''}>${cl}</option>`).join('')}</select></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.65rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
@@ -1035,13 +1035,13 @@ function openGoldModal(param = null) {
             </div>
             <form id="gold-form" onsubmit="saveGold(event, ${editItem ? editItem.id : null})">
                 <div class="modal-form-grid">
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('image')}</label><input type="file" id="g-image" accept="image/*" class="file-input"></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('name')}</label><input type="text" id="g-name" value="${editItem ? editItem.name : ''}" required></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
-                    <div class="form-group"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required></div>
-                    <div id="g-suggested" style="grid-column: span 3; font-size: 0.7rem; color: var(--primary-blue); margin-top: -0.5rem; margin-bottom: 0.5rem;"></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('image')}</label><input type="file" id="g-image" accept="image/*" class="file-input"></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('name')}</label><input type="text" id="g-name" value="${editItem ? editItem.name : ''}" required></div>
+                    <div class="form-group" style="grid-column: span 6;"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required></div>
+                    <div id="g-suggested" style="grid-column: span 6; font-size: 0.65rem; color: var(--primary-blue); margin-top: -0.5rem; margin-bottom: 0.5rem;"></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
