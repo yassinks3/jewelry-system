@@ -669,12 +669,12 @@ function renderDashboard(container) {
 
         <div class="inventory-grid animate-fade-in">
             <div class="glass-card hero-card" style="grid-column: span 2;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
                         <div class="stat-label">${t('total_portfolio_value')}</div>
-                        <div class="stat-value privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-size: 2.8rem; letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
+                        <div class="stat-value privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-size: clamp(1.8rem, 8vw, 2.8rem); letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer;" onclick="togglePrivacy('stats')">
+                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer; flex-shrink: 0;" onclick="togglePrivacy('stats')">
                         <i data-lucide="${privacyMode_stats ? 'eye-off' : 'eye'}" style="width: 20px; color: var(--primary-blue);"></i>
                     </div>
                 </div>

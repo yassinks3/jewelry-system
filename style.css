@@ -715,6 +715,8 @@ button:hover {
     border-radius: 20px;
     padding: 1.5rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Prevent child element leaks */
+    position: relative;
 }
 
 .glass-card:hover {
@@ -1619,6 +1621,10 @@ table tbody tr:last-child td {
     .content {
         padding: 1rem;
         padding-top: 5rem; /* Space for the hamburger menu */
+    }
+
+    .stat-value {
+        font-size: 1.5rem; /* Scale down on mobile */
     }
 
     #app {
