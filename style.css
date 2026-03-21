@@ -1720,6 +1720,46 @@ table tbody tr:last-child td {
         display: flex !important;
         flex-direction: column !important;
     }
+
+    /* Scaling UI for small screens */
+    .filter-tabs, .range-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-btn, .range-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+
+    .inventory-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .inventory-controls > div {
+        flex-wrap: wrap;
+    }
+
+    .btn-outline, .btn-import, .inventory-controls button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .workshop-board {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 1rem;
+    }
+
+    .workshop-board > div {
+        min-width: 1000px; /* Force scrollable side-ways on mobile */
+        display: flex;
+        gap: 1rem;
+    }
 }
 
 /* Workshop Specifics */

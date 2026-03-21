@@ -1987,14 +1987,7 @@ async function wipeCategory(category) {
 // Mobile Sidebar Logic
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
-    let overlay = document.querySelector('.sidebar-overlay');
-
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.className = 'sidebar-overlay';
-        overlay.onclick = toggleSidebar;
-        document.body.appendChild(overlay);
-    }
+    const overlay = document.getElementById('sidebar-overlay');
 
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
