@@ -1291,12 +1291,43 @@ button:hover {
 
 .repair-img-preview {
     width: 100%;
-    aspect-ratio: 4/3; /* Fixed size to prevent "super long" images */
+    aspect-ratio: 4/3;
     object-fit: cover;
     border-radius: 12px;
-    margin-top: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+}
+
+.repair-img-preview-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.repair-img-remove-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    z-index: 20;
+    transition: all 0.2s;
+}
+
+.repair-img-remove-btn:hover {
+    background: #dc2626;
+    transform: scale(1.1);
 }
 
 .job-card-image {
@@ -1888,8 +1919,32 @@ table tbody tr:last-child td {
     }
 
     .workshop-column {
-        flex: 0 0 220px !important; /* Narrower per user request */
-        padding: 1rem !important;
+        flex: 0 0 170px !important; /* Ultra-compact as requested */
+        padding: 0.75rem !important;
+    }
+
+    .column-header h3 {
+        font-size: 0.65rem !important;
+        letter-spacing: 0;
+    }
+
+    .column-header .job-count {
+        font-size: 0.6rem !important;
+        padding: 0.1rem 0.3rem !important;
+    }
+
+    .job-card {
+        padding: 0.6rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .job-card .customer-name {
+        font-size: 0.7rem !important;
+    }
+    
+    .pieces-badge {
+        font-size: 0.55rem !important;
+        padding: 0.1rem 0.25rem !important;
     }
     
     /* Bigger Add Job Button on Mobile */

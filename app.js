@@ -1669,7 +1669,14 @@ function openRepairModal(editId = null) {
                                 <span>${t('take_photo') || 'Take / Choose Photo'}</span>
                             </button>
                             <div id="r-image-preview-container">
-                                ${currentImage ? `<img src="${currentImage}" class="repair-img-preview" onclick="showFullImage('${currentImage}')">` : ''}
+                                ${currentImage ? `
+                                <div class="repair-img-preview-wrapper">
+                                    <button type="button" class="repair-img-remove-btn" onclick="removeRepairImage()">
+                                        <i data-lucide="x" style="width: 16px;"></i>
+                                    </button>
+                                    <img src="${currentImage}" class="repair-img-preview" onclick="showFullImage('${currentImage}')">
+                                </div>
+                                ` : ''}
                             </div>
                             <input type="hidden" id="r-image-data" value="${currentImage || ''}">
                         </div>
@@ -1709,10 +1716,24 @@ function handleRepairImageChange(input) {
             const data = e.target.result;
             document.getElementById('r-image-data').value = data;
             const container = document.getElementById('r-image-preview-container');
-            container.innerHTML = `<img src="${data}" class="repair-img-preview" onclick="showFullImage('${data}')">`;
+            container.innerHTML = `
+                <div class="repair-img-preview-wrapper">
+                    <button type="button" class="repair-img-remove-btn" onclick="removeRepairImage()">
+                        <i data-lucide="x" style="width: 16px;"></i>
+                    </button>
+                    <img src="${data}" class="repair-img-preview" onclick="showFullImage('${data}')">
+                </div>
+            `;
+            lucide.createIcons();
         };
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function removeRepairImage() {
+    document.getElementById('r-image-data').value = '';
+    document.getElementById('r-image-input').value = '';
+    document.getElementById('r-image-preview-container').innerHTML = '';
 }
 
 function handleCustomerAutocomplete(input) {
