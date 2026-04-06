@@ -1386,7 +1386,7 @@ button:hover {
     box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
 
-.pieces-badge {
+.pieces-badge { color: var(--primary-blue) !important; font-weight: 700 !important; font-size: 0.75rem !important; opacity: 1 !important; visibility: visible !important; display: block !important; _ignore: 
     background: var(--primary-gold);
     color: #000;
     padding: 0.2rem 0.61rem;
@@ -2023,7 +2023,7 @@ table tbody tr:last-child td {
         font-size: 0.65rem !important;
     }
     
-    .pieces-badge {
+    .pieces-badge { color: var(--primary-blue) !important; font-weight: 700 !important; font-size: 0.75rem !important; opacity: 1 !important; visibility: visible !important; display: block !important; _ignore: 
         font-size: 0.6rem !important;
         color: var(--primary-blue) !important;
     }
