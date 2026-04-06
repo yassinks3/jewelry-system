@@ -1826,6 +1826,16 @@ table tbody tr:last-child td {
     .content {
         padding: 1rem;
         height: 100vh;
+        padding-top: 10rem !important; /* Extra clearance for hamburger menu */
+    }
+
+    /* Keep all top-level elements away from the hamburger menu */
+    #dashboard-view, #diamonds-view, #gold-view, #workshop-view, #customers-view, #inventory-view {
+        margin-top: 30px !important;
+    }
+
+    .inventory-controls {
+        margin-top: 35px !important;
     }
 
     header h1 {
@@ -1945,19 +1955,21 @@ table tbody tr:last-child td {
         flex: 0 0 145px !important; /* Force even smaller */
         max-width: 145px !important;
         min-width: 145px !important;
-        padding: 0.5rem !important;
+        padding: 0.4rem !important;
+        min-height: auto !important; /* Shorter columns as requested */
         overflow: hidden !important;
         word-wrap: break-word !important;
     }
 
     .column-header h3 {
-        font-size: 0.52rem !important;
+        font-size: 0.85rem !important; /* Bigger text as requested */
         letter-spacing: -0.3px;
         margin: 0;
         line-height: 1.1;
         white-space: normal !important;
-        word-break: break-all !important;
+        word-break: break-word !important;
         text-align: center;
+        font-weight: 700;
     }
 
     .column-header .job-count {

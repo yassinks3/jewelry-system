@@ -1631,33 +1631,46 @@ function openRepairModal(editId = null) {
                         
                         <!-- Customer Selection -->
                         <div class="form-group" style="position: relative;">
-                            <label>${t('customer')}</label>
-                            <input type="text" id="r-customer" value="${job ? job.customer : ''}" 
-                                placeholder="${t('customer_name')} (${t('optional')})" 
-                                oninput="handleCustomerAutocomplete(this)" autocomplete="off">
-                            <div id="r-customer-suggestions" class="suggestions-dropdown hidden"></div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <label style="margin: 0;">${t('customer')}</label>
+                                <button type="button" class="btn-text" style="font-size: 0.75rem; color: var(--primary-blue);" onclick="toggleQuickCustomer()">
+                                    + ${t('new_customer') || 'New Customer'}
+                                </button>
+                            </div>
+                            <div id="r-customer-select-group">
+                                <input type="text" id="r-customer" value="${job ? job.customer : ''}" 
+                                    placeholder="${t('customer_name')} (${t('optional')})" 
+                                    oninput="handleCustomerAutocomplete(this)" autocomplete="off">
+                                <div id="r-customer-suggestions" class="suggestions-dropdown hidden"></div>
+                            </div>
+                            
+                            <!-- Quick Add Fields -->
+                            <div id="quick-customer-fields" class="hidden" style="margin-top: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.03); border: 1px dashed var(--border); border-radius: 8px; display: flex; flex-direction: column; gap: 0.75rem;">
+                                <p style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.25rem;">${t('quick_add_info') || 'Creating New Customer'}</p>
+                                <input type="text" id="qc-name" placeholder="${t('customer_name')} *">
+                                <input type="tel" id="qc-phone" placeholder="${t('customer_phone')}">
+                                <input type="email" id="qc-email" placeholder="${t('customer_email')}">
+                            </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                             <!-- Piece Counter -->
-                            <div class="form-group">
-                                <label>${t('pieces') || 'Pieces'}</label>
-                                <div class="piece-counter">
-                                    <button type="button" class="counter-btn" onclick="adjustRepairCounter(-1)">-</button>
-                                    <span id="r-pieces-display" class="counter-value">${currentPieces}</span>
-                                    <button type="button" class="counter-btn" onclick="adjustRepairCounter(1)">+</button>
-                                </div>
-                                <input type="hidden" id="r-pieces" value="${currentPieces}">
+                        <!-- Piece Counter -->
+                        <div class="form-group">
+                            <label>${t('pieces') || 'Pieces'}</label>
+                            <div class="piece-counter">
+                                <button type="button" class="counter-btn" onclick="adjustRepairCounter(-1)">-</button>
+                                <span id="r-pieces-display" class="counter-value">${currentPieces}</span>
+                                <button type="button" class="counter-btn" onclick="adjustRepairCounter(1)">+</button>
                             </div>
+                            <input type="hidden" id="r-pieces" value="${currentPieces}">
+                        </div>
 
-                            <!-- Status Selection -->
-                            <div class="form-group">
-                                <label>${t('status')}</label>
-                                <select id="r-status" required>
-                                    ${['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'].map(s =>
-        `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}
-                                </select>
-                            </div>
+                        <!-- Status Selection (Mobile Stacked) -->
+                        <div class="form-group">
+                            <label>${t('status')}</label>
+                            <select id="r-status" required>
+                                ${['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'].map(s =>
+                                    `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}
+                            </select>
                         </div>
 
                         <!-- Photo Capture -->
@@ -1736,6 +1749,21 @@ function removeRepairImage() {
     document.getElementById('r-image-preview-container').innerHTML = '';
 }
 
+function toggleQuickCustomer() {
+    const fields = document.getElementById('quick-customer-fields');
+    const select = document.getElementById('r-customer-select-group');
+    const input = document.getElementById('r-customer');
+    
+    if (fields.classList.contains('hidden')) {
+        fields.classList.remove('hidden');
+        select.classList.add('hidden');
+        input.value = ''; // Clear search if adding new
+    } else {
+        fields.classList.add('hidden');
+        select.classList.remove('hidden');
+    }
+}
+
 function handleCustomerAutocomplete(input) {
     const val = input.value.toLowerCase();
     const suggestions = document.getElementById('r-customer-suggestions');
@@ -1762,43 +1790,72 @@ function selectRepairCustomer(name) {
 async function saveRepair(event, editId = null) {
     event.preventDefault();
     if (!currentUser) return alert("Please log in first");
+    setButtonLoading(true);
 
-    const status = document.getElementById('r-status').value;
-    const existingJob = editId ? inventory.repairs.find(j => j.id === editId) : null;
+    try {
+        let customer = document.getElementById('r-customer').value;
+        const qcNameInput = document.getElementById('qc-name');
+        const qcName = qcNameInput ? qcNameInput.value : '';
+        
+        // Handle Quick Customer Add
+        if (qcName) {
+            const qcPhone = document.getElementById('qc-phone').value;
+            const qcEmail = document.getElementById('qc-email').value;
+            
+            const { data: newCust, error: custErr } = await supabase
+                .from('customers')
+                .insert([
+                    { 
+                        name: qcName, 
+                        phone: qcPhone, 
+                        email: qcEmail,
+                        user_id: currentUser.id
+                    }
+                ])
+                .select();
+                
+            if (custErr) throw custErr;
+            customer = qcName;
+            
+            // Refresh customers list background
+            const { data: allCusts } = await supabase.from('customers').select('*');
+            inventory.customers = allCusts || [];
+        }
 
-    const job = {
-        id: editId || Date.now(),
-        customer: document.getElementById('r-customer').value,
-        status: status,
-        pieces: parseInt(document.getElementById('r-pieces').value) || 1,
-        image: document.getElementById('r-image-data').value || null,
-        user_id: currentUser.id,
-        is_urgent: existingJob ? existingJob.is_urgent : false,
-        delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
-            ? new Date().toISOString()
-            : (existingJob ? existingJob.delivered_at : null)
-    };
+        const status = document.getElementById('r-status').value;
+        const existingJob = editId ? inventory.repairs.find(j => j.id === editId) : null;
 
-    const btn = event.submitter || event.target.querySelector('button[type="submit"]');
-    if (btn) setButtonLoading(btn, true);
+        const job = {
+            id: editId || Date.now(),
+            customer: customer,
+            status: status,
+            pieces: parseInt(document.getElementById('r-pieces').value) || 1,
+            image: document.getElementById('r-image-data').value || null,
+            user_id: currentUser.id,
+            is_urgent: existingJob ? existingJob.is_urgent : false,
+            delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
+                ? new Date().toISOString()
+                : (existingJob ? existingJob.delivered_at : null)
+        };
 
-    const { error } = await supabaseClient.from('repairs').upsert([job]);
-    if (error) { 
-        alert("Error saving job: " + error.message); 
-        if (btn) setButtonLoading(btn, false);
-        return; 
+        const { error } = await supabase.from('repairs').upsert([job]);
+        if (error) throw error;
+
+        // Surgical Update
+        if (editId) {
+            const idx = inventory.repairs.findIndex(j => j.id === editId);
+            if (idx !== -1) inventory.repairs[idx] = job;
+        } else {
+            inventory.repairs.unshift(job);
+        }
+
+        closeModal();
+        renderApp();
+    } catch (error) {
+        alert("Error saving job: " + error.message);
+    } finally {
+        setButtonLoading(false);
     }
-
-    // Surgical Update
-    if (editId) {
-        const idx = inventory.repairs.findIndex(j => j.id === editId);
-        if (idx !== -1) inventory.repairs[idx] = job;
-    } else {
-        inventory.repairs.unshift(job);
-    }
-
-    closeModal();
-    renderApp();
 }
 
 function handleJobLongPressStart(id) {
