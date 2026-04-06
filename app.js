@@ -469,56 +469,56 @@ let globalSearchTimeout;
 function handleSearch(val) {
     clearTimeout(globalSearchTimeout);
     globalSearchTimeout = setTimeout(() => {
-    currentSearch = val.toLowerCase();
-    const suggestionsContainer = document.getElementById('search-suggestions');
-    const activeView = currentView;
+        currentSearch = val.toLowerCase();
+        const suggestionsContainer = document.getElementById('search-suggestions');
+        const activeView = currentView;
 
-    if (!val || val.length < 1) {
-        suggestionsContainer.classList.add('hidden');
-        if (activeView === 'diamonds') updateInventoryGrid('diamonds');
-        else if (activeView === 'gold') updateInventoryGrid('gold');
-        else if (activeView === 'customers') updateCustomerTable();
-        return;
-    }
-
-    let matches = [];
-    // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
-    inventory.diamonds.forEach(d => {
-        const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} ${t('diamond')} (${d.sku})`;
-        if (isFuzzyMatch(label, currentSearch)) {
-            const isFuzzy = !label.toLowerCase().includes(currentSearch);
-            matches.push({ label, value: d.sku, type: 'diamond', isFuzzy });
+        if (!val || val.length < 1) {
+            suggestionsContainer.classList.add('hidden');
+            if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+            else if (activeView === 'gold') updateInventoryGrid('gold');
+            else if (activeView === 'customers') updateCustomerTable();
+            return;
         }
-    });
-    inventory.gold.forEach(g => {
-        const label = `${g.name} (${g.sku})`;
-        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
-    });
-    // Add customers to global search suggestions too
-    inventory.customers.forEach(c => {
-        const label = `${c.name} (${c.customer_code})`;
-        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id, type: 'customer' });
-    });
 
-    if (matches.length > 0) {
-        suggestionsContainer.innerHTML = matches.slice(0, 10).map(m => {
-            const regex = new RegExp(`(${currentSearch})`, 'gi');
-            const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
-            return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
+        let matches = [];
+        // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
+        inventory.diamonds.forEach(d => {
+            const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} ${t('diamond')} (${d.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) {
+                const isFuzzy = !label.toLowerCase().includes(currentSearch);
+                matches.push({ label, value: d.sku, type: 'diamond', isFuzzy });
+            }
+        });
+        inventory.gold.forEach(g => {
+            const label = `${g.name} (${g.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
+        });
+        // Add customers to global search suggestions too
+        inventory.customers.forEach(c => {
+            const label = `${c.name} (${c.customer_code})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id, type: 'customer' });
+        });
+
+        if (matches.length > 0) {
+            suggestionsContainer.innerHTML = matches.slice(0, 10).map(m => {
+                const regex = new RegExp(`(${currentSearch})`, 'gi');
+                const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
+                return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
                 <div style="display: flex; flex-direction: column;">
                     <span class="match-label">${highlightedLabel}</span>
                     ${m.isFuzzy ? `<span class="fuzzy-hint" style="font-size: 0.7rem; color: var(--primary-gold); opacity: 0.8;">✨ ${t('potential_match')}</span>` : ''}
                 </div>
                 <span class="match-type">${t(m.type === 'diamond' ? 'diamonds' : (m.type === 'gold' ? 'gold' : 'customers'))}</span>
             </div>`;
-        }).join('');
-        suggestionsContainer.classList.remove('hidden');
-    } else suggestionsContainer.classList.add('hidden');
+            }).join('');
+            suggestionsContainer.classList.remove('hidden');
+        } else suggestionsContainer.classList.add('hidden');
 
-    // Filter the view itself
-    if (activeView === 'diamonds') updateInventoryGrid('diamonds');
-    else if (activeView === 'gold') updateInventoryGrid('gold');
-    else if (activeView === 'customers') updateCustomerTable();
+        // Filter the view itself
+        if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+        else if (activeView === 'gold') updateInventoryGrid('gold');
+        else if (activeView === 'customers') updateCustomerTable();
     }, 250);
 }
 
@@ -543,50 +543,50 @@ let localSearchTimeout;
 function handleLocalSearch(query, type) {
     clearTimeout(localSearchTimeout);
     localSearchTimeout = setTimeout(() => {
-    currentSearch = query.toLowerCase();
-    const suggestionsId = `${type}-local-suggestions`;
-    const suggestionsContainer = document.getElementById(suggestionsId);
+        currentSearch = query.toLowerCase();
+        const suggestionsId = `${type}-local-suggestions`;
+        const suggestionsContainer = document.getElementById(suggestionsId);
 
-    if (!query) {
-        if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
-        if (type === 'customers') updateCustomerTable();
-        else updateInventoryGrid(type);
-        return;
-    }
+        if (!query) {
+            if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
+            if (type === 'customers') updateCustomerTable();
+            else updateInventoryGrid(type);
+            return;
+        }
 
-    let matches = [];
-    if (type === 'diamonds') {
-        inventory.diamonds.forEach(d => {
-            const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} (${d.sku})`;
-            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
-        });
-    } else if (type === 'gold') {
-        inventory.gold.forEach(g => {
-            const label = `${g.name} (${g.sku})`;
-            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku });
-        });
-    } else if (type === 'customers') {
-        inventory.customers.forEach(c => {
-            const label = `${c.name} (${c.customer_code})`;
-            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id });
-        });
-    }
+        let matches = [];
+        if (type === 'diamonds') {
+            inventory.diamonds.forEach(d => {
+                const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} (${d.sku})`;
+                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
+            });
+        } else if (type === 'gold') {
+            inventory.gold.forEach(g => {
+                const label = `${g.name} (${g.sku})`;
+                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku });
+            });
+        } else if (type === 'customers') {
+            inventory.customers.forEach(c => {
+                const label = `${c.name} (${c.customer_code})`;
+                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id });
+            });
+        }
 
-    if (suggestionsContainer && matches.length > 0) {
-        suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `
+        if (suggestionsContainer && matches.length > 0) {
+            suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `
             <div class="suggestion-item" onclick="selectLocalSuggestion('${m.value}', '${type}')">
                 <span class="match-label">${m.label}</span>
                 <i data-lucide="corner-down-left" style="width: 12px; height: 12px; opacity: 0.3;"></i>
             </div>
         `).join('');
-        suggestionsContainer.classList.remove('hidden');
-        lucide.createIcons();
-    } else if (suggestionsContainer) {
-        suggestionsContainer.classList.add('hidden');
-    }
+            suggestionsContainer.classList.remove('hidden');
+            lucide.createIcons();
+        } else if (suggestionsContainer) {
+            suggestionsContainer.classList.add('hidden');
+        }
 
-    if (type === 'customers') updateCustomerTable();
-    else updateInventoryGrid(type);
+        if (type === 'customers') updateCustomerTable();
+        else updateInventoryGrid(type);
     }, 250);
 }
 
@@ -624,11 +624,11 @@ document.addEventListener('keydown', (e) => {
         if (modalContainer && !modalContainer.classList.contains('hidden')) {
             closeModal();
         }
-        
+
         if (typeof commandPaletteActive !== 'undefined' && commandPaletteActive && typeof closeCommandPalette === 'function') {
             closeCommandPalette();
         }
-        
+
         const sidebar = document.querySelector('.sidebar');
         if (sidebar && sidebar.classList.contains('active')) {
             toggleSidebar();
@@ -1086,6 +1086,17 @@ function saveMarketRates(event) {
 
 function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
 
+// UI Helpers
+function setButtonLoading(btn, isLoading) {
+    if (isLoading) {
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+    } else {
+        btn.classList.remove('btn-loading');
+        btn.disabled = false;
+    }
+}
+
 function saveDiamond(event, editId = null) {
     event.preventDefault();
     const diamond = {
@@ -1102,13 +1113,16 @@ function saveDiamond(event, editId = null) {
         image: editId ? inventory.diamonds.find(i => i.id === editId).image : null
     };
     const finalize = async () => {
+        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
         if (!editId && isDuplicate('diamonds', diamond) && !confirm(t('duplicate_warn'))) return;
 
+        if (btn) setButtonLoading(btn, true);
         // Save to Supabase
         const { error } = await supabaseClient.from('diamonds').upsert([diamond]);
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
+            if (btn) setButtonLoading(btn, false);
         } else {
             // Surgical Update
             if (editId) {
@@ -1142,13 +1156,16 @@ function saveGold(event, editId = null) {
         image: editId ? inventory.gold.find(i => i.id === editId).image : null
     };
     const finalize = async () => {
+        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
         if (!editId && isDuplicate('gold', item) && !confirm(t('duplicate_warn'))) return;
 
+        if (btn) setButtonLoading(btn, true);
         // Save to Supabase
         const { error } = await supabaseClient.from('gold').upsert([item]);
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
+            if (btn) setButtonLoading(btn, false);
         } else {
             // Surgical Update
             if (editId) {
@@ -1291,6 +1308,8 @@ function sellItem(event, category, id) {
     };
 
     const finalizeSale = async () => {
+        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
+        if (btn) setButtonLoading(btn, true);
         // Save to sales table
         const { error: sError } = await supabaseClient.from('sales').insert([saleData]);
         // Remove from original table
@@ -1298,6 +1317,7 @@ function sellItem(event, category, id) {
 
         if (sError || dError) {
             alert("Error syncing sale: " + (sError?.message || dError?.message));
+            if (btn) setButtonLoading(btn, false);
             return;
         }
 
@@ -1459,7 +1479,7 @@ function renderSales(container) {
                 <button class="btn-outline" onclick="toggleVoidMode()" style="background: rgba(100, 100, 100, 0.2);">
                     <i data-lucide="x" style="width: 16px; height: 16px;"></i> Cancel
                 </button>
-                <button class="btn-outline" onclick="confirmBulkVoid()" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" ${selectedCount === 0 ? 'disabled' : ''}>
+                <button class="btn-outline" onclick="confirmBulkVoid(event)" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" ${selectedCount === 0 ? 'disabled' : ''}>
                     <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Void Selected (${selectedCount})
                 </button>
                 <span style="color: var(--primary-blue); font-weight: 600; font-size: 0.9rem;">
@@ -1493,7 +1513,7 @@ function renderSales(container) {
                             <i data-lucide="printer" style="width: 12px; height: 12px;"></i> Receipt
                         </button>
                         ${userRole === 'admin' ? `
-                        <button onclick="voidSale(${item.id})" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                        <button onclick="voidSale(${item.id}, event)" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
                             <i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i> Void
                         </button>
                         ` : ''}
@@ -1744,8 +1764,15 @@ async function saveRepair(event, editId = null) {
             : (existingJob ? existingJob.delivered_at : null)
     };
 
+    const btn = event.submitter || event.target.querySelector('button[type="submit"]');
+    if (btn) setButtonLoading(btn, true);
+
     const { error } = await supabaseClient.from('repairs').upsert([job]);
-    if (error) { alert("Error saving job: " + error.message); return; }
+    if (error) { 
+        alert("Error saving job: " + error.message); 
+        if (btn) setButtonLoading(btn, false);
+        return; 
+    }
 
     // Surgical Update
     if (editId) {
@@ -2129,11 +2156,14 @@ function renderProfitChart() {
     });
 }
 
-async function voidSale(saleId) {
+async function voidSale(saleId, event) {
     if (!confirm("Void this sale and return item to inventory?")) return;
 
     const sale = inventory.sold.find(s => s.id === saleId);
     if (!sale) return;
+
+    const btn = event?.submitter || (event?.target && event.target.tagName === 'BUTTON' ? event.target : null);
+    if (btn) setButtonLoading(btn, true);
 
     try {
         // 1. Mark sale as voided in Supabase
@@ -2158,6 +2188,7 @@ async function voidSale(saleId) {
     } catch (e) {
         console.error("Void failed", e);
         alert("Void failed: " + e.message);
+        if (btn) setButtonLoading(btn, false);
     }
 }
 
@@ -2463,6 +2494,9 @@ async function saveCustomer(event, customerId) {
         user_id: currentUser.id
     };
 
+    const btn = event.submitter || event.target.querySelector('button[type="submit"]');
+    if (btn) setButtonLoading(btn, true);
+
     try {
         let finalCustomerId = customerId;
         if (customerId) {
@@ -2626,11 +2660,14 @@ function toggleVoidSelection(saleId) {
     showView('sales');
 }
 
-async function confirmBulkVoid() {
+async function confirmBulkVoid(event) {
     const count = selectedVoidIds.size;
     if (count === 0) return;
 
     if (!confirm(`${t('void')} ${count} ${t('sale_plural')} ${t('and_return_items')}?`)) return;
+
+    const btn = event?.submitter || (event?.target && event.target.tagName === 'BUTTON' ? event.target : null);
+    if (btn) setButtonLoading(btn, true);
 
     try {
         for (const saleId of selectedVoidIds) {
@@ -2660,6 +2697,7 @@ async function confirmBulkVoid() {
     } catch (e) {
         console.error("Bulk void failed", e);
         alert("Bulk void failed: " + e.message);
+        if (btn) setButtonLoading(btn, false);
     }
 }
 
