@@ -3138,33 +3138,47 @@ function stopQRScanner() {
 
 function onScanSuccess(decodedText, decodedResult) {
     console.log("Code matched =", decodedText, decodedResult);
+    
+    // Diagnostic Alert
+    alert("SCAN DETECTED!\nRaw: " + decodedText);
+    
     stopQRScanner();
     
     if (navigator.vibrate) navigator.vibrate(100);
 
     const sku = decodedText.trim().toUpperCase();
+    console.log("Searching for SKU:", sku);
     
     if (sku.startsWith('D-')) {
-        const item = inventory.diamonds.find(i => i.sku === sku);
+        const item = inventory.diamonds.find(i => (i.sku || i.SKU || "").toUpperCase() === sku);
         if (item) {
+            alert("Found Diamond ID: " + item.id);
             showView('diamonds');
             setTimeout(() => openItemModal('diamonds', item.id), 100);
-        } else alert("Diamond not found: " + sku);
+        } else {
+            alert("Diamond not found in inventory: " + sku + "\nInventory Size: " + inventory.diamonds.length);
+        }
     } else if (sku.startsWith('G-')) {
-        const item = inventory.gold.find(i => i.sku === sku);
+        const item = inventory.gold.find(i => (i.sku || i.SKU || "").toUpperCase() === sku);
         if (item) {
+            alert("Found Gold ID: " + item.id);
             showView('gold');
             setTimeout(() => openItemModal('gold', item.id), 100);
-        } else alert("Gold item not found: " + sku);
+        } else {
+            alert("Gold item not found in inventory: " + sku + "\nInventory Size: " + inventory.gold.length);
+        }
     } else if (sku.startsWith('R-')) {
         // Handle Virtual SKU: R-{id}
         const idStr = sku.replace('R-', '');
         const item = inventory.repairs.find(j => j.id.toString() === idStr || j.id == idStr);
         if (item) {
+            alert("Found Repair ID: " + item.id);
             showView('workshop');
             setTimeout(() => openRepairModal(item.id), 100);
-        } else alert("Repair job not found: " + sku);
+        } else {
+            alert("Repair job not found in inventory: " + sku + "\nInventory Size: " + inventory.repairs.length);
+        }
     } else {
-        alert("Unknown QR Code format: " + sku);
+        alert("Unknown QR Code format: " + sku + "\nTry codes starting with D-, G-, or R-");
     }
 }
