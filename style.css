@@ -2024,8 +2024,8 @@ table tbody tr:last-child td {
     }
     
     .pieces-badge {
-        font-size: 0.5rem !important;
-        padding: 0.1rem 0.2rem !important;
+        font-size: 0.6rem !important;
+        color: var(--primary-blue) !important;
     }
     
     /* Bigger Add Job Button on Mobile */

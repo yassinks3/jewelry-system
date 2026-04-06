@@ -1583,9 +1583,9 @@ function renderWorkshop(container) {
                                         `}
                                     </div>
                                     
-                                    ${status !== 'delivered' ? `
+                                    ${getNextRepairStatus(status) ? `
                                         <div class="next-step-badge" onclick="quickMoveRepair(${j.id}, event)">
-                                            <span>${t(statuses[statuses.indexOf(status) + 1])}</span>
+                                            <span>${t(getNextRepairStatus(status))}</span>
                                             <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                         </div>
                                     ` : ''}
@@ -1628,15 +1628,12 @@ async function quickMoveRepair(id, event) {
         event.preventDefault();
         event.stopPropagation();
     }
-    console.log("Quick Moving Repair:", id);
     const job = inventory.repairs.find(j => j.id === id);
     if (!job) return;
 
-    const statuses = ['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'];
-    const currentIdx = statuses.indexOf(job.status);
-    if (currentIdx === -1 || currentIdx === statuses.length - 1) return;
+    const nextStatus = getNextRepairStatus(job.status);
+    if (!nextStatus) return;
 
-    const nextStatus = statuses[currentIdx + 1];
     job.status = nextStatus;
     
     if (nextStatus === 'delivered') {
@@ -1651,6 +1648,13 @@ async function quickMoveRepair(id, event) {
     if (error) {
         alert("SQL Sync Error: " + error.message);
     }
+}
+
+function getNextRepairStatus(currentStatus) {
+    if (currentStatus === 'hamada_received' || currentStatus === 'am_fathy_received') return 'goldsmith';
+    if (currentStatus === 'goldsmith') return 'ready';
+    if (currentStatus === 'ready') return 'delivered';
+    return null;
 }
 
 function openRepairModal(editId = null) {
