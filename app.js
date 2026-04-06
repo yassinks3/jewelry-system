@@ -364,8 +364,9 @@ function saveToStorage() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(inventory));
 }
 
-function generateSKU(category) {
-    const prefix = category === 'diamonds' ? 'D' : (category === 'gold' ? 'G' : 'R');
+function generateSKU(category, id = null) {
+    if (category === 'repairs') return `R-${id || Date.now()}`;
+    const prefix = category === 'diamonds' ? 'D' : 'G';
     const items = inventory[category] || [];
     const lastId = items.length > 0 ? Math.max(...items.map(i => {
         const parts = (i.sku || "").split('-');
@@ -1972,7 +1973,6 @@ async function saveRepair(event, editId = null) {
 
         const job = {
             id: editId || Date.now(),
-            sku: existingJob ? (existingJob.sku || generateSKU('repairs')) : generateSKU('repairs'),
             customer: customer || null,
             status: status,
             pieces: parseInt(document.getElementById('r-pieces').value) || 1,
@@ -3157,7 +3157,9 @@ function onScanSuccess(decodedText, decodedResult) {
             setTimeout(() => openItemModal('gold', item.id), 100);
         } else alert("Gold item not found: " + sku);
     } else if (sku.startsWith('R-')) {
-        const item = inventory.repairs.find(j => j.sku === sku);
+        // Handle Virtual SKU: R-{id}
+        const idStr = sku.replace('R-', '');
+        const item = inventory.repairs.find(j => j.id.toString() === idStr || j.id == idStr);
         if (item) {
             showView('workshop');
             setTimeout(() => openRepairModal(item.id), 100);
