@@ -1459,29 +1459,33 @@ button:hover {
 }
 
 .quick-move-btn {
-    background: var(--glass);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid var(--primary-blue);
     color: var(--primary-blue);
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 5;
+    margin-top: -5px; /* Slight lift */
 }
 
 .quick-move-btn:hover {
     background: var(--primary-blue);
-    color: white;
-    transform: translateX(3px);
+    color: #fff;
+    transform: scale(1.1) rotate(5deg);
+    border-color: #fff;
 }
 
-.quick-move-btn i {
-    width: 14px;
-    height: 14px;
+.quick-move-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 
