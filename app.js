@@ -1788,6 +1788,11 @@ async function addQuickCustomer() {
 
         // Auto-select and hide fields
         document.getElementById('r-customer').value = name;
+        
+        // Clear inputs and hide fields
+        document.getElementById('qc-name').value = '';
+        document.getElementById('qc-phone').value = '';
+        document.getElementById('qc-email').value = '';
         toggleQuickCustomer();
         
         // Show success
@@ -1830,8 +1835,9 @@ async function saveRepair(event, editId = null) {
         const qcNameInput = document.getElementById('qc-name');
         const qcName = qcNameInput ? qcNameInput.value : '';
         
-        // Handle Quick Customer Add
-        if (qcName) {
+        // Handle Quick Customer Add (Only if NOT already added via standalone button)
+        const customerExists = inventory.customers.some(c => c.name === qcName);
+        if (qcName && !customerExists) {
             const qcPhone = document.getElementById('qc-phone').value;
             const qcEmail = document.getElementById('qc-email').value;
             
