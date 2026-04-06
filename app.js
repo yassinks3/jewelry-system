@@ -1672,7 +1672,7 @@ function openRepairModal(editId = null) {
                                 ${currentImage ? `
                                 <div class="repair-img-preview-wrapper">
                                     <button type="button" class="repair-img-remove-btn" onclick="removeRepairImage()">
-                                        <i data-lucide="x" style="width: 16px;"></i>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                     </button>
                                     <img src="${currentImage}" class="repair-img-preview" onclick="showFullImage('${currentImage}')">
                                 </div>
@@ -1719,7 +1719,7 @@ function handleRepairImageChange(input) {
             container.innerHTML = `
                 <div class="repair-img-preview-wrapper">
                     <button type="button" class="repair-img-remove-btn" onclick="removeRepairImage()">
-                        <i data-lucide="x" style="width: 16px;"></i>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                     </button>
                     <img src="${data}" class="repair-img-preview" onclick="showFullImage('${data}')">
                 </div>

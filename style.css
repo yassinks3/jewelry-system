@@ -1324,21 +1324,28 @@ button:hover {
 
 .repair-img-remove-btn {
     position: absolute;
-    top: -10px;
-    right: -10px;
+    top: -12px;
+    right: -12px;
     background: #ef4444;
     color: white;
-    border: none;
-    width: 28px;
-    height: 28px;
+    border: 2px solid #050507;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    z-index: 20;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+    z-index: 100;
     transition: all 0.2s;
+    padding: 0;
+}
+
+.repair-img-remove-btn svg {
+    width: 16px;
+    height: 16px;
+    stroke: white;
 }
 
 .repair-img-remove-btn:hover {
@@ -1935,15 +1942,22 @@ table tbody tr:last-child td {
     }
 
     .workshop-column {
-        flex: 0 0 150px !important; /* Ultra-mini as requested */
+        flex: 0 0 145px !important; /* Force even smaller */
+        max-width: 145px !important;
+        min-width: 145px !important;
         padding: 0.5rem !important;
+        overflow: hidden !important;
+        word-wrap: break-word !important;
     }
 
     .column-header h3 {
-        font-size: 0.55rem !important;
-        letter-spacing: -0.2px;
+        font-size: 0.52rem !important;
+        letter-spacing: -0.3px;
         margin: 0;
         line-height: 1.1;
+        white-space: normal !important;
+        word-break: break-all !important;
+        text-align: center;
     }
 
     .column-header .job-count {
