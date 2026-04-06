@@ -1584,7 +1584,10 @@ function renderWorkshop(container) {
                                     </div>
                                     
                                     ${getNextRepairStatus(s) ? `
-                                        <div class="next-step-badge" onclick="quickMoveRepair(${j.id}, event)">
+                                        <div class="next-step-badge" 
+                                            onclick="quickMoveRepair(${j.id}, event)"
+                                            onmousedown="event.stopPropagation()"
+                                            ontouchstart="event.stopPropagation()">
                                             <span>${t(getNextRepairStatus(s))}</span>
                                             <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                         </div>
@@ -1628,6 +1631,14 @@ async function quickMoveRepair(id, event) {
         event.preventDefault();
         event.stopPropagation();
     }
+    
+    const card = event?.currentTarget?.closest('.job-card');
+    if (card) {
+        card.style.transform = 'translateX(100px)';
+        card.style.opacity = '0';
+        card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    }
+
     const job = inventory.repairs.find(j => j.id === id);
     if (!job) return;
 
@@ -1640,14 +1651,15 @@ async function quickMoveRepair(id, event) {
         job.delivered_at = new Date().toISOString();
     }
 
-    // Refresh UI
-    renderWorkshop(document.getElementById('view-content'));
-
-    // Sync to DB
-    const { error } = await supabaseClient.from('repairs').upsert([job]);
-    if (error) {
-        alert("SQL Sync Error: " + error.message);
-    }
+    // Small delay for animation
+    setTimeout(async () => {
+        renderWorkshop(document.getElementById('view-content'));
+        
+        const { error } = await supabaseClient.from('repairs').upsert([job]);
+        if (error) {
+            console.error("Quick move sync failed:", error);
+        }
+    }, 300);
 }
 
 function getNextRepairStatus(currentStatus) {
