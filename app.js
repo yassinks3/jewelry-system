@@ -1802,7 +1802,7 @@ async function saveRepair(event, editId = null) {
             const qcPhone = document.getElementById('qc-phone').value;
             const qcEmail = document.getElementById('qc-email').value;
             
-            const { data: newCust, error: custErr } = await supabase
+            const { data: newCust, error: custErr } = await supabaseClient
                 .from('customers')
                 .insert([
                     { 
@@ -1818,7 +1818,7 @@ async function saveRepair(event, editId = null) {
             customer = qcName;
             
             // Refresh customers list background
-            const { data: allCusts } = await supabase.from('customers').select('*');
+            const { data: allCusts } = await supabaseClient.from('customers').select('*');
             inventory.customers = allCusts || [];
         }
 
@@ -1838,7 +1838,7 @@ async function saveRepair(event, editId = null) {
                 : (existingJob ? existingJob.delivered_at : null)
         };
 
-        const { error } = await supabase.from('repairs').upsert([job]);
+        const { error } = await supabaseClient.from('repairs').upsert([job]);
         if (error) throw error;
 
         // Surgical Update
