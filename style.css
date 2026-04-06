@@ -1458,6 +1458,33 @@ button:hover {
     transform: translateX(5px) !important;
 }
 
+.quick-move-btn {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--primary-blue);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.quick-move-btn:hover {
+    background: var(--primary-blue);
+    color: white;
+    transform: translateX(3px);
+}
+
+.quick-move-btn i {
+    width: 14px;
+    height: 14px;
+}
+
+
 .job-header {
     display: flex;
     justify-content: space-between;

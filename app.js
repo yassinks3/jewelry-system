@@ -1560,23 +1560,31 @@ function renderWorkshop(container) {
                                 
                                 ${j.image ? `<img src="${j.image}" class="job-card-image" onclick="showFullImage('${j.image}')">` : ''}
 
-                                <div class="job-footer" style="margin-top: 0.75rem;" onclick="openRepairModal(${j.id})">
-                                    ${status === 'delivered' && j.delivered_at ? `
-                                        <div class="job-age-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.1);">
-                                            <i data-lucide="check-circle" style="width: 10px; height: 10px;"></i>
-                                            ${t('delivered_at_label')}: ${(() => {
-                        const ageMins = Math.floor((new Date() - new Date(j.delivered_at)) / (1000 * 60));
-                        if (ageMins < 1) return t('just_now');
-                        if (ageMins < 60) return t('minutes_ago').replace('{n}', ageMins);
-                        return t('hours_ago').replace('{n}', Math.floor(ageMins / 60));
-                    })()}
-                                        </div>
-                                    ` : `
-                                        <div class="job-age-badge">
-                                            <i data-lucide="clock" style="width: 10px; height: 10px;"></i>
-                                            ${ageDays === 0 ? t('today') : t('days_active').replace('{n}', ageDays)}
-                                        </div>
-                                    `}
+                                <div class="job-footer" style="margin-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <div onclick="openRepairModal(${j.id})">
+                                        ${status === 'delivered' && j.delivered_at ? `
+                                            <div class="job-age-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.1);">
+                                                <i data-lucide="check-circle" style="width: 10px; height: 10px;"></i>
+                                                ${t('delivered_at_label')}: ${(() => {
+                                                    const ageMins = Math.floor((new Date() - new Date(j.delivered_at)) / (1000 * 60));
+                                                    if (ageMins < 1) return t('just_now');
+                                                    if (ageMins < 60) return t('minutes_ago').replace('{n}', ageMins);
+                                                    return t('hours_ago').replace('{n}', Math.floor(ageMins / 60));
+                                                })()}
+                                            </div>
+                                        ` : `
+                                            <div class="job-age-badge">
+                                                <i data-lucide="clock" style="width: 10px; height: 10px;"></i>
+                                                ${ageDays === 0 ? t('today') : t('days_active').replace('{n}', ageDays)}
+                                            </div>
+                                        `}
+                                    </div>
+                                    
+                                    ${status !== 'delivered' ? `
+                                        <button class="quick-move-btn" onclick="quickMoveRepair(${j.id}, event)" title="Move to next status">
+                                            <i data-lucide="arrow-right"></i>
+                                        </button>
+                                    ` : ''}
                                 </div>
                             </div>
                         `;
@@ -1608,6 +1616,32 @@ async function toggleUrgent(id, event) {
         job.is_urgent = !newPriority; // Revert on failure
         if (currentView === 'workshop') renderWorkshop(viewContent);
         alert("Error updating priority: " + error.message);
+    }
+}
+
+async function quickMoveRepair(id, event) {
+    if (event) event.stopPropagation();
+    const job = inventory.repairs.find(j => j.id === id);
+    if (!job) return;
+
+    const statuses = ['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'];
+    const currentIdx = statuses.indexOf(job.status);
+    if (currentIdx === -1 || currentIdx === statuses.length - 1) return;
+
+    const nextStatus = statuses[currentIdx + 1];
+    job.status = nextStatus;
+    
+    if (nextStatus === 'delivered') {
+        job.delivered_at = new Date().toISOString();
+    }
+
+    // Refresh UI
+    renderWorkshop(document.getElementById('view-content'));
+
+    // Sync to DB
+    const { error } = await supabaseClient.from('repairs').upsert([job]);
+    if (error) {
+        alert("SQL Sync Error: " + error.message);
     }
 }
 
