@@ -1087,6 +1087,14 @@ function saveMarketRates(event) {
 
 function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
 
+function showFullImage(src) {
+    const overlay = document.createElement('div');
+    overlay.className = 'fullscreen-img-overlay';
+    overlay.innerHTML = `<img src="${src}" onclick="this.parentElement.remove()">`;
+    overlay.onclick = () => overlay.remove();
+    document.body.appendChild(overlay);
+}
+
 function saveDiamond(event, editId = null) {
     event.preventDefault();
     const diamond = {
@@ -1539,21 +1547,20 @@ function renderWorkshop(container) {
             return `
                             <div class="card job-card ${j.is_urgent ? 'job-urgent' : ''}" 
                                 style="position: relative;"
-                                onclick="openRepairModal(${j.id})"
                                 onmousedown="handleJobLongPressStart(${j.id})" 
                                 onmouseup="handleJobLongPressEnd()" 
                                 onmouseleave="handleJobLongPressEnd()"
                                 ontouchstart="handleJobLongPressStart(${j.id})" 
                                 ontouchend="handleJobLongPressEnd()">
                                 
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;" onclick="openRepairModal(${j.id})">
                                     <div style="font-weight: 700; color: var(--primary-blue);">${j.customer || t('no_customer')}</div>
                                     <div class="pieces-badge">${j.pieces || 1} ${t('pcs') || 'Pcs'}</div>
                                 </div>
                                 
-                                ${j.image ? `<img src="${j.image}" class="job-card-image">` : ''}
+                                ${j.image ? `<img src="${j.image}" class="job-card-image" onclick="showFullImage('${j.image}')">` : ''}
 
-                                <div class="job-footer" style="margin-top: 0.75rem;">
+                                <div class="job-footer" style="margin-top: 0.75rem;" onclick="openRepairModal(${j.id})">
                                     ${status === 'delivered' && j.delivered_at ? `
                                         <div class="job-age-badge" style="color: #10b981; background: rgba(16, 185, 129, 0.1);">
                                             <i data-lucide="check-circle" style="width: 10px; height: 10px;"></i>
@@ -1662,7 +1669,7 @@ function openRepairModal(editId = null) {
                                 <span>${t('take_photo') || 'Take / Choose Photo'}</span>
                             </button>
                             <div id="r-image-preview-container">
-                                ${currentImage ? `<img src="${currentImage}" class="repair-img-preview">` : ''}
+                                ${currentImage ? `<img src="${currentImage}" class="repair-img-preview" onclick="showFullImage('${currentImage}')">` : ''}
                             </div>
                             <input type="hidden" id="r-image-data" value="${currentImage || ''}">
                         </div>
@@ -1702,7 +1709,7 @@ function handleRepairImageChange(input) {
             const data = e.target.result;
             document.getElementById('r-image-data').value = data;
             const container = document.getElementById('r-image-preview-container');
-            container.innerHTML = `<img src="${data}" class="repair-img-preview">`;
+            container.innerHTML = `<img src="${data}" class="repair-img-preview" onclick="showFullImage('${data}')">`;
         };
         reader.readAsDataURL(input.files[0]);
     }

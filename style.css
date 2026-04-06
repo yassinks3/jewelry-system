@@ -1228,13 +1228,118 @@ button:hover {
     overflow-x: auto;
     padding-bottom: 1rem;
     scroll-snap-type: x mandatory;
+    margin-top: 2.5rem; /* Separate from controls */
 }
 
 .workshop-column {
     flex: 0 0 280px;
     scroll-snap-align: start;
     background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    padding: 1.25rem;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Piece Counter UI - Refined */
+.piece-counter {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Thinner border per user request */
+}
+
+.counter-btn {
+    background: rgba(79, 144, 255, 0.1);
+    color: var(--primary-blue);
+    border: 1px solid rgba(79, 144, 254, 0.2);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+.counter-btn:active { transform: scale(0.9); }
+.counter-btn:hover { background: rgba(79, 144, 254, 0.2); }
+.counter-value { font-size: 1.2rem; font-weight: 700; min-width: 25px; text-align: center; }
+
+/* Camera Upload UI */
+.camera-upload-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: rgba(79, 144, 255, 0.1);
+    border: 1px dashed var(--primary-blue);
+    padding: 1.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.repair-img-preview {
+    width: 100%;
+    aspect-ratio: 4/3; /* Fixed size to prevent "super long" images */
+    object-fit: cover;
+    border-radius: 12px;
+    margin-top: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.job-card-image {
+    width: 100%;
+    aspect-ratio: 16/9; /* Consistent horizontal preview */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+}
+
+/* Image Full View Overlay */
+.fullscreen-img-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    cursor: zoom-out;
+}
+
+.fullscreen-img-overlay img {
+    max-width: 100%;
     max-height: 100%;
+    border-radius: 12px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+.pieces-badge {
+    background: var(--primary-gold);
+    color: #000;
+    padding: 0.2rem 0.61rem;
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
 }
 
 .column-header {
