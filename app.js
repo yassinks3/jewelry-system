@@ -3117,8 +3117,7 @@ async function startQRScanner() {
     html5QrCode = new Html5Qrcode("reader");
     const config = { 
         fps: 20, // Increased for smoother detection
-        qrbox: { width: 250, height: 250 },
-        aspectRatio: 1.0
+        aspectRatio: 1.0 // Removed qrbox completely to allow scanning anywhere on the screen!
     };
 
     try {
@@ -3143,6 +3142,9 @@ function stopQRScanner() {
             if (instructions) instructions.remove();
             const toast = document.getElementById('scanner-toast');
             if (toast) toast.classList.add('hidden');
+            const preview = document.getElementById('scanner-preview');
+            if (preview) preview.classList.add('hidden');
+            isScannerPaused = false;
         }).catch(err => {
             console.error("Stop error:", err);
             document.getElementById('qr-scanner-overlay').classList.add('hidden');
@@ -3152,18 +3154,96 @@ function stopQRScanner() {
     }
 }
 
+let toastTimeout = null;
+let lastScannedCode = '';
+let lastScannedTime = 0;
+let isScannerPaused = false;
+
 function showScannerToast(message, isError = false) {
     const toast = document.getElementById('scanner-toast');
     if (!toast) return;
+    
+    // Antiflicker: do not reset the toast wildly if it's the SAME error within 1.5 seconds.
+    if (toast.innerText === message && !toast.classList.contains('hidden') && isError) {
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        return;
+    }
+
     toast.innerText = message;
     toast.className = isError ? 'error' : 'success';
     toast.classList.remove('hidden');
-    setTimeout(() => {
+    
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
         toast.classList.add('hidden');
     }, 3000);
 }
 
+function showScannerPreview(item, type) {
+    isScannerPaused = true;
+    const preview = document.getElementById('scanner-preview');
+    if (!preview) {
+        // Fallback if UI is missing
+        stopQRScanner();
+        if (type === 'workshop') {
+            showView('workshop');
+            setTimeout(() => openRepairModal(item.id), 100);
+        } else {
+            showView(type);
+            setTimeout(() => openItemModal(type, item.id), 100);
+        }
+        return;
+    }
+
+    const img = document.getElementById('preview-image');
+    if (img) img.src = item.image_url || 'https://images.unsplash.com/photo-1599643478524-fb66f7ca065b?auto=format&fit=crop&w=400';
+    
+    const name = document.getElementById('preview-name');
+    if (name) name.innerText = item.name || item.customer_name || 'Item Found';
+    
+    const sku = document.getElementById('preview-sku');
+    if (sku) sku.innerText = 'SKU: ' + (item.sku || item.SKU || item.id);
+
+    const btn = document.getElementById('preview-confirm-btn');
+    if (btn) {
+        btn.onclick = () => {
+            isScannerPaused = false;
+            preview.classList.add('hidden');
+            stopQRScanner();
+            if (type === 'workshop') {
+                showView('workshop');
+                setTimeout(() => openRepairModal(item.id), 100);
+            } else {
+                showView(type);
+                setTimeout(() => openItemModal(type, item.id), 100);
+            }
+        };
+    }
+
+    preview.classList.remove('hidden');
+}
+
+function hideScannerPreview() {
+    isScannerPaused = false;
+    const preview = document.getElementById('scanner-preview');
+    if (preview) preview.classList.add('hidden');
+    // Debounce the re-scan to avoid instantly triggering again
+    lastScannedTime = Date.now();
+    lastScannedCode = ''; // fully reset state
+}
+
 function onScanSuccess(decodedText, decodedResult) {
+    if (isScannerPaused) return;
+
+    const now = Date.now();
+    if (decodedText === lastScannedCode && (now - lastScannedTime) < 1500) {
+        // Ignored reading same code very rapidly to stop flicker
+        return;
+    }
+    lastScannedCode = decodedText;
+    lastScannedTime = now;
+
     console.log("Code matched =", decodedText, decodedResult);
     
     if (navigator.vibrate) navigator.vibrate(50);
@@ -3201,19 +3281,12 @@ function onScanSuccess(decodedText, decodedResult) {
         showScannerToast((t('found') || 'Found') + ": " + (match.sku || match.SKU || match.id), false);
         if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
         
-        // Wait slightly so user sees the success message
+        // Let the toast display briefly, then show preview card
         setTimeout(() => {
-            stopQRScanner();
-            if (type === 'workshop') {
-                showView('workshop');
-                setTimeout(() => openRepairModal(match.id), 100);
-            } else {
-                showView(type);
-                setTimeout(() => openItemModal(type, match.id), 100);
-            }
-        }, 600);
+            showScannerPreview(match, type);
+        }, 300);
+        
     } else {
         showScannerToast((t('item_not_found') || 'Item not found in stock') + ": " + decodedText, true);
-        // Do NOT stop scanner - allow user to try again/adjust position
     }
 }

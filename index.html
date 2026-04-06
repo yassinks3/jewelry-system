@@ -92,6 +92,21 @@
         <div class="scanner-container">
             <div id="reader"></div>
             <div class="scanner-frame"></div>
+            
+            <!-- Scan Preview Card -->
+            <div id="scanner-preview" class="hidden">
+                <div class="preview-card">
+                    <img id="preview-image" src="" alt="Item">
+                    <div class="preview-info">
+                        <h4 id="preview-name">Item Name</h4>
+                        <p id="preview-sku">SKU: ---</p>
+                    </div>
+                    <div class="preview-actions">
+                        <button id="preview-confirm-btn" class="btn-primary">View Details</button>
+                        <button onclick="hideScannerPreview()" class="btn-outline">Scan Again</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="scanner-footer">
             <div id="scanner-toast" class="hidden"></div>
