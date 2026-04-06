@@ -3012,3 +3012,18 @@ function jumpToPaletteItem(type, id) {
         }, 50);
     }
 }
+
+function setButtonLoading(isLoading) {
+    const btn = document.querySelector('form button[type="submit"]');
+    if (!btn) return;
+    if (isLoading) {
+        btn.disabled = true;
+        const originalText = btn.innerText;
+        btn.setAttribute('data-original-text', originalText);
+        btn.innerHTML = '<span class="spinner"></span> ' + (t('saving') || 'Saving...');
+    } else {
+        btn.disabled = false;
+        const savedText = btn.getAttribute('data-original-text');
+        btn.innerHTML = savedText || t('save');
+    }
+}
