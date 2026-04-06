@@ -1826,16 +1826,16 @@ table tbody tr:last-child td {
     .content {
         padding: 1rem;
         height: 100vh;
-        padding-top: 10rem !important; /* Extra clearance for hamburger menu */
+        padding-top: 6rem !important; /* Balanced clearance for hamburger menu */
     }
 
     /* Keep all top-level elements away from the hamburger menu */
     #dashboard-view, #diamonds-view, #gold-view, #workshop-view, #customers-view, #inventory-view {
-        margin-top: 30px !important;
+        margin-top: 15px !important;
     }
 
     .inventory-controls {
-        margin-top: 35px !important;
+        margin-top: 15px !important;
     }
 
     header h1 {
@@ -1942,7 +1942,7 @@ table tbody tr:last-child td {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 2rem;
-        margin-top: 3rem !important; /* Space from menu/button */
+        margin-top: 1.5rem !important; /* Space from menu/button */
     }
 
     .workshop-board > div {
