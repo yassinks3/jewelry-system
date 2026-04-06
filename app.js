@@ -1583,9 +1583,9 @@ function renderWorkshop(container) {
                                         `}
                                     </div>
                                     
-                                    ${getNextRepairStatus(status) ? `
+                                    ${getNextRepairStatus(s) ? `
                                         <div class="next-step-badge" onclick="quickMoveRepair(${j.id}, event)">
-                                            <span>${t(getNextRepairStatus(status))}</span>
+                                            <span>${t(getNextRepairStatus(s))}</span>
                                             <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                                         </div>
                                     ` : ''}
