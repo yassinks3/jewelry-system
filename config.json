@@ -184,7 +184,8 @@
             "unit_carat": "ct",
             "diamond": "Diamond",
             "new_customer": "New Customer",
-            "quick_add_info": "Customer Info"
+            "quick_add_info": "Customer Info",
+            "scan_code": "Scan QR Code"
         },
         "ar": {
             "dashboard": "لوحة التحكم",
@@ -364,7 +365,8 @@
             "unit_carat": "قيراط",
             "diamond": "ألماس",
             "new_customer": "عميل جديد",
-            "quick_add_info": "بيانات العميل"
+            "quick_add_info": "بيانات العميل",
+            "scan_code": "مسح رمز QR"
         }
     }
 }

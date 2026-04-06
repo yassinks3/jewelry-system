@@ -3110,11 +3110,20 @@ async function startQRScanner() {
     const overlay = document.getElementById('qr-scanner-overlay');
     overlay.classList.remove('hidden');
     
+    // Add scanning status
+    const reader = document.getElementById('reader');
+    reader.innerHTML = '<div style="color: white; margin-bottom: 1rem;">' + (t('scanning_init') || 'Initializing Camera...') + '</div>';
+
     html5QrCode = new Html5Qrcode("reader");
-    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+    const config = { 
+        fps: 20, // Increased for smoother detection
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
+    };
 
     try {
         await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess);
+        reader.insertAdjacentHTML('beforebegin', '<div id="scanner-instructions" style="color: white; margin-bottom: 1rem; font-weight: 500;">' + (t('scanner_instructions') || 'Hold steady and frame the QR code') + '</div>');
     } catch (err) {
         console.error("Camera error:", err);
         alert("Could not start camera: " + err);
