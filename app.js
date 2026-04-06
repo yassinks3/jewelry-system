@@ -1635,7 +1635,7 @@ async function quickMoveRepair(id, event) {
     job.status = nextStatus;
     
     if (nextStatus === 'delivered') {
-        job.Delivered_at = new Date().toISOString();
+        job.delivered_at = new Date().toISOString();
     }
 
     // Refresh UI
@@ -1909,9 +1909,9 @@ async function saveRepair(event, editId = null) {
             image: document.getElementById('r-image-data').value || null,
             user_id: currentUser.id,
             is_urgent: existingJob ? existingJob.is_urgent : false,
-            Delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
+            delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
                 ? new Date().toISOString()
-                : (existingJob ? existingJob.Delivered_at || existingJob.delivered_at : null)
+                : (existingJob ? existingJob.delivered_at || existingJob.Delivered_at : null)
         };
 
         console.log("Saving Repair Job:", job);
