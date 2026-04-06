@@ -1632,34 +1632,44 @@ async function quickMoveRepair(id, event) {
         event.stopPropagation();
     }
     
-    const card = event?.currentTarget?.closest('.job-card');
-    if (card) {
-        card.style.transform = 'translateX(100px)';
-        card.style.opacity = '0';
-        card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-    }
+    // Prevent double-clicks
+    const btn = event?.currentTarget;
+    if (btn) btn.style.pointerEvents = 'none';
 
     const job = inventory.repairs.find(j => j.id === id);
-    if (!job) return;
+    if (!job) {
+        console.error("Job not found:", id);
+        return;
+    }
 
-    const nextStatus = getNextRepairStatus(job.status);
-    if (!nextStatus) return;
-
-    job.status = nextStatus;
+    const currentStatus = job.status;
+    const nextStatus = getNextRepairStatus(currentStatus);
     
+    if (!nextStatus) {
+        console.warn("No next status for:", currentStatus);
+        return;
+    }
+
+    console.log(`Moving job ${id} from ${currentStatus} to ${nextStatus}`);
+
+    // Update locally
+    job.status = nextStatus;
     if (nextStatus === 'delivered') {
         job.delivered_at = new Date().toISOString();
     }
 
-    // Small delay for animation
-    setTimeout(async () => {
-        renderWorkshop(document.getElementById('view-content'));
-        
-        const { error } = await supabaseClient.from('repairs').upsert([job]);
-        if (error) {
-            console.error("Quick move sync failed:", error);
-        }
-    }, 300);
+    // RE-RENDER IMMEDIATELY (Instant Feedback)
+    const viewContent = document.getElementById('view-content');
+    if (viewContent) {
+        renderWorkshop(viewContent);
+    }
+
+    // Sync to DB in background
+    const { error } = await supabaseClient.from('repairs').upsert([job]);
+    if (error) {
+        console.error("DB Sync Error:", error);
+        alert("Sync failed: " + error.message);
+    }
 }
 
 function getNextRepairStatus(currentStatus) {
