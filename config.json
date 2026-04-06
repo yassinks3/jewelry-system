@@ -181,7 +181,9 @@
             "sale_plural": "sales",
             "and_return_items": "and return items to inventory",
             "unit_carat": "ct",
-            "diamond": "Diamond"
+            "diamond": "Diamond",
+            "new_customer": "New Customer",
+            "quick_add_info": "Customer Info"
         },
         "ar": {
             "dashboard": "لوحة التحكم",
@@ -358,7 +360,9 @@
             "sale_plural": "مبيعات",
             "and_return_items": "وإرجاع العناصر للمخزون",
             "unit_carat": "قيراط",
-            "diamond": "ألماس"
+            "diamond": "ألماس",
+            "new_customer": "عميل جديد",
+            "quick_add_info": "بيانات العميل"
         }
     }
 }

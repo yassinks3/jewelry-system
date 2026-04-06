@@ -1633,8 +1633,8 @@ function openRepairModal(editId = null) {
                         <div class="form-group" style="position: relative;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                                 <label style="margin: 0;">${t('customer')}</label>
-                                <button type="button" class="btn-text" style="font-size: 0.75rem; color: var(--primary-blue);" onclick="toggleQuickCustomer()">
-                                    + ${t('new_customer') || 'New Customer'}
+                                <button type="button" class="btn-premium" style="padding: 0.4rem 0.8rem; font-size: 0.7rem; border-radius: 20px;" onclick="toggleQuickCustomer()">
+                                    + ${t('new_customer')}
                                 </button>
                             </div>
                             <div id="r-customer-select-group">
@@ -1645,11 +1645,14 @@ function openRepairModal(editId = null) {
                             </div>
                             
                             <!-- Quick Add Fields -->
-                            <div id="quick-customer-fields" class="hidden" style="margin-top: 0.5rem; padding: 1rem; background: rgba(255,255,255,0.03); border: 1px dashed var(--border); border-radius: 8px; display: flex; flex-direction: column; gap: 0.75rem;">
-                                <p style="font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.25rem;">${t('quick_add_info') || 'Creating New Customer'}</p>
+                            <div id="quick-customer-fields" class="hidden" style="margin-top: 0.5rem; padding: 1.25rem; background: rgba(255,255,255,0.03); border: 1px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; gap: 0.75rem;">
+                                <p style="font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.5px;">${t('quick_add_info')}</p>
                                 <input type="text" id="qc-name" placeholder="${t('customer_name')} *">
                                 <input type="tel" id="qc-phone" placeholder="${t('customer_phone')}">
                                 <input type="email" id="qc-email" placeholder="${t('customer_email')}">
+                                <button type="button" class="btn-premium" style="margin-top: 0.5rem; border-radius: 10px;" onclick="addQuickCustomer()">
+                                    ${t('add')}
+                                </button>
                             </div>
                         </div>
 
@@ -1761,6 +1764,36 @@ function toggleQuickCustomer() {
     } else {
         fields.classList.add('hidden');
         select.classList.remove('hidden');
+    }
+}
+
+async function addQuickCustomer() {
+    const name = document.getElementById('qc-name').value;
+    const phone = document.getElementById('qc-phone').value;
+    const email = document.getElementById('qc-email').value;
+
+    if (!name) return alert(t('enter_name') || "Please enter customer name");
+
+    try {
+        const { data, error } = await supabaseClient
+            .from('customers')
+            .insert([{ name, phone, email, user_id: currentUser.id }])
+            .select();
+
+        if (error) throw error;
+
+        // Update local state
+        const { data: allCusts } = await supabaseClient.from('customers').select('*');
+        inventory.customers = allCusts || [];
+
+        // Auto-select and hide fields
+        document.getElementById('r-customer').value = name;
+        toggleQuickCustomer();
+        
+        // Show success
+        alert(t('save_success') || "Customer added successfully!");
+    } catch (e) {
+        alert("Error: " + e.message);
     }
 }
 
