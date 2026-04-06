@@ -17,6 +17,22 @@
     --accent-glow: rgba(225, 29, 72, 0.12);
 }
 
+/* Zoom & Selection Prevention */
+button, 
+.btn-premium, 
+.btn-outline, 
+.counter-btn, 
+.piece-counter,
+.job-card,
+.nav-links li {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    touch-action: pan-x pan-y;
+}
+
 /* Custom Scrollbar for Webkit */
 ::-webkit-scrollbar {
     width: 8px;
@@ -1919,32 +1935,34 @@ table tbody tr:last-child td {
     }
 
     .workshop-column {
-        flex: 0 0 170px !important; /* Ultra-compact as requested */
-        padding: 0.75rem !important;
+        flex: 0 0 150px !important; /* Ultra-mini as requested */
+        padding: 0.5rem !important;
     }
 
     .column-header h3 {
-        font-size: 0.65rem !important;
-        letter-spacing: 0;
+        font-size: 0.55rem !important;
+        letter-spacing: -0.2px;
+        margin: 0;
+        line-height: 1.1;
     }
 
     .column-header .job-count {
-        font-size: 0.6rem !important;
-        padding: 0.1rem 0.3rem !important;
+        font-size: 0.55rem !important;
+        padding: 0.1rem 0.25rem !important;
     }
 
     .job-card {
-        padding: 0.6rem !important;
-        margin-bottom: 0.75rem !important;
+        padding: 0.5rem !important;
+        margin-bottom: 0.6rem !important;
     }
 
     .job-card .customer-name {
-        font-size: 0.7rem !important;
+        font-size: 0.65rem !important;
     }
     
     .pieces-badge {
-        font-size: 0.55rem !important;
-        padding: 0.1rem 0.25rem !important;
+        font-size: 0.5rem !important;
+        padding: 0.1rem 0.2rem !important;
     }
     
     /* Bigger Add Job Button on Mobile */
@@ -1970,6 +1988,16 @@ table tbody tr:last-child td {
     .counter-value {
         font-size: 1.1rem !important;
         min-width: 20px !important;
+    }
+
+    /* Eraser Visibility Fix */
+    #r-image-preview-container {
+        overflow: visible !important;
+        padding: 10px !important; /* Space for the offset eraser button */
+    }
+
+    .repair-img-preview-wrapper {
+        margin-top: 0.5rem !important;
     }
 
     /* Menu Spacing */
