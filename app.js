@@ -1622,7 +1622,7 @@ async function toggleUrgent(id, event) {
 
     // UI Update (Immediate/Optimistic)
     job.is_urgent = newPriority;
-    const viewContent = document.getElementById('view-content');
+    const viewContent = document.getElementById('view-container');
     if (currentView === 'workshop') renderWorkshop(viewContent);
 
     // Sync to DB
@@ -1678,7 +1678,7 @@ async function quickMoveRepair(id, event) {
         }
 
         // 3. RE-RENDER IMMEDIATELY (Instant Feedback)
-        const viewContent = document.getElementById('view-content');
+        const viewContent = document.getElementById('view-container');
         if (viewContent) {
             renderWorkshop(viewContent);
         }
