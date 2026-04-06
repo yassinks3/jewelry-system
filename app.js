@@ -308,6 +308,9 @@ function renderApp() {
                 <i data-lucide="users"></i> ${t('customers')}
                 ${inventory.customers.some(c => inventory.repairs.some(j => j.customer === c.name && j.status === 'ready')) ? '<span class="nav-badge"></span>' : ''}
             </li>
+            <li class="scan-btn" onclick="startQRScanner()">
+                <i data-lucide="scan"></i> ${t('scan_code') || 'Scan QR Code'}
+            </li>
             ${userRole === 'admin' ? `
             <li id="nav-settings" onclick="openSettingsModal()">
                 <i data-lucide="settings"></i> ${t('settings')}
@@ -362,9 +365,12 @@ function saveToStorage() {
 }
 
 function generateSKU(category) {
-    const prefix = category === 'diamonds' ? 'D' : 'G';
-    const items = inventory[category];
-    const lastId = items.length > 0 ? Math.max(...items.map(i => parseInt(i.sku.split('-')[1]) || 1000)) : 1000;
+    const prefix = category === 'diamonds' ? 'D' : (category === 'gold' ? 'G' : 'R');
+    const items = inventory[category] || [];
+    const lastId = items.length > 0 ? Math.max(...items.map(i => {
+        const parts = (i.sku || "").split('-');
+        return parts.length > 1 ? parseInt(parts[1]) : 1000;
+    })) : 1000;
     return `${prefix}-${lastId + 1}`;
 }
 
@@ -1966,6 +1972,7 @@ async function saveRepair(event, editId = null) {
 
         const job = {
             id: editId || Date.now(),
+            sku: existingJob ? (existingJob.sku || generateSKU('repairs')) : generateSKU('repairs'),
             customer: customer || null,
             status: status,
             pieces: parseInt(document.getElementById('r-pieces').value) || 1,
@@ -2010,10 +2017,16 @@ function handleJobLongPressEnd() {
 
 async function confirmJobDeletion(id) {
     if (confirm(t('delete_job_confirm') || "Are you sure you want to erase this repair job?")) {
+        // Surgical Local Delete for Instant UX
+        inventory.repairs = inventory.repairs.filter(j => j.id !== id);
+        closeModal();
+        renderApp();
+
+        // Background Delete
         const { error } = await supabaseClient.from('repairs').delete().eq('id', id);
         if (error) {
-            alert("Error deleting job: " + error.message);
-        } else {
+            console.error("Delete failed:", error);
+            alert("Error deleting job from database: " + error.message);
             initApp();
         }
     }
@@ -3088,5 +3101,68 @@ function setButtonLoading(isLoading) {
         btn.disabled = false;
         const savedText = btn.getAttribute('data-original-text');
         btn.innerHTML = savedText || t('save');
+    }
+}
+
+let html5QrCode = null;
+
+async function startQRScanner() {
+    const overlay = document.getElementById('qr-scanner-overlay');
+    overlay.classList.remove('hidden');
+    
+    html5QrCode = new Html5Qrcode("reader");
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+    try {
+        await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess);
+    } catch (err) {
+        console.error("Camera error:", err);
+        alert("Could not start camera: " + err);
+        stopQRScanner();
+    }
+}
+
+function stopQRScanner() {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            document.getElementById('qr-scanner-overlay').classList.add('hidden');
+            html5QrCode = null;
+        }).catch(err => {
+            console.error("Stop error:", err);
+            document.getElementById('qr-scanner-overlay').classList.add('hidden');
+        });
+    } else {
+        document.getElementById('qr-scanner-overlay').classList.add('hidden');
+    }
+}
+
+function onScanSuccess(decodedText, decodedResult) {
+    console.log("Code matched =", decodedText, decodedResult);
+    stopQRScanner();
+    
+    if (navigator.vibrate) navigator.vibrate(100);
+
+    const sku = decodedText.trim().toUpperCase();
+    
+    if (sku.startsWith('D-')) {
+        const item = inventory.diamonds.find(i => i.sku === sku);
+        if (item) {
+            showView('diamonds');
+            setTimeout(() => openItemModal('diamonds', item.id), 100);
+        } else alert("Diamond not found: " + sku);
+    } else if (sku.startsWith('G-')) {
+        const item = inventory.gold.find(i => i.sku === sku);
+        if (item) {
+            showView('gold');
+            setTimeout(() => openItemModal('gold', item.id), 100);
+        } else alert("Gold item not found: " + sku);
+    } else if (sku.startsWith('R-')) {
+        const item = inventory.repairs.find(j => j.sku === sku);
+        if (item) {
+            showView('workshop');
+            setTimeout(() => openRepairModal(item.id), 100);
+        } else alert("Repair job not found: " + sku);
+    } else {
+        alert("Unknown QR Code format: " + sku);
     }
 }

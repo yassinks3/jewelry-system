@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 
 <body>
@@ -81,6 +82,21 @@
 
     <!-- Modals -->
     <div id="modal-container" class="hidden"></div>
+
+    <!-- QR Scanner Overlay -->
+    <div id="qr-scanner-overlay" class="hidden">
+        <div class="scanner-header">
+            <h3>Scan Item QR Code</h3>
+            <p>Point your camera at the tag</p>
+        </div>
+        <div class="scanner-container">
+            <div id="reader"></div>
+            <div class="scanner-frame"></div>
+        </div>
+        <div class="scanner-footer">
+            <button class="btn-outline" onclick="stopQRScanner()" style="color: white; border-color: white;">Cancel</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
     <script>
