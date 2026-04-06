@@ -172,7 +172,10 @@ async function fetchLivePrices(silent = false) {
             throw new Error("No pricing data available from any source.");
         }
 
-        if (currentView === 'dashboard') renderDashboard(document.getElementById('inventory-list'));
+        if (currentView === 'dashboard') {
+            const container = document.getElementById('inventory-list');
+            if (container) renderDashboard(container);
+        }
     } catch (err) {
         console.error("Critical Sync Failure:", err);
         marketPrices.isFallback = true;
