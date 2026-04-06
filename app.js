@@ -50,6 +50,16 @@ const t = (key) => {
 
 // Initialization Sequence
 async function initApp() {
+    // 1. Setup Global Auth Listener (Prevent stale/dropped sessions)
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        console.log("Auth Event:", event);
+        if (event === 'SIGNED_OUT') {
+            location.reload(); // Hard reset to login
+        } else if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN') {
+            currentUser = session?.user || null;
+        }
+    });
+
     const { data: { session } } = await supabaseClient.auth.getSession();
 
     if (!session) {
@@ -1632,43 +1642,65 @@ async function quickMoveRepair(id, event) {
         event.stopPropagation();
     }
     
-    // Prevent double-clicks
+    // Prevent double-clicks & provide immediate visual lock
     const btn = event?.currentTarget;
     if (btn) btn.style.pointerEvents = 'none';
 
-    const job = inventory.repairs.find(j => j.id === id);
-    if (!job) {
-        console.error("Job not found:", id);
-        return;
-    }
+    try {
+        const job = inventory.repairs.find(j => j.id === id);
+        if (!job) {
+            console.error("Job not found:", id);
+            return;
+        }
 
-    const currentStatus = job.status;
-    const nextStatus = getNextRepairStatus(currentStatus);
-    
-    if (!nextStatus) {
-        console.warn("No next status for:", currentStatus);
-        return;
-    }
+        const currentStatus = job.status;
+        const nextStatus = getNextRepairStatus(currentStatus);
+        
+        if (!nextStatus) {
+            console.warn("No next status for:", currentStatus);
+            return;
+        }
 
-    console.log(`Moving job ${id} from ${currentStatus} to ${nextStatus}`);
+        // 1. Auth Guard: Verify session before critical DB write
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) {
+            alert("Session expired. Please log in again.");
+            location.reload();
+            return;
+        }
 
-    // Update locally
-    job.status = nextStatus;
-    if (nextStatus === 'delivered') {
-        job.delivered_at = new Date().toISOString();
-    }
+        console.log(`Moving job ${id} from ${currentStatus} to ${nextStatus}`);
 
-    // RE-RENDER IMMEDIATELY (Instant Feedback)
-    const viewContent = document.getElementById('view-content');
-    if (viewContent) {
-        renderWorkshop(viewContent);
-    }
+        // 2. Update locally (Optimistic)
+        job.status = nextStatus;
+        if (nextStatus === 'delivered') {
+            job.delivered_at = new Date().toISOString();
+        }
 
-    // Sync to DB in background
-    const { error } = await supabaseClient.from('repairs').upsert([job]);
-    if (error) {
-        console.error("DB Sync Error:", error);
-        alert("Sync failed: " + error.message);
+        // 3. RE-RENDER IMMEDIATELY (Instant Feedback)
+        const viewContent = document.getElementById('view-content');
+        if (viewContent) {
+            renderWorkshop(viewContent);
+        }
+
+        // 4. Sync to DB in background
+        const { error } = await supabaseClient.from('repairs').upsert([job]);
+        if (error) {
+            console.error("DB Sync Error:", error);
+            // Revert state on failure to keep UI honest
+            job.status = currentStatus;
+            renderWorkshop(viewContent);
+            alert("Sync failed: " + error.message);
+        }
+    } catch (err) {
+        console.error("Critical quickMove error:", err);
+    } finally {
+        // ALWAYS re-enable button (prevents "dead button" syndrome)
+        if (btn) {
+            setTimeout(() => {
+                btn.style.pointerEvents = 'auto';
+            }, 100);
+        }
     }
 }
 
