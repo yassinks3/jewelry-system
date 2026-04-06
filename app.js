@@ -3134,8 +3134,15 @@ async function startQRScanner() {
 function stopQRScanner() {
     if (html5QrCode) {
         html5QrCode.stop().then(() => {
-            document.getElementById('qr-scanner-overlay').classList.add('hidden');
+            html5QrCode.clear();
             html5QrCode = null;
+            document.getElementById('qr-scanner-overlay').classList.add('hidden');
+            
+            // Clean up UI elements
+            const instructions = document.getElementById('scanner-instructions');
+            if (instructions) instructions.remove();
+            const toast = document.getElementById('scanner-toast');
+            if (toast) toast.classList.add('hidden');
         }).catch(err => {
             console.error("Stop error:", err);
             document.getElementById('qr-scanner-overlay').classList.add('hidden');
@@ -3145,11 +3152,21 @@ function stopQRScanner() {
     }
 }
 
+function showScannerToast(message, isError = false) {
+    const toast = document.getElementById('scanner-toast');
+    if (!toast) return;
+    toast.innerText = message;
+    toast.className = isError ? 'error' : 'success';
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
+
 function onScanSuccess(decodedText, decodedResult) {
     console.log("Code matched =", decodedText, decodedResult);
-    stopQRScanner();
     
-    if (navigator.vibrate) navigator.vibrate(100);
+    if (navigator.vibrate) navigator.vibrate(50);
 
     // Normalize: remove spaces, dots, commas, hyphens and make uppercase
     const cleanScan = decodedText.trim().replace(/[\s\-\.,]/g, '').toUpperCase();
@@ -3162,32 +3179,41 @@ function onScanSuccess(decodedText, decodedResult) {
         });
     };
 
+    let match = null;
+    let type = '';
+
     if (cleanScan.startsWith('D')) {
-        const item = findItem(inventory.diamonds);
-        if (item) {
-            showView('diamonds');
-            setTimeout(() => openItemModal('diamonds', item.id), 100);
-        } else alert("Diamond not found: " + decodedText);
+        match = findItem(inventory.diamonds);
+        type = 'diamonds';
     } else if (cleanScan.startsWith('G')) {
-        const item = findItem(inventory.gold);
-        if (item) {
-            showView('gold');
-            setTimeout(() => openItemModal('gold', item.id), 100);
-        } else alert("Gold item not found: " + decodedText);
+        match = findItem(inventory.gold);
+        type = 'gold';
     } else if (cleanScan.startsWith('R')) {
-        // Handle Repair: could be R-{id} or R-{sku}
-        // Try SKU first, then ID
-        let item = findItem(inventory.repairs);
-        if (!item) {
+        match = findItem(inventory.repairs);
+        type = 'workshop';
+        if (!match) {
             const idPart = cleanScan.replace('R', '');
-            item = inventory.repairs.find(j => j.id.toString() === idPart || j.id == idPart);
+            match = inventory.repairs.find(j => j.id.toString() === idPart || j.id == idPart);
         }
+    }
+
+    if (match) {
+        showScannerToast((t('found') || 'Found') + ": " + (match.sku || match.SKU || match.id), false);
+        if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
         
-        if (item) {
-            showView('workshop');
-            setTimeout(() => openRepairModal(item.id), 100);
-        } else alert("Repair job not found: " + decodedText);
+        // Wait slightly so user sees the success message
+        setTimeout(() => {
+            stopQRScanner();
+            if (type === 'workshop') {
+                showView('workshop');
+                setTimeout(() => openRepairModal(match.id), 100);
+            } else {
+                showView(type);
+                setTimeout(() => openItemModal(type, match.id), 100);
+            }
+        }, 600);
     } else {
-        alert("Unknown format: " + decodedText);
+        showScannerToast((t('item_not_found') || 'Item not found in stock') + ": " + decodedText, true);
+        // Do NOT stop scanner - allow user to try again/adjust position
     }
 }
