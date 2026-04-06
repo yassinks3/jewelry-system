@@ -1458,34 +1458,34 @@ button:hover {
     transform: translateX(5px) !important;
 }
 
-.quick-move-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1.5px solid var(--primary-blue);
-    color: var(--primary-blue);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.next-step-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.5rem;
+    color: var(--primary-blue);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    position: relative;
-    z-index: 5;
-    margin-top: -5px; /* Slight lift */
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
 }
 
-.quick-move-btn:hover {
+.next-step-badge:hover {
     background: var(--primary-blue);
-    color: #fff;
-    transform: scale(1.1) rotate(5deg);
-    border-color: #fff;
+    color: white;
+    border-color: var(--primary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary-blue-rgb), 0.3);
 }
 
-.quick-move-btn svg {
-    width: 16px;
-    height: 16px;
+.next-step-badge svg {
+    opacity: 0.7;
 }
 
 

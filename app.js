@@ -1584,9 +1584,10 @@ function renderWorkshop(container) {
                                     </div>
                                     
                                     ${status !== 'delivered' ? `
-                                        <button class="quick-move-btn" onclick="quickMoveRepair(${j.id}, event)" title="${t('move_to_next') || 'Move to Next'}">
-                                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                        </button>
+                                        <div class="next-step-badge" onclick="quickMoveRepair(${j.id}, event)">
+                                            <span>${t(statuses[statuses.indexOf(status) + 1])}</span>
+                                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        </div>
                                     ` : ''}
                                 </div>
                             </div>
