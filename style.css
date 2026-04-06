@@ -1221,26 +1221,19 @@ button:hover {
     margin: 0 auto;
 }
 
-/* Workshop Board Styles */
+/* Workshop Custom Items */
 .workshop-board {
     display: flex;
     gap: 1.5rem;
-    height: calc(100vh - 200px);
     overflow-x: auto;
     padding-bottom: 1rem;
-    align-items: flex-start;
+    scroll-snap-type: x mandatory;
 }
 
 .workshop-column {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
     background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    min-width: 320px;
-    flex-shrink: 0;
     max-height: 100%;
 }
 

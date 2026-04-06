@@ -469,56 +469,56 @@ let globalSearchTimeout;
 function handleSearch(val) {
     clearTimeout(globalSearchTimeout);
     globalSearchTimeout = setTimeout(() => {
-        currentSearch = val.toLowerCase();
-        const suggestionsContainer = document.getElementById('search-suggestions');
-        const activeView = currentView;
+    currentSearch = val.toLowerCase();
+    const suggestionsContainer = document.getElementById('search-suggestions');
+    const activeView = currentView;
 
-        if (!val || val.length < 1) {
-            suggestionsContainer.classList.add('hidden');
-            if (activeView === 'diamonds') updateInventoryGrid('diamonds');
-            else if (activeView === 'gold') updateInventoryGrid('gold');
-            else if (activeView === 'customers') updateCustomerTable();
-            return;
+    if (!val || val.length < 1) {
+        suggestionsContainer.classList.add('hidden');
+        if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+        else if (activeView === 'gold') updateInventoryGrid('gold');
+        else if (activeView === 'customers') updateCustomerTable();
+        return;
+    }
+
+    let matches = [];
+    // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
+    inventory.diamonds.forEach(d => {
+        const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} ${t('diamond')} (${d.sku})`;
+        if (isFuzzyMatch(label, currentSearch)) {
+            const isFuzzy = !label.toLowerCase().includes(currentSearch);
+            matches.push({ label, value: d.sku, type: 'diamond', isFuzzy });
         }
+    });
+    inventory.gold.forEach(g => {
+        const label = `${g.name} (${g.sku})`;
+        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
+    });
+    // Add customers to global search suggestions too
+    inventory.customers.forEach(c => {
+        const label = `${c.name} (${c.customer_code})`;
+        if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id, type: 'customer' });
+    });
 
-        let matches = [];
-        // Combine Diamonds, Gold, and Customers for GLOBAL search suggestions only
-        inventory.diamonds.forEach(d => {
-            const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} ${t('diamond')} (${d.sku})`;
-            if (isFuzzyMatch(label, currentSearch)) {
-                const isFuzzy = !label.toLowerCase().includes(currentSearch);
-                matches.push({ label, value: d.sku, type: 'diamond', isFuzzy });
-            }
-        });
-        inventory.gold.forEach(g => {
-            const label = `${g.name} (${g.sku})`;
-            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku, type: 'gold' });
-        });
-        // Add customers to global search suggestions too
-        inventory.customers.forEach(c => {
-            const label = `${c.name} (${c.customer_code})`;
-            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id, type: 'customer' });
-        });
-
-        if (matches.length > 0) {
-            suggestionsContainer.innerHTML = matches.slice(0, 10).map(m => {
-                const regex = new RegExp(`(${currentSearch})`, 'gi');
-                const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
-                return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
+    if (matches.length > 0) {
+        suggestionsContainer.innerHTML = matches.slice(0, 10).map(m => {
+            const regex = new RegExp(`(${currentSearch})`, 'gi');
+            const highlightedLabel = m.label.replace(regex, '<span class="highlight">$1</span>');
+            return `<div class="suggestion-item" onclick="selectSuggestion('${m.value}', '${m.type}')">
                 <div style="display: flex; flex-direction: column;">
                     <span class="match-label">${highlightedLabel}</span>
                     ${m.isFuzzy ? `<span class="fuzzy-hint" style="font-size: 0.7rem; color: var(--primary-gold); opacity: 0.8;">✨ ${t('potential_match')}</span>` : ''}
                 </div>
                 <span class="match-type">${t(m.type === 'diamond' ? 'diamonds' : (m.type === 'gold' ? 'gold' : 'customers'))}</span>
             </div>`;
-            }).join('');
-            suggestionsContainer.classList.remove('hidden');
-        } else suggestionsContainer.classList.add('hidden');
+        }).join('');
+        suggestionsContainer.classList.remove('hidden');
+    } else suggestionsContainer.classList.add('hidden');
 
-        // Filter the view itself
-        if (activeView === 'diamonds') updateInventoryGrid('diamonds');
-        else if (activeView === 'gold') updateInventoryGrid('gold');
-        else if (activeView === 'customers') updateCustomerTable();
+    // Filter the view itself
+    if (activeView === 'diamonds') updateInventoryGrid('diamonds');
+    else if (activeView === 'gold') updateInventoryGrid('gold');
+    else if (activeView === 'customers') updateCustomerTable();
     }, 250);
 }
 
@@ -543,50 +543,50 @@ let localSearchTimeout;
 function handleLocalSearch(query, type) {
     clearTimeout(localSearchTimeout);
     localSearchTimeout = setTimeout(() => {
-        currentSearch = query.toLowerCase();
-        const suggestionsId = `${type}-local-suggestions`;
-        const suggestionsContainer = document.getElementById(suggestionsId);
+    currentSearch = query.toLowerCase();
+    const suggestionsId = `${type}-local-suggestions`;
+    const suggestionsContainer = document.getElementById(suggestionsId);
 
-        if (!query) {
-            if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
-            if (type === 'customers') updateCustomerTable();
-            else updateInventoryGrid(type);
-            return;
-        }
+    if (!query) {
+        if (suggestionsContainer) suggestionsContainer.classList.add('hidden');
+        if (type === 'customers') updateCustomerTable();
+        else updateInventoryGrid(type);
+        return;
+    }
 
-        let matches = [];
-        if (type === 'diamonds') {
-            inventory.diamonds.forEach(d => {
-                const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} (${d.sku})`;
-                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
-            });
-        } else if (type === 'gold') {
-            inventory.gold.forEach(g => {
-                const label = `${g.name} (${g.sku})`;
-                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku });
-            });
-        } else if (type === 'customers') {
-            inventory.customers.forEach(c => {
-                const label = `${c.name} (${c.customer_code})`;
-                if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id });
-            });
-        }
+    let matches = [];
+    if (type === 'diamonds') {
+        inventory.diamonds.forEach(d => {
+            const label = `${d.carat}${t('unit_carat')} ${t(d.type.toLowerCase())} (${d.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: d.sku });
+        });
+    } else if (type === 'gold') {
+        inventory.gold.forEach(g => {
+            const label = `${g.name} (${g.sku})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: g.sku });
+        });
+    } else if (type === 'customers') {
+        inventory.customers.forEach(c => {
+            const label = `${c.name} (${c.customer_code})`;
+            if (isFuzzyMatch(label, currentSearch)) matches.push({ label, value: c.id });
+        });
+    }
 
-        if (suggestionsContainer && matches.length > 0) {
-            suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `
+    if (suggestionsContainer && matches.length > 0) {
+        suggestionsContainer.innerHTML = matches.slice(0, 8).map(m => `
             <div class="suggestion-item" onclick="selectLocalSuggestion('${m.value}', '${type}')">
                 <span class="match-label">${m.label}</span>
                 <i data-lucide="corner-down-left" style="width: 12px; height: 12px; opacity: 0.3;"></i>
             </div>
         `).join('');
-            suggestionsContainer.classList.remove('hidden');
-            lucide.createIcons();
-        } else if (suggestionsContainer) {
-            suggestionsContainer.classList.add('hidden');
-        }
+        suggestionsContainer.classList.remove('hidden');
+        lucide.createIcons();
+    } else if (suggestionsContainer) {
+        suggestionsContainer.classList.add('hidden');
+    }
 
-        if (type === 'customers') updateCustomerTable();
-        else updateInventoryGrid(type);
+    if (type === 'customers') updateCustomerTable();
+    else updateInventoryGrid(type);
     }, 250);
 }
 
@@ -624,11 +624,11 @@ document.addEventListener('keydown', (e) => {
         if (modalContainer && !modalContainer.classList.contains('hidden')) {
             closeModal();
         }
-
+        
         if (typeof commandPaletteActive !== 'undefined' && commandPaletteActive && typeof closeCommandPalette === 'function') {
             closeCommandPalette();
         }
-
+        
         const sidebar = document.querySelector('.sidebar');
         if (sidebar && sidebar.classList.contains('active')) {
             toggleSidebar();
@@ -650,6 +650,8 @@ function renderDashboard(container) {
     const alerts = checkStockLevels();
 
     container.innerHTML = `
+        <div style="margin-top: -1rem;"></div> <!-- Pull content up -->
+
         ${alerts.length > 0 ? `
         <div class="glass-card hero-card animate-fade-in" style="margin-bottom: 2rem; border-left: 4px solid #ef4444;">
             <div style="display: flex; gap: 1rem; align-items: center;">
@@ -669,12 +671,12 @@ function renderDashboard(container) {
 
         <div class="inventory-grid animate-fade-in">
             <div class="glass-card hero-card" style="grid-column: span 2;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                     <div>
                         <div class="stat-label">${t('total_portfolio_value')}</div>
-                        <div class="stat-value privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-size: clamp(1.8rem, 8vw, 2.8rem); letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
+                        <div class="stat-value privacy-value ${privacyMode_stats ? 'blurred' : ''}" style="font-size: 2.8rem; letter-spacing: -1px;">${liveValue.toLocaleString()} EGP</div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer; flex-shrink: 0;" onclick="togglePrivacy('stats')">
+                    <div style="background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 10px; cursor: pointer;" onclick="togglePrivacy('stats')">
                         <i data-lucide="${privacyMode_stats ? 'eye-off' : 'eye'}" style="width: 20px; color: var(--primary-blue);"></i>
                     </div>
                 </div>
@@ -820,9 +822,9 @@ function renderDiamonds(container, filter = 'All') {
         <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
             <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderDiamonds(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase().replace(' ', '_'))}</button>`).join('')}</div>
             <div style="display: flex; gap: 1rem;">
-                <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_excel')}</button>
+                <button class="btn-outline" onclick="exportDiamonds()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel')}</button>
+                <button class="btn-import" onclick="importCSV('diamonds')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
                 <button onclick="openDiamondModal('${filter}')">+ ${filter === 'All' ? t('add_diamond') : t('add') + ' ' + t(filter.toLowerCase().replace(' ', '_'))}</button>
-                <button class="btn-outline" onclick="exportCSV('diamonds')"><i data-lucide="download" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_csv')}</button>
             </div>
             ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("diamonds", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
         </div>
@@ -854,12 +856,12 @@ function renderGold(container, filter = 'All') {
 
         <div class="inventory-controls" style="margin-top: 1.5rem; margin-bottom: 2.5rem;">
             <div class="filter-tabs" style="margin-bottom: 1.5rem;">${types.map(type => `<button class="filter-btn ${filter === type ? 'active' : ''}" onclick="renderGold(document.getElementById('view-container'), '${type}')">${t(type.toLowerCase())}</button>`).join('')}</div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="btn-outline" onclick="exportGold()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_excel') || 'Excel'}</button>
+            <div style="gap: 1rem; display: flex;">
+                <button class="btn-outline" onclick="exportGold()"><i data-lucide="file-spreadsheet" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('export_excel') || 'Export'}</button>
+                <button class="btn-import" onclick="importCSV('gold')"><i data-lucide="upload" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 0.5rem;"></i> ${t('import_csv')}</button>
                 <button onclick="openGoldModal('${filter}')">+ ${filter === 'All' ? t('add_gold') :
             (filter === 'Necklace' ? t('add') + ' ' + (currentLang === 'en' ? t('gold_label') + ' ' : '') + t(filter.toLowerCase()) + (currentLang === 'ar' ? ' ' + t('gold_label') : '') : t('add') + ' ' + t(filter.toLowerCase()))
         }</button>
-                <button class="btn-outline" onclick="exportCSV('gold')"><i data-lucide="download" style="width: 16px; height: 16px; margin-right: 0.5rem;"></i> ${t('export_csv')}</button>
             </div>
             ${ranges.length > 1 ? `<div class="range-tabs" style="margin-top: 1.5rem; margin-bottom: 0;">${ranges.map(r => `<button class="range-btn ${activeRange.start === r.start ? 'active' : ''}" onclick='setInventoryRange("gold", ${JSON.stringify(r)})'>${r.label}</button>`).join('')}</div>` : ''}
         </div>
@@ -997,16 +999,16 @@ function openDiamondModal(param = null) {
                 <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
             </div>
             <form id="diamond-form" onsubmit="saveDiamond(event, ${editItem ? editItem.id : null})">
-                <div class="modal-form-grid">
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('image')}</label><input type="file" id="d-image" accept="image/*" class="file-input"></div>
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('type')}</label><select id="d-item-type" required>${['Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'].map(tg => `<option ${(editItem && editItem.item_type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase().replace(' ', '_'))}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('shape')}</label><select id="d-shape" required>${['Round', 'Princess', 'Emerald', 'Asscher', 'Cushion', 'Marquise', 'Oval', 'Pear', 'Radiant', 'Heart'].map(s => `<option ${editItem && editItem.type === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 3;"><label>${t('color')}</label><select id="d-color" required>${['D', 'E', 'F', 'G', 'H', 'I', 'J'].map(c => `<option ${editItem && editItem.color === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('cut')}</label><select id="d-cut" required>${['Excellent', 'Very Good', 'Good', 'Fair'].map(ct => `<option ${editItem && editItem.cut === ct ? 'selected' : ''}>${ct}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('carat')}</label><input type="number" id="d-carat" step="any" value="${editItem ? editItem.carat : ''}" required></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('clarity')}</label><select id="d-clarity" required>${['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1'].map(cl => `<option ${editItem && editItem.clarity === cl ? 'selected' : ''}>${cl}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.65rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('image')}</label><input type="file" id="d-image" accept="image/*" class="file-input"></div>
+                    <div class="form-group"><label>${t('name')}</label><input type="text" id="d-name" value="${editItem ? editItem.name || '' : ''}" placeholder="Diamond Name"></div>
+                    <div class="form-group"><label>${t('type')}</label><select id="d-item-type" required>${['Loose Stone', 'Solitaire', 'Ring', 'Earrings', 'Necklace', 'Bracelet'].map(tg => `<option ${(editItem && editItem.item_type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase().replace(' ', '_'))}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('shape')}</label><select id="d-shape" required>${['Round', 'Princess', 'Emerald', 'Asscher', 'Cushion', 'Marquise', 'Oval', 'Pear', 'Radiant', 'Heart'].map(s => `<option ${editItem && editItem.type === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('carat')}</label><input type="number" id="d-carat" step="any" value="${editItem ? editItem.carat : ''}" required></div>
+                    <div class="form-group"><label>${t('color')}</label><select id="d-color" required>${['D', 'E', 'F', 'G', 'H', 'I', 'J'].map(c => `<option ${editItem && editItem.color === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('clarity')}</label><select id="d-clarity" required>${['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1'].map(cl => `<option ${editItem && editItem.clarity === cl ? 'selected' : ''}>${cl}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('cut')}</label><select id="d-cut" required>${['Excellent', 'Very Good', 'Good', 'Fair'].map(ct => `<option ${editItem && editItem.cut === ct ? 'selected' : ''}>${ct}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('price_egp')}</label><input type="number" id="d-price" value="${editItem ? editItem.price : ''}" required><div id="d-suggested" style="font-size: 0.75rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
@@ -1034,14 +1036,13 @@ function openGoldModal(param = null) {
                 <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
             </div>
             <form id="gold-form" onsubmit="saveGold(event, ${editItem ? editItem.id : null})">
-                <div class="modal-form-grid">
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('image')}</label><input type="file" id="g-image" accept="image/*" class="file-input"></div>
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('name')}</label><input type="text" id="g-name" value="${editItem ? editItem.name : ''}" required></div>
-                    <div class="form-group" style="grid-column: span 6;"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
-                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required></div>
-                    <div id="g-suggested" style="grid-column: span 6; font-size: 0.65rem; color: var(--primary-blue); margin-top: -0.5rem; margin-bottom: 0.5rem;"></div>
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('image')}</label><input type="file" id="g-image" accept="image/*" class="file-input"></div>
+                    <div class="form-group"><label>${t('name')}</label><input type="text" id="g-name" value="${editItem ? editItem.name : ''}" required></div>
+                    <div class="form-group"><label>${t('type')}</label><select id="g-type" required>${['Chain', 'Necklace', 'Bracelet', 'Ring', 'Earrings', 'Other'].map(tg => `<option ${(editItem && editItem.type === tg) || (!editItem && preselectedType === tg) ? 'selected' : ''} value="${tg}">${t(tg.toLowerCase())}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('karat')}</label><select id="g-karat" required>${['10k', '14k', '18k', '22k', '24k'].map(k => `<option ${editItem && editItem.karat === k ? 'selected' : ''}>${k}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>${t('weight_g')}</label><input type="number" id="g-weight" step="any" value="${editItem ? editItem.weight : ''}" required></div>
+                    <div class="form-group" style="grid-column: span 2;"><label>${t('price_egp')}</label><input type="number" id="g-price" value="${editItem ? editItem.price : ''}" required><div id="g-suggested" style="font-size: 0.75rem; color: var(--primary-blue); margin-top: 0.25rem;"></div></div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1rem;"><button type="submit">${editItem ? t('save') : t('add')}</button><button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button></div>
             </form>
@@ -1086,17 +1087,6 @@ function saveMarketRates(event) {
 
 function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
 
-// UI Helpers
-function setButtonLoading(btn, isLoading) {
-    if (isLoading) {
-        btn.classList.add('btn-loading');
-        btn.disabled = true;
-    } else {
-        btn.classList.remove('btn-loading');
-        btn.disabled = false;
-    }
-}
-
 function saveDiamond(event, editId = null) {
     event.preventDefault();
     const diamond = {
@@ -1113,16 +1103,13 @@ function saveDiamond(event, editId = null) {
         image: editId ? inventory.diamonds.find(i => i.id === editId).image : null
     };
     const finalize = async () => {
-        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
         if (!editId && isDuplicate('diamonds', diamond) && !confirm(t('duplicate_warn'))) return;
 
-        if (btn) setButtonLoading(btn, true);
         // Save to Supabase
         const { error } = await supabaseClient.from('diamonds').upsert([diamond]);
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
-            if (btn) setButtonLoading(btn, false);
         } else {
             // Surgical Update
             if (editId) {
@@ -1156,16 +1143,13 @@ function saveGold(event, editId = null) {
         image: editId ? inventory.gold.find(i => i.id === editId).image : null
     };
     const finalize = async () => {
-        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
         if (!editId && isDuplicate('gold', item) && !confirm(t('duplicate_warn'))) return;
 
-        if (btn) setButtonLoading(btn, true);
         // Save to Supabase
         const { error } = await supabaseClient.from('gold').upsert([item]);
 
         if (error) {
             alert("Error saving to cloud: " + error.message);
-            if (btn) setButtonLoading(btn, false);
         } else {
             // Surgical Update
             if (editId) {
@@ -1186,14 +1170,8 @@ function saveGold(event, editId = null) {
     } else finalize();
 }
 
-function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds_excel.csv', ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
-function exportGold() { downloadCSV(inventory.gold, 'gold_excel.csv', ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price']); }
-function exportCSV(type) {
-    const data = inventory[type];
-    const filename = `${type}_export.csv`;
-    const headers = type === 'diamonds' ? ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price'] : ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price'];
-    downloadCSV(data, filename, headers);
-}
+function exportDiamonds() { downloadCSV(inventory.diamonds, 'diamonds.csv', ['SKU', 'Type', 'Carat', 'Color', 'Clarity', 'Cut', 'Price']); }
+function exportGold() { downloadCSV(inventory.gold, 'gold.csv', ['SKU', 'Name', 'Type', 'Karat', 'Weight', 'Price']); }
 function exportAll() { downloadCSV([...inventory.diamonds, ...inventory.gold], 'inventory_backup.csv', ['SKU', 'Type', 'Price']); }
 
 function requestSalesArchive() { if (prompt(t('enter_pass')) === SYSTEM_PASS) showView('sales'); else alert(t('wrong_pass')); }
@@ -1308,8 +1286,6 @@ function sellItem(event, category, id) {
     };
 
     const finalizeSale = async () => {
-        const btn = event.submitter || event.target.querySelector('button[type="submit"]');
-        if (btn) setButtonLoading(btn, true);
         // Save to sales table
         const { error: sError } = await supabaseClient.from('sales').insert([saleData]);
         // Remove from original table
@@ -1317,7 +1293,6 @@ function sellItem(event, category, id) {
 
         if (sError || dError) {
             alert("Error syncing sale: " + (sError?.message || dError?.message));
-            if (btn) setButtonLoading(btn, false);
             return;
         }
 
@@ -1479,7 +1454,7 @@ function renderSales(container) {
                 <button class="btn-outline" onclick="toggleVoidMode()" style="background: rgba(100, 100, 100, 0.2);">
                     <i data-lucide="x" style="width: 16px; height: 16px;"></i> Cancel
                 </button>
-                <button class="btn-outline" onclick="confirmBulkVoid(event)" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" ${selectedCount === 0 ? 'disabled' : ''}>
+                <button class="btn-outline" onclick="confirmBulkVoid()" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" ${selectedCount === 0 ? 'disabled' : ''}>
                     <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Void Selected (${selectedCount})
                 </button>
                 <span style="color: var(--primary-blue); font-weight: 600; font-size: 0.9rem;">
@@ -1513,7 +1488,7 @@ function renderSales(container) {
                             <i data-lucide="printer" style="width: 12px; height: 12px;"></i> Receipt
                         </button>
                         ${userRole === 'admin' ? `
-                        <button onclick="voidSale(${item.id}, event)" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
+                        <button onclick="voidSale(${item.id})" class="btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">
                             <i data-lucide="rotate-ccw" style="width: 12px; height: 12px;"></i> Void
                         </button>
                         ` : ''}
@@ -1571,19 +1546,12 @@ function renderWorkshop(container) {
                                 ontouchstart="handleJobLongPressStart(${j.id})" 
                                 ontouchend="handleJobLongPressEnd()">
                                 
-                                ${j.is_urgent && status !== 'delivered' ? `<div class="urgent-badge">${t('urgent')}</div>` : ''}
-
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                                     <div style="font-weight: 700; color: var(--primary-blue);">${j.customer || t('no_customer')}</div>
-                                    ${status !== 'delivered' ? `
-                                        <i data-lucide="star" 
-                                           class="urgent-toggle ${j.is_urgent ? 'active' : ''}" 
-                                           onclick="toggleUrgent(${j.id}, event)"
-                                           style="width: 14px; height: 14px;"></i>
-                                    ` : ''}
+                                    <div class="pieces-badge">${j.pieces || 1} ${t('pcs') || 'Pcs'}</div>
                                 </div>
-                                <div class="job-service">${j.service}</div>
-                                ${j.notes ? `<div class="job-notes-summary">${j.notes}</div>` : ''}
+                                
+                                ${j.image ? `<img src="${j.image}" class="job-card-image">` : ''}
 
                                 <div class="job-footer" style="margin-top: 0.75rem;">
                                     ${status === 'delivered' && j.delivered_at ? `
@@ -1602,7 +1570,6 @@ function renderWorkshop(container) {
                                             ${ageDays === 0 ? t('today') : t('days_active').replace('{n}', ageDays)}
                                         </div>
                                     `}
-                                    ${j.phone ? `<div class="job-phone">${j.phone}</div>` : ''}
                                 </div>
                             </div>
                         `;
@@ -1642,25 +1609,20 @@ function openRepairModal(editId = null) {
     const modal = document.getElementById('modal-container');
     modal.classList.remove('hidden');
 
-    // Create Datalist for Services
-    const serviceListId = 'saved-services-list';
-    let datalist = document.getElementById(serviceListId);
-    if (!datalist) {
-        datalist = document.createElement('datalist');
-        datalist.id = serviceListId;
-        document.body.appendChild(datalist);
-    }
-    datalist.innerHTML = appSettings.workshopServices.map(s => `<option value="${s}">`).join('');
+    let currentPieces = job ? (job.pieces || 1) : 1;
+    let currentImage = job ? job.image : null;
 
     modal.innerHTML = `
         <div class="modal">
-            <div class="modal-content card">
+            <div class="modal-content card" style="max-width: 500px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                     <h2>${job ? t('edit') : t('add_job')}</h2>
                     <i data-lucide="x" class="close-btn" onclick="closeModal()"></i>
                 </div>
                 <form onsubmit="saveRepair(event, ${editId})">
-                    <div class="form-grid">
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        
+                        <!-- Customer Selection -->
                         <div class="form-group" style="position: relative;">
                             <label>${t('customer')}</label>
                             <input type="text" id="r-customer" value="${job ? job.customer : ''}" 
@@ -1668,35 +1630,52 @@ function openRepairModal(editId = null) {
                                 oninput="handleCustomerAutocomplete(this)" autocomplete="off">
                             <div id="r-customer-suggestions" class="suggestions-dropdown hidden"></div>
                         </div>
-                        <div class="form-group">
-                            <label>${t('service_type')}</label>
-                            <input type="text" id="r-service" value="${job ? job.service : ''}" 
-                                placeholder="${t('service_type_placeholder')}" list="${serviceListId}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>${t('status')}</label>
-                            <select id="r-status" required>
-                                ${['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'].map(s =>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                             <!-- Piece Counter -->
+                            <div class="form-group">
+                                <label>${t('pieces') || 'Pieces'}</label>
+                                <div class="piece-counter">
+                                    <button type="button" class="counter-btn" onclick="adjustRepairCounter(-1)">-</button>
+                                    <span id="r-pieces-display" class="counter-value">${currentPieces}</span>
+                                    <button type="button" class="counter-btn" onclick="adjustRepairCounter(1)">+</button>
+                                </div>
+                                <input type="hidden" id="r-pieces" value="${currentPieces}">
+                            </div>
+
+                            <!-- Status Selection -->
+                            <div class="form-group">
+                                <label>${t('status')}</label>
+                                <select id="r-status" required>
+                                    ${['hamada_received', 'am_fathy_received', 'goldsmith', 'ready', 'delivered'].map(s =>
         `<option value="${s}" ${job && job.status === s ? 'selected' : ''}>${t(s)}</option>`).join('')}
-                            </select>
+                                </select>
+                            </div>
                         </div>
+
+                        <!-- Photo Capture -->
                         <div class="form-group">
-                            <label>${t('due_date')}</label>
-                            <input type="date" id="r-date" value="${job ? job.due_date : ''}">
+                            <label>${t('job_photo') || 'Job Photo'}</label>
+                            <input type="file" id="r-image-input" accept="image/*" capture="environment" style="display: none;" onchange="handleRepairImageChange(this)">
+                            <button type="button" class="camera-upload-btn" onclick="document.getElementById('r-image-input').click()">
+                                <i data-lucide="camera"></i>
+                                <span>${t('take_photo') || 'Take / Choose Photo'}</span>
+                            </button>
+                            <div id="r-image-preview-container">
+                                ${currentImage ? `<img src="${currentImage}" class="repair-img-preview">` : ''}
+                            </div>
+                            <input type="hidden" id="r-image-data" value="${currentImage || ''}">
                         </div>
+
                     </div>
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>${t('notes')}</label>
-                        <textarea id="r-notes" class="textarea-auto" placeholder="${t('notes')}..." 
-                            oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'">${job ? job.notes || '' : ''}</textarea>
-                    </div>
+
                     <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: space-between; align-items: center;">
-                        <div style="display: flex; gap: 1rem;">
-                            <button type="submit" class="btn-premium">${t('save')}</button>
-                            <button type="button" class="btn-outline" onclick="closeModal()">${t('cancel')}</button>
+                        <div style="display: flex; gap: 1rem; flex: 1;">
+                            <button type="submit" class="btn-premium" style="flex: 1;">${t('save')}</button>
+                            <button type="button" class="btn-outline" onclick="closeModal()" style="flex: 1;">${t('cancel')}</button>
                         </div>
                         ${editId ? `<button type="button" class="btn-danger-text" onclick="confirmJobDeletion(${editId})">
-                            <i data-lucide="trash-2" style="width: 16px;"></i> ${t('delete_job')}
+                            <i data-lucide="trash-2" style="width: 16px;"></i>
                         </button>` : ''}
                     </div>
                 </form>
@@ -1704,10 +1683,29 @@ function openRepairModal(editId = null) {
         </div>
     `;
     lucide.createIcons();
+}
 
-    // Auto-adjust textarea if editing
-    const tx = modal.querySelector('#r-notes');
-    if (tx) { tx.style.height = 'auto'; tx.style.height = tx.scrollHeight + 'px'; }
+// Helpers for the new Repair Modal
+function adjustRepairCounter(delta) {
+    const input = document.getElementById('r-pieces');
+    const display = document.getElementById('r-pieces-display');
+    let val = parseInt(input.value) + delta;
+    if (val < 1) val = 1;
+    input.value = val;
+    display.innerText = val;
+}
+
+function handleRepairImageChange(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = e.target.result;
+            document.getElementById('r-image-data').value = data;
+            const container = document.getElementById('r-image-preview-container');
+            container.innerHTML = `<img src="${data}" class="repair-img-preview">`;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 function handleCustomerAutocomplete(input) {
@@ -1737,26 +1735,15 @@ async function saveRepair(event, editId = null) {
     event.preventDefault();
     if (!currentUser) return alert("Please log in first");
 
-    const service = document.getElementById('r-service').value;
-    const notes = document.getElementById('r-notes').value;
-
-    // Persistence for new services
-    if (service && !appSettings.workshopServices.includes(service)) {
-        appSettings.workshopServices.push(service);
-        localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
-    }
-
-    const dueDate = document.getElementById('r-date').value;
     const status = document.getElementById('r-status').value;
     const existingJob = editId ? inventory.repairs.find(j => j.id === editId) : null;
 
     const job = {
         id: editId || Date.now(),
         customer: document.getElementById('r-customer').value,
-        service: service,
         status: status,
-        due_date: dueDate === "" ? null : dueDate,
-        notes: notes,
+        pieces: parseInt(document.getElementById('r-pieces').value) || 1,
+        image: document.getElementById('r-image-data').value || null,
         user_id: currentUser.id,
         is_urgent: existingJob ? existingJob.is_urgent : false,
         delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
@@ -2021,7 +2008,14 @@ async function wipeCategory(category) {
 // Mobile Sidebar Logic
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
+    let overlay = document.querySelector('.sidebar-overlay');
+
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.onclick = toggleSidebar;
+        document.body.appendChild(overlay);
+    }
 
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
@@ -2060,15 +2054,10 @@ async function refreshDataOnly() {
 
 async function handleLogin(event) {
     event.preventDefault();
-    let loginInput = document.getElementById('login-email').value;
+    const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     const btn = document.getElementById('login-btn');
     const errorDiv = document.getElementById('login-error');
-
-    // Shorthand support: if no @ domain, assume @idar.com
-    if (!loginInput.includes('@')) {
-        loginInput += "@idar.com";
-    }
 
     btn.disabled = true;
     const originalText = btn.innerText;
@@ -2076,7 +2065,7 @@ async function handleLogin(event) {
     errorDiv.innerText = "";
 
     try {
-        const { error } = await supabaseClient.auth.signInWithPassword({ email: loginInput, password });
+        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
         if (error) throw error;
         initApp();
     } catch (error) {
@@ -2156,14 +2145,11 @@ function renderProfitChart() {
     });
 }
 
-async function voidSale(saleId, event) {
+async function voidSale(saleId) {
     if (!confirm("Void this sale and return item to inventory?")) return;
 
     const sale = inventory.sold.find(s => s.id === saleId);
     if (!sale) return;
-
-    const btn = event?.submitter || (event?.target && event.target.tagName === 'BUTTON' ? event.target : null);
-    if (btn) setButtonLoading(btn, true);
 
     try {
         // 1. Mark sale as voided in Supabase
@@ -2188,7 +2174,6 @@ async function voidSale(saleId, event) {
     } catch (e) {
         console.error("Void failed", e);
         alert("Void failed: " + e.message);
-        if (btn) setButtonLoading(btn, false);
     }
 }
 
@@ -2494,9 +2479,6 @@ async function saveCustomer(event, customerId) {
         user_id: currentUser.id
     };
 
-    const btn = event.submitter || event.target.querySelector('button[type="submit"]');
-    if (btn) setButtonLoading(btn, true);
-
     try {
         let finalCustomerId = customerId;
         if (customerId) {
@@ -2660,14 +2642,11 @@ function toggleVoidSelection(saleId) {
     showView('sales');
 }
 
-async function confirmBulkVoid(event) {
+async function confirmBulkVoid() {
     const count = selectedVoidIds.size;
     if (count === 0) return;
 
     if (!confirm(`${t('void')} ${count} ${t('sale_plural')} ${t('and_return_items')}?`)) return;
-
-    const btn = event?.submitter || (event?.target && event.target.tagName === 'BUTTON' ? event.target : null);
-    if (btn) setButtonLoading(btn, true);
 
     try {
         for (const saleId of selectedVoidIds) {
@@ -2697,7 +2676,6 @@ async function confirmBulkVoid(event) {
     } catch (e) {
         console.error("Bulk void failed", e);
         alert("Bulk void failed: " + e.message);
-        if (btn) setButtonLoading(btn, false);
     }
 }
 
