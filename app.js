@@ -1632,7 +1632,7 @@ async function quickMoveRepair(id, event) {
     job.status = nextStatus;
     
     if (nextStatus === 'delivered') {
-        job.delivered_at = new Date().toISOString();
+        job.Delivered_at = new Date().toISOString();
     }
 
     // Refresh UI
@@ -1900,17 +1900,18 @@ async function saveRepair(event, editId = null) {
 
         const job = {
             id: editId || Date.now(),
-            customer: customer,
+            customer: customer || null,
             status: status,
             pieces: parseInt(document.getElementById('r-pieces').value) || 1,
             image: document.getElementById('r-image-data').value || null,
             user_id: currentUser.id,
             is_urgent: existingJob ? existingJob.is_urgent : false,
-            delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
+            Delivered_at: (status === 'delivered' && (!existingJob || existingJob.status !== 'delivered'))
                 ? new Date().toISOString()
-                : (existingJob ? existingJob.delivered_at : null)
+                : (existingJob ? existingJob.Delivered_at || existingJob.delivered_at : null)
         };
 
+        console.log("Saving Repair Job:", job);
         const { error } = await supabaseClient.from('repairs').upsert([job]);
         if (error) throw error;
 
