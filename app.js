@@ -3138,47 +3138,47 @@ function stopQRScanner() {
 
 function onScanSuccess(decodedText, decodedResult) {
     console.log("Code matched =", decodedText, decodedResult);
-    
-    // Diagnostic Alert
-    alert("SCAN DETECTED!\nRaw: " + decodedText);
-    
     stopQRScanner();
     
     if (navigator.vibrate) navigator.vibrate(100);
 
-    const sku = decodedText.trim().toUpperCase();
-    console.log("Searching for SKU:", sku);
+    // Normalize: remove spaces, dots, commas, hyphens and make uppercase
+    const cleanScan = decodedText.trim().replace(/[\s\-\.,]/g, '').toUpperCase();
     
-    if (sku.startsWith('D-')) {
-        const item = inventory.diamonds.find(i => (i.sku || i.SKU || "").toUpperCase() === sku);
+    const findItem = (list) => {
+        return list.find(i => {
+            const rawSku = (i.sku || i.SKU || "").toString();
+            const cleanSku = rawSku.replace(/[\s\-\.,]/g, '').toUpperCase();
+            return cleanSku === cleanScan;
+        });
+    };
+
+    if (cleanScan.startsWith('D')) {
+        const item = findItem(inventory.diamonds);
         if (item) {
-            alert("Found Diamond ID: " + item.id);
             showView('diamonds');
             setTimeout(() => openItemModal('diamonds', item.id), 100);
-        } else {
-            alert("Diamond not found in inventory: " + sku + "\nInventory Size: " + inventory.diamonds.length);
-        }
-    } else if (sku.startsWith('G-')) {
-        const item = inventory.gold.find(i => (i.sku || i.SKU || "").toUpperCase() === sku);
+        } else alert("Diamond not found: " + decodedText);
+    } else if (cleanScan.startsWith('G')) {
+        const item = findItem(inventory.gold);
         if (item) {
-            alert("Found Gold ID: " + item.id);
             showView('gold');
             setTimeout(() => openItemModal('gold', item.id), 100);
-        } else {
-            alert("Gold item not found in inventory: " + sku + "\nInventory Size: " + inventory.gold.length);
+        } else alert("Gold item not found: " + decodedText);
+    } else if (cleanScan.startsWith('R')) {
+        // Handle Repair: could be R-{id} or R-{sku}
+        // Try SKU first, then ID
+        let item = findItem(inventory.repairs);
+        if (!item) {
+            const idPart = cleanScan.replace('R', '');
+            item = inventory.repairs.find(j => j.id.toString() === idPart || j.id == idPart);
         }
-    } else if (sku.startsWith('R-')) {
-        // Handle Virtual SKU: R-{id}
-        const idStr = sku.replace('R-', '');
-        const item = inventory.repairs.find(j => j.id.toString() === idStr || j.id == idStr);
+        
         if (item) {
-            alert("Found Repair ID: " + item.id);
             showView('workshop');
             setTimeout(() => openRepairModal(item.id), 100);
-        } else {
-            alert("Repair job not found in inventory: " + sku + "\nInventory Size: " + inventory.repairs.length);
-        }
+        } else alert("Repair job not found: " + decodedText);
     } else {
-        alert("Unknown QR Code format: " + sku + "\nTry codes starting with D-, G-, or R-");
+        alert("Unknown format: " + decodedText);
     }
 }
