@@ -1335,9 +1335,28 @@ function sellItem(event, category, id) {
 function viewQR(category, id) {
     const item = inventory[category].find(i => i.id === id);
     const modal = document.getElementById('modal-container');
+    const skuText = item.sku || item.SKU || item.id;
+    
     modal.classList.remove('hidden');
-    modal.innerHTML = `<div class="modal"><div class="modal-content card" style="max-width: 400px; text-align: center;"><div id="qr-output"></div><h3>${item.sku}</h3></div></div>`;
-    new QRCode(document.getElementById("qr-output"), { text: item.sku, width: 200, height: 200 });
+    modal.innerHTML = `
+        <div class="modal" onclick="closeModal()">
+            <div class="modal-content card" style="max-width: 400px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;" onclick="event.stopPropagation()">
+                <h3 style="margin: 0; color: var(--gold-primary);">${skuText}</h3>
+                <div id="qr-output" style="background: white; padding: 20px; border-radius: 10px; display: inline-block;"></div>
+                <button class="btn-outline" style="margin-top: 10px; width: 100%;" onclick="closeModal()">${t('cancel') || 'Close'}</button>
+            </div>
+        </div>
+    `;
+    
+    // Explicitly set light/dark colors and ensure it builds properly
+    new QRCode(document.getElementById("qr-output"), { 
+        text: skuText.toString(), 
+        width: 250, 
+        height: 250,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
 }
 
 async function generateReceipt(saleData) {
