@@ -3150,26 +3150,26 @@ async function startQRScanner() {
 }
 
 function stopQRScanner() {
+    // Hide overlay immediately so modals can show without delay
+    const overlay = document.getElementById('qr-scanner-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    
+    // Clean up UI elements immediately
+    const instructions = document.getElementById('scanner-instructions');
+    if (instructions) instructions.remove();
+    const toast = document.getElementById('scanner-toast');
+    if (toast) toast.classList.add('hidden');
+    const preview = document.getElementById('scanner-preview');
+    if (preview) preview.classList.add('hidden');
+    isScannerPaused = false;
+
     if (html5QrCode) {
         html5QrCode.stop().then(() => {
             html5QrCode.clear();
             html5QrCode = null;
-            document.getElementById('qr-scanner-overlay').classList.add('hidden');
-            
-            // Clean up UI elements
-            const instructions = document.getElementById('scanner-instructions');
-            if (instructions) instructions.remove();
-            const toast = document.getElementById('scanner-toast');
-            if (toast) toast.classList.add('hidden');
-            const preview = document.getElementById('scanner-preview');
-            if (preview) preview.classList.add('hidden');
-            isScannerPaused = false;
         }).catch(err => {
             console.error("Stop error:", err);
-            document.getElementById('qr-scanner-overlay').classList.add('hidden');
         });
-    } else {
-        document.getElementById('qr-scanner-overlay').classList.add('hidden');
     }
 }
 
@@ -3247,9 +3247,8 @@ function hideScannerPreview() {
     isScannerPaused = false;
     const preview = document.getElementById('scanner-preview');
     if (preview) preview.classList.add('hidden');
-    // Debounce the re-scan to avoid instantly triggering again
-    lastScannedTime = Date.now();
-    lastScannedCode = ''; // fully reset state
+    // Set time into the future to completely ignore the current tag for a moment
+    lastScannedTime = Date.now() + 1500; 
 }
 
 function onScanSuccess(decodedText, decodedResult) {
